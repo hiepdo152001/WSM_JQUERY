@@ -23,6 +23,6 @@
         "webpack-cli": "^5.0.2"
     },
     "dependencies": {
-        "vue": "^3.2.47"
+        "vue": "^3.2.36"
     }
 }
