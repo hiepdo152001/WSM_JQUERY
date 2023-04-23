@@ -1,22 +1,20 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <nav>
-                <ul class="list-inline">
-                    <li>
-                        <router-link :to="{ name: 'home' }">Home</router-link>
-                    </li>
-                    <li class="pull-right">
-                        <router-link :to="{ name: 'login' }">Login</router-link>
-                    </li>
-                    <li class="pull-right">
-                        <router-link :to="{ name: 'register' }">Register</router-link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="panel-body">
-            <router-view></router-view>
-        </div>
-    </div>
-</template>
+    <h1>{{ message }}</h1>
+  </template>
+
+  <script>
+  export default {
+    data() {
+      return {
+        message: 'Hello Vue!'
+      };
+    }
+  };
+  </script>
+
+  <style>
+  h1 {
+    color: greenyellow;
+    background-color: black;
+  }
+  </style>
