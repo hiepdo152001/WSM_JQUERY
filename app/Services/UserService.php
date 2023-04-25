@@ -14,7 +14,7 @@ class UserService{
            $user->update($request);
  }
  public function getUserbyId( $id){
-    $user=User::find($id)->first();
+    $user=User::find($id);
     return $user;
  }
  public function newPassword(string $email, string $password)

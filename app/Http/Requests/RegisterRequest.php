@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class RegisterRequest extends FormRequest
 {
@@ -32,15 +33,14 @@ class RegisterRequest extends FormRequest
         ];
     }
    
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator){
-        
-        $errors = $validator->errors();
-        $response = new JsonResponse([
-            'success' => false,
-            'message' => $errors->first(),
-            'errors' => $errors
-        ], 422);
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
 
-        throw new HttpResponseException($response);
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json(
+            [
+                'error' => $errors,
+                'status_code' => 422,
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

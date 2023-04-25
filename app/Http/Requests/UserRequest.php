@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class UserRequest extends FormRequest
 {
@@ -29,7 +30,8 @@ class UserRequest extends FormRequest
                 
                 'department' =>'string|max:255',
                 'position'=> 'string|max:255',
-                'age'=> 'interger|max:3',
+                'email'=>'string|email|unique:users|max:255',
+                'age'=> 'interger|max:200',
                 'location'=> 'string|max:255',
                 'project' =>  'string|max:255',
                 'sex' => 'string|max:3',
@@ -37,12 +39,12 @@ class UserRequest extends FormRequest
                 'seniority'=> 'string|max:255',
                 'contract'=> 'string|max:255', 
                 'temporary_address'=>'string|max:255', 
-                'CCCD'=>'unique:users|max:255', 
+                'CCCD'=>'unique:users|string|max:255', 
                 'issued_by'=>'string|max:255', 
                 'personal_email'=> 'string|email|unique:users|max:255',
-                'tax_code'=> 'integer|unique:users|max:20',
+                'tax_code'=> 'string|unique:users|max:255',
                 // leave_days admin moi hien thi
-                'leave_days'=> 'integer|max:2',
+                'leave_days'=> 'integer|max:100',
                 'use_property' => 'string|max:255',
                 'avatar'=>'string|max:255',
            
@@ -50,15 +52,14 @@ class UserRequest extends FormRequest
         ];
     }
     
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator){
-        
-        $errors = $validator->errors();
-        $response = new JsonResponse([
-            'success' => false,
-            'message' => $errors->first(),
-            'errors' => $errors
-        ], 422);
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
 
-        throw new HttpResponseException($response);
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json(
+            [
+                'error' => $errors,
+                'status_code' => 422,
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
