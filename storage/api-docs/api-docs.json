@@ -1,0 +1,365 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your Application API document",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/registerAuth": {
+            "post": {
+                "summary": "Register User",
+                "operationId": "e33f1826a6c48543523951b30637b68d",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "The name of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "The email of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "The password of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maximum": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minimum": 8
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "A van B",
+                                    "email": "abc@gamil.com",
+                                    "password": "1234Ab1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "false"
+                    }
+                }
+            }
+        },
+        "/api/updateUser": {
+            "put": {
+                "summary": "Update User",
+                "operationId": "5d51042f5c154762b493f2d28a231725",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maximum": 255
+                                    },
+                                    "position": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "department": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "age": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "maximum": 255
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "project": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "sex": {
+                                        "type": "string",
+                                        "maximum": 3
+                                    },
+                                    "permanent_address": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "seniority": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "contract": {
+                                        "type": "string",
+                                        "format": "contract",
+                                        "maximum": 255
+                                    },
+                                    "temporary_address": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maximum": 255
+                                    },
+                                    "issued_by": {
+                                        "type": "integer",
+                                        "maximum": 255
+                                    },
+                                    "personal_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maximum": 255
+                                    },
+                                    "CCCD": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "tax_code": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "leave_days": {
+                                        "type": "integer",
+                                        "maximum": 100
+                                    },
+                                    "use_property": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "working_day": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "promotion_day": {
+                                        "type": "string",
+                                        "maximum": 255
+                                    },
+                                    "date_range": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "maximum": 255
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "A van B",
+                                    "email": "abc@gamil.com",
+                                    "department": "devesion 1"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "false"
+                    }
+                }
+            }
+        },
+        "/api/getUser/{id}": {
+            "get": {
+                "summary": "Get User",
+                "operationId": "970d55d515b1aa466e74ccee7ad31827",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "message: delete user successfull,user delete: {id: 7, email: a@123,  name: 123,...}"
+                    },
+                    "404": {
+                        "description": "status:false,message: Call to a member function first() on null"
+                    }
+                }
+            }
+        },
+        "/api/getUserLoggin": {
+            "get": {
+                "summary": "Get current logged-in user",
+                "description": "Retrieve the information of the current logged-in user",
+                "operationId": "getCurrentUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/deleteUser/{id}": {
+            "delete": {
+                "summary": "Delete User",
+                "operationId": "3cedaf2c8991b02a8ce1073a1a0fb020",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "OK, message:delete user successfull,data: detail user,example : user: id=1,name=abc,..."
+                    },
+                    "404": {
+                        "description": "status:false,message: Call to a member function first() on null"
+                    }
+                }
+            }
+        },
+        "/api/loggin": {
+            "post": {
+                "summary": "Loggin User",
+                "operationId": "97f37ed41999efa01a348b1689f7176f",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "The id of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "The id of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maximum": 255
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "minimum": 8
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "abc@gamil.com",
+                                    "password": "1234Ab1234"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "message: loggin successfull,status: true, token: 11|BIRyGlIxhLyBtG6xQFFfbMWwEVhZhm7yR5GYRdOk"
+                    },
+                    "500": {
+                        "description": "status:false, message: email not isset,"
+                    },
+                    "404": {
+                        "description": "status:false, message: password not match,"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "summary": "Logout User",
+                "operationId": "b5b0e4026ed3cc40a861d3e9c4b7f0e4",
+                "responses": {
+                    "200": {
+                        "description": "status:true,  message: logout successfull"
+                    },
+                    "500": {
+                        "description": "status:false"
+                    }
+                }
+            }
+        }
+    }
+}
