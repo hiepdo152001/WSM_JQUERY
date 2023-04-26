@@ -41,7 +41,7 @@ class UserController extends Controller
  *         required=true,
  *         @OA\Schema(
  *             type="string",
- *             format="email"
+ *             
  *         )
  *     ),
  *     @OA\Parameter(
@@ -50,34 +50,7 @@ class UserController extends Controller
  *         description="The password of the user",
  *         required=true,
  *         @OA\Schema(
- *             type="string"
- *         )
- *     ),
- *     @OA\RequestBody(
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             
- *             @OA\Schema(
- *                 required={"name","email","password"},
- *                 @OA\Property(
- *                     property="name",
- *                     type="string",
- *                      maximum=255,
- *                 ),
- *                 @OA\Property(
- *                     property="email",
- *                     type="string",
- *                     format="email",
- *                      maximum=255,
- *                 ),
- *                 @OA\Property(
- *                     property="password",
- *                     format="password",
- *                     minimum = 8,
- *                     type="string",
- *                 ),
- *                 example={"name": "A van B", "email": "abc@gamil.com", "password":"1234Ab1234" }
- *             )
+ *             type="string",
  *         )
  *     ),
  *     @OA\Response(
@@ -116,136 +89,202 @@ class UserController extends Controller
 
         /**
  * @OA\Put(
- *     path="/api/updateUser",
+ *     path="/api/updateUser/{id}",
  *     summary="Update User",
-            
- *     @OA\RequestBody(
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             
- *             @OA\Schema(
- *                 @OA\Property(
- *                     property="name",
- *                     type="string",
- *                      maximum=255,
- *                 ),
- *                 @OA\Property(
- *                     property="email",
- *                     type="string",
- *                     format="email",
- *                     maximum=255,
- *                 ),
- *                 @OA\Property(
- *                     property="position",            
- *                     maximum = 255,
- *                     type="string",
- *                 ),
- *                  @OA\Property(
- *                     property="department",                     
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="age",                     
- *                     maximum=255,
- *                     type="string",
- *                     format ="date-time",
- *                 ),
- *                   @OA\Property(
- *                     property="location",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="project",                    
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="sex",                    
- *                     maximum=3,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="permanent_address",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="seniority",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="contract",
- *                     format="contract",
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                   @OA\Property(
- *                     property="temporary_address",                    
- *                     maximum=255,
- *                     type="string",
- *                     format="email",
- *                 ),
- *                   @OA\Property(
- *                     property="issued_by",
- *                     
- *                     maximum=255,
- *                     type="integer",
- *                 ),
- *                    @OA\Property(
- *                     property="personal_email",                   
- *                     maximum=255,
- *                     type="string",
- *                     format="email",
- *                 ),
- *                    @OA\Property(
- *                     property="CCCD",                    
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                    @OA\Property(
- *                     property="tax_code",                    
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                     @OA\Property(
- *                     property="leave_days",                    
- *                     maximum=100,
- *                     type="integer",
- *                 ),
- *                     @OA\Property(
- *                     property="use_property",                    
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                     @OA\Property(
- *                     property="avatar",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                     @OA\Property(
- *                     property="working_day",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                     @OA\Property(
- *                     property="promotion_day",                   
- *                     maximum=255,
- *                     type="string",
- *                 ),
- *                     @OA\Property(
- *                     property="date_range",                   
- *                     maximum=255,
- *                     type="string",
- *                     format ="date-time",
- *                 ),
- * 
- *                 example={"name": "A van B", "email": "abc@gamil.com","department":"devesion 1", }
- *             )
+ *     @OA\Parameter(
+ *         name="id",
+ *         in= "path",
+ *         description="The id of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="integer",
+ *             format= "int64",
  *         )
  *     ),
+ *     @OA\Parameter(
+ *         name="name",
+ *         in="query",
+ *         description="The name of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *      @OA\Parameter(
+ *         name="email",
+ *         in="query",
+ *         description="The email of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *      @OA\Parameter(
+ *         name="position",
+ *         in="query",
+ *         description="The position of the user",
+ *         
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *       @OA\Parameter(
+ *         name="department",
+ *         in="query",
+ *         description="The department of the user",
+ *        
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *        @OA\Parameter(
+ *         name="age",
+ *         in="query",
+ *         description="The age of the user",
+ *         
+ *         @OA\Schema(
+ *             type="date-time",
+ *         )
+ *     ),
+ *         @OA\Parameter(
+ *         name="location",
+ *         in="query",
+ *         description="The location of the user",
+ *        
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *         @OA\Parameter(
+ *         name="project",
+ *         in="query",
+ *         description="The project of the user",
+ *         
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *          @OA\Parameter(
+ *         name="sex",
+ *         in="query",
+ *         description="The sex of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *           @OA\Parameter(
+ *         name="permanent_address",
+ *         in="query",
+ *         description="The permanent_address of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *             @OA\Parameter(
+ *         name="seniority",
+ *         in="query",
+ *         description="The seniority of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *              @OA\Parameter(
+ *         name="contract",
+ *         in="query",
+ *         description="The contract of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *              @OA\Parameter(
+ *         name="temporary_address",
+ *         in="query",
+ *         description="The temporary_address of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),   
+ *              @OA\Parameter(
+ *         name="issued_by",
+ *         in="query",
+ *         description="The issued_by of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *              @OA\Parameter(
+ *         name="personal_email",
+ *         in="query",
+ *         description="The personal_email of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="CCCD",
+ *         in="query",
+ *         description="The CCCD of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *                @OA\Parameter(
+ *         name="tax_code",
+ *         in="query",
+ *         description="The tax_code of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="leave_days",
+ *         in="query",
+ *         description="The leave_days of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="use_property",
+ *         in="query",
+ *         description="The use_property of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="avatar",
+ *         in="query",
+ *         description="The avatar of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *                @OA\Parameter(
+ *         name="working_day",
+ *         in="query",
+ *         description="The working_day of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *                @OA\Parameter(
+ *         name="promotion_day",
+ *         in="query",
+ *         description="The promotion_day of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *                 @OA\Parameter(
+ *         name="date_range",
+ *         in="query",
+ *         description="The date_range of the user",
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
  *     @OA\Response(
  *         response=204,
  *         description="OK",
@@ -258,10 +297,10 @@ class UserController extends Controller
  *     ),
  * )
  */
-    public function updateUser(UserRequest $userequest)
+    public function updateUserById($id,Request $userequest)
     {
         try {
-            $user=$this->getCurrentLoggedIn();
+           $user=$this->userservice->getUserbyId($id);
             if (isset($user)) {
                 $this->userservice->editUser($user, $userequest->input());
                 return response()->json([
@@ -283,7 +322,7 @@ class UserController extends Controller
 * @OA\Get(
  *     path="/api/getUser/{id}",
  *     summary="Get User",
- *@OA\Parameter(
+ *     @OA\Parameter(
  *         name="id",
  *         in= "path",
  *         description="The id of the user",
@@ -325,8 +364,16 @@ class UserController extends Controller
  *     path="/api/getUserLoggin",
  *     summary="Get current logged-in user",
  *     description="Retrieve the information of the current logged-in user",
- *     operationId="getCurrentUser",
- *     security={{"bearerAuth": {}}},
+ *      @OA\Parameter(
+ *       parameter="Authorization",
+ *       description="Bearer Token",
+ *       in="header",
+ *       name="Authorization",
+ *       required=true,
+ *       @OA\Schema(
+ *         type="string"
+ *     ),
+ * ),
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
@@ -383,7 +430,7 @@ class UserController extends Controller
  */
     public function deleteUserById($id){
        try{
-        $user=User::find($id)->first();
+        $user=User::find($id);
         if(isset($user)){
         $user->delete();
         }
@@ -403,51 +450,28 @@ class UserController extends Controller
 * @OA\Post(
  *     path="/api/loggin",
  *     summary="Loggin User",
- *@OA\Parameter(
+ *     @OA\Parameter(
  *         name="email",
  *         in= "query",
- *         description="The id of the user",
+ *         description="The email of the user",
  *         required=true,
  *         @OA\Schema(
  *             type="string",
- *             format= "email",
  *         )
  *     ),
- * *@OA\Parameter(
+ *      @OA\Parameter(
  *         name="password",
  *         in= "query",
- *         description="The id of the user",
+ *         description="The password of the user",
  *         required=true,
  *         @OA\Schema(
  *             type="string",
  *             format= "password",
  *         )
  *     ),
- *     @OA\RequestBody(
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             
- *             @OA\Schema(
- *                 required={"email","password"},
- *                 @OA\Property(
- *                     property="email",
- *                     type="string",
- *                     format="email",
- *                      maximum=255,
- *                 ),
- *                 @OA\Property(
- *                     property="password",
- *                     format="password",
- *                     minimum = 8,
- *                     type="string",
- *                 ),
- *                 example={"email": "abc@gamil.com", "password":"1234Ab1234" }
- *             )
- *         )
- *     ),
  *     @OA\Response(
  *         response=202,
- *         description="message: loggin successfull,status: true, token: 11|BIRyGlIxhLyBtG6xQFFfbMWwEVhZhm7yR5GYRdOk",
+ *         description="message: loggin successfull,status: true",
  *         
  *     ),
  *     @OA\Response(
@@ -455,11 +479,7 @@ class UserController extends Controller
  *         description="status:false, message: email not isset,",
  *        
  *     ),
- *     @OA\Response(
- *         response=404,
- *         description="status:false, message: password not match,",
- *        
- *     ),
+ *     
  * )
  */
     public function loggin(Request $registerRequest){
@@ -500,6 +520,16 @@ class UserController extends Controller
 * @OA\Get(
  *     path="/api/logout",
  *     summary="Logout User",
+ *      @OA\Parameter(
+ *       parameter="Authorization",
+ *       description="Bearer Token",
+ *       in="header",
+ *       name="Authorization",
+ *       required=true,
+ *       @OA\Schema(
+ *         type="string"
+ *     ),
+ * ),
  *     @OA\Response(
  *         response=200,
  *         description="status:true,  message: logout successfull",
@@ -530,6 +560,68 @@ class UserController extends Controller
 
     }
 }
+    /** 
+* @OA\Post(
+ *     path="/api/changePassword",
+ *     summary="changePassword User",
+ *      @OA\Parameter(
+ *       parameter="Authorization",
+ *       description="Bearer Token",
+ *       in="header",
+ *       name="Authorization",
+ *       required=true,
+ *       @OA\Schema(
+ *         type="string"
+ *     ),
+ * ),
+ *     @OA\Parameter(
+ *         name="email",
+ *         in= "query",
+ *         description="The email of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *      @OA\Parameter(
+ *         name="old_password",
+ *         in= "query",
+ *         description="The old_password of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             format= "password",
+ *         )
+ *     ),
+ *      @OA\Parameter(
+ *         name="new_password",
+ *         in= "query",
+ *         description="The new_password of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             format= "password",
+ *         )
+ *     ),
+ 
+ *     @OA\Response(
+ *         response=202,
+ *         description="message: Success'",
+ *         
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="status:false, message: Mật khẩu cũ không chính xác,",
+ *        
+ *     ),
+ *  @OA\Response(
+ *         response=500,
+ *         description="status:false",
+ *        
+ *     ),
+ *     
+ * )
+ */
 public function changePassword(Request $request)
     {
         try {
@@ -537,14 +629,14 @@ public function changePassword(Request $request)
             $user = $this->getCurrentLoggedIn();
 
             if (isset($user)) {
-                if (!Hash::check($request->old_position, $user->position)) {
+                if (!Hash::check($request->old_password, $user->password)) {
                     return response()->json([
                         'status' => 422,
                         'message' => 'Mật khẩu cũ không chính xác'
                     ], 422);
                 }
 
-                $this->userservice->newPassword($user->email, $request->new_position);
+                $this->userservice->newPassword($user->email, $request->new_password);
             } else {
                 abort(401);
             }

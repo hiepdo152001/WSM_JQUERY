@@ -27,10 +27,11 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-                'name' => 'string|max:255',
-                'email' => 'required|string|email|unique:users|max:255',
-                'password' => 'required|string|min:8',
+                'name' => 'required|max:255',
+                'email' => 'unique:users,email|required|',
+                'password' => 'required|min:6',
         ];
+        // regex:/^([a-z0-9\+_.\-]{4,65}+)(\.[a-z0-9\+_\-]{4,65}+)*@([a-z0-9\-]{2,65}+\.)+[a-z]{2,6}$/ix',
     }
    
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
