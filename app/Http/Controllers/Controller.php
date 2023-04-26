@@ -9,6 +9,22 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Info( 
  * title="Your Application API document", 
  * version="1.0.0", * ) 
+ ** @OA\SecurityScheme(
+*      securityScheme="bearerAuth",
+*      in="header",
+*      name="bearerAuth",
+*      type="http",
+*      scheme="bearer",
+*      bearerFormat="JWT",
+* ),
+ * @OA\Tag(
+ *     name="Auth",
+ *     description="Auth endpoints",
+ * )
+ * @OA\Tag(
+ *     name="Users",
+ *     description="Users endpoints",
+ * )
  */
 class Controller extends BaseController
 {

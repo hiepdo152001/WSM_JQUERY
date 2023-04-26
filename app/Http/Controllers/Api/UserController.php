@@ -485,7 +485,7 @@ class UserController extends Controller
     public function loggin(Request $registerRequest){
         try{
             $email=$registerRequest->email;
-            $user=User::where('email',$email);
+            $user=User::where('email',$email)->first();
             if(!$user){
                     return response()->json([
                         'message' => 'email not isset',
@@ -498,7 +498,7 @@ class UserController extends Controller
                     'status' => false
                  ],404);
             }
-
+            
             elseif(Auth::attempt(['email' => $registerRequest->email, 'password' => $registerRequest->password])){  
                 return response()->json([
                     'message' => 'loggin successfull',
@@ -550,7 +550,8 @@ class UserController extends Controller
         }
         return response()->json([
             'status' => true,
-            'message' => 'logout successfull'
+            'message' => 'logout successfull',
+            'data'=>$user,
         ],200);
     } catch(\Throwable $th) {
         return response()->json([

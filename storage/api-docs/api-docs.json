@@ -451,5 +451,26 @@
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth endpoints"
+        },
+        {
+            "name": "Users",
+            "description": "Users endpoints"
+        }
+    ]
 }
