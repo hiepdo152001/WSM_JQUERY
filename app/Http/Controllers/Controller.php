@@ -17,14 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 *      scheme="bearer",
 *      bearerFormat="JWT",
 * ),
- * @OA\Tag(
- *     name="Auth",
- *     description="Auth endpoints",
- * )
- * @OA\Tag(
- *     name="Users",
- *     description="Users endpoints",
- * )
+
  */
 class Controller extends BaseController
 {

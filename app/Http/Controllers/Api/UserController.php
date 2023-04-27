@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class UserController extends Controller
 {
@@ -25,6 +26,7 @@ class UserController extends Controller
  * @OA\Post(
  *     path="/api/registerAuth",
  *     summary="Register User",
+ *      tags={"User"},
  *     @OA\Parameter(
  *         name="name",
  *         in="query",
@@ -91,6 +93,7 @@ class UserController extends Controller
  * @OA\Put(
  *     path="/api/updateUser/{id}",
  *     summary="Update User",
+ *      tags={"User"},
  *     @OA\Parameter(
  *         name="id",
  *         in= "path",
@@ -143,7 +146,8 @@ class UserController extends Controller
  *         description="The age of the user",
  *         
  *         @OA\Schema(
- *             type="date-time",
+ *             type="string",
+ *             format="date-time"
  *         )
  *     ),
  *         @OA\Parameter(
@@ -209,7 +213,7 @@ class UserController extends Controller
  *         in="query",
  *         description="The issued_by of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
  *         )
  *     ), 
  *              @OA\Parameter(
@@ -217,7 +221,7 @@ class UserController extends Controller
  *         in="query",
  *         description="The personal_email of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
  *         )
  *     ), 
  *               @OA\Parameter(
@@ -250,7 +254,7 @@ class UserController extends Controller
  *         in="query",
  *         description="The use_property of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
  *         )
  *     ), 
  *               @OA\Parameter(
@@ -258,7 +262,7 @@ class UserController extends Controller
  *         in="query",
  *         description="The avatar of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="file",
  *         )
  *     ), 
  *                @OA\Parameter(
@@ -266,7 +270,8 @@ class UserController extends Controller
  *         in="query",
  *         description="The working_day of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
+ *             format="date-time"
  *         )
  *     ), 
  *                @OA\Parameter(
@@ -274,7 +279,8 @@ class UserController extends Controller
  *         in="query",
  *         description="The promotion_day of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
+ *             format="date-time"
  *         )
  *     ), 
  *                 @OA\Parameter(
@@ -282,7 +288,8 @@ class UserController extends Controller
  *         in="query",
  *         description="The date_range of the user",
  *         @OA\Schema(
- *             type="integer",
+ *             type="string",
+ *             format="date-time"
  *         )
  *     ), 
  *     @OA\Response(
@@ -301,6 +308,15 @@ class UserController extends Controller
     {
         try {
            $user=$this->userservice->getUserbyId($id);
+           $validateor=FacadesValidator::make($userequest->all(),[
+             'email'=>'string|unique:users|email'
+           ]);
+           if($validateor->fails()){
+            return response()->json([
+                'message' => 'validation error',
+                'errors' => $validateor->errors()
+            ]);
+           }
             if (isset($user)) {
                 $this->userservice->editUser($user, $userequest->input());
                 return response()->json([
@@ -318,10 +334,144 @@ class UserController extends Controller
             ], 422);
         };
     }
+          /**
+ * @OA\Put(
+ *     path="/api/updateUserLoggedIn",
+ *     summary="updateUserLoggedIn",
+ *      tags={"User"},
+ *      security={ {"bearerAuth": {} }},
+ *      @OA\Parameter(
+ *         name="position",
+ *         in="query",
+ *         description="The position of the user",
+ *         
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *       @OA\Parameter(
+ *         name="department",
+ *         in="query",
+ *         description="The department of the user",
+ *        
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *        @OA\Parameter(
+ *         name="age",
+ *         in="query",
+ *         description="The age of the user",
+ *         
+ *         @OA\Schema(
+ *            type="string",
+ *             format="date-time"
+ *         )
+ *     ),
+ *         @OA\Parameter(
+ *         name="location",
+ *         in="query",
+ *         description="The location of the user",
+ *        
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *          @OA\Parameter(
+ *         name="sex",
+ *         in="query",
+ *         description="The sex of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *           @OA\Parameter(
+ *         name="permanent_address",
+ *         in="query",
+ *         description="The permanent_address of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),
+ *              @OA\Parameter(
+ *         name="temporary_address",
+ *         in="query",
+ *         description="The temporary_address of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ),   
+ *              @OA\Parameter(
+ *         name="issued_by",
+ *         in="query",
+ *         description="The issued_by of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="CCCD",
+ *         in="query",
+ *         description="The CCCD of the user",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="integer",
+ *         )
+ *     ), 
+ *                @OA\Parameter(
+ *         name="tax_code",
+ *         in="query",
+ *         description="The tax_code of the user",
+ *         @OA\Schema(
+ *             type="string",
+ *         )
+ *     ), 
+ *               @OA\Parameter(
+ *         name="avatar",
+ *         in="query",
+ *         description="The avatar of the user",
+ *         @OA\Schema(
+ *             type="file",
+ *         )
+ *     ), 
+ *     @OA\Response(
+ *         response=204,
+ *         description="OK",
+ *         
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="false",
+ *        
+ *     ),
+ * )
+ */
+public function updateUserLoggedIn(Request $request)
+{
+    try {
+        $user=$this->getCurrentLoggedIn();
+        if (isset($user)) {
+            $this->userservice->editUser($user, $request->input());
+            return response()->json([
+                'status' => true,
+                'message' => 'update successfull'
+            ],200);
+        } else {
+            abort(401);
+        }
+        
+    } catch(\Throwable $th) {
+        return response()->json([
+         'status' =>  false,
+         'message' => $th->getMessage(),
+        ], 422);
+    };
+}
 /** 
 * @OA\Get(
  *     path="/api/getUser/{id}",
  *     summary="Get User",
+ *      tags={"User"},
  *     @OA\Parameter(
  *         name="id",
  *         in= "path",
@@ -362,27 +512,43 @@ class UserController extends Controller
 /**
  * @OA\Get(
  *     path="/api/getUserLoggin",
- *     summary="Get current logged-in user",
- *     description="Retrieve the information of the current logged-in user",
- *      @OA\Parameter(
- *       parameter="Authorization",
- *       description="Bearer Token",
- *       in="header",
- *       name="Authorization",
- *       required=true,
- *       @OA\Schema(
- *         type="string"
- *     ),
- * ),
+ *     summary="Get the current logged in user",
+ *     description="Get the user details of the currently logged in user",
+ *     tags={"User"},
+ *     security={ {"bearerAuth": {} }},
+
+ * 
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
- *        
+ *         @OA\JsonContent(ref="App\Models\User;")
  *     ),
  *     @OA\Response(
- *         response=500,
- *         description="Internal server error",
- *        
+ *         response="500",
+ *         description="Internal Server Error",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="status",
+ *                 type="boolean",
+ *                 example=false
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Internal Server Error"
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="401",
+ *         description="Unauthorized",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Unauthorized"
+ *             )
+ *         )
  *     )
  * )
  */
@@ -405,7 +571,7 @@ class UserController extends Controller
 /** 
 * @OA\Delete(
  *     path="/api/deleteUser/{id}",
- *     summary="Delete User",
+ *         tags={"User"},
  *@OA\Parameter(
  *         name="id",
  *         in= "path",
@@ -450,6 +616,7 @@ class UserController extends Controller
 * @OA\Post(
  *     path="/api/loggin",
  *     summary="Loggin User",
+ *     tags={"User"},
  *     @OA\Parameter(
  *         name="email",
  *         in= "query",
@@ -500,9 +667,11 @@ class UserController extends Controller
             }
             
             elseif(Auth::attempt(['email' => $registerRequest->email, 'password' => $registerRequest->password])){  
+                $user->tokens()->delete();
                 return response()->json([
                     'message' => 'loggin successfull',
                     'status' => true,
+                    'token' => $user->createToken("API TOKEN")->plainTextToken
                  ],200);
             }
 
@@ -520,16 +689,9 @@ class UserController extends Controller
 * @OA\Get(
  *     path="/api/logout",
  *     summary="Logout User",
- *      @OA\Parameter(
- *       parameter="Authorization",
- *       description="Bearer Token",
- *       in="header",
- *       name="Authorization",
- *       required=true,
- *       @OA\Schema(
- *         type="string"
- *     ),
- * ),
+ *     tags={"User"},
+ *      security={ {"bearerAuth": {} }},
+ *      
  *     @OA\Response(
  *         response=200,
  *         description="status:true,  message: logout successfull",
@@ -551,7 +713,6 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'logout successfull',
-            'data'=>$user,
         ],200);
     } catch(\Throwable $th) {
         return response()->json([
@@ -564,17 +725,10 @@ class UserController extends Controller
     /** 
 * @OA\Post(
  *     path="/api/changePassword",
- *     summary="changePassword User",
- *      @OA\Parameter(
- *       parameter="Authorization",
- *       description="Bearer Token",
- *       in="header",
- *       name="Authorization",
- *       required=true,
- *       @OA\Schema(
- *         type="string"
- *     ),
- * ),
+ *     summary="changePassword Users",
+ *     description="Get the user details of the currently changepassword in user",
+ *     tags={"User"},
+ *     security={ {"bearerAuth": {} }},
  *     @OA\Parameter(
  *         name="email",
  *         in= "query",
@@ -626,9 +780,21 @@ class UserController extends Controller
 public function changePassword(Request $request)
     {
         try {
+            $validateUser = FacadesValidator::make($request->all(),
+                [
+                    'new_password' => 'min:6'
+                ]);
+
+            if ($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
 
             $user = $this->getCurrentLoggedIn();
-
+   
             if (isset($user)) {
                 if (!Hash::check($request->old_password, $user->password)) {
                     return response()->json([
