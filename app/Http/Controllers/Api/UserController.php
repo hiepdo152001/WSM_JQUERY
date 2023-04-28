@@ -558,7 +558,7 @@ public function updateUserLoggedIn(Request $request)
             $user=$this->getCurrentLoggedIn();
             if (isset($user)) {
                 return response()->json([
-                    'data' => $user
+                    'message' => 'logout successfully'
                  ],200);
             }
         } catch(\Throwable $th) {
