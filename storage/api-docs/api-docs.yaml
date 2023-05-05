@@ -1,0 +1,497 @@
+openapi: 3.0.0
+info: 
+  title: 'Your Application API document'
+  version: '1.0.0'
+schemes:
+  - http
+# chi chap nhan request dang json
+# consumes:
+#   - application/json
+# chi nhan response dang json
+# produces:
+#   - application/json
+paths: 
+  /api/registerAuth:
+    post:
+      summary: Register User
+      tags:
+        - User
+      parameters:
+        - name: name
+          in: query
+          description: The name of the user
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: The email of the user
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '422':
+          description: false
+
+  /api/updateUser/{id}:  
+    put: 
+      summary:  updateUserById
+      tags: 
+        - User
+      parameters: 
+        - name: id
+          in: path
+          description:  The id of the user
+          required:  true
+          schema: 
+              type:  integer
+              format:  int64
+          
+        - name: name
+          in: query
+          description:  The name of the user
+          required:  true
+          schema: 
+              type:  string
+
+        - name:  email
+          in:  query
+          description:  The email of the user
+          required:  true
+          schema: 
+              type:  string
+
+        - name:  position
+          in:  query
+          description:  The position of the user
+          schema: 
+              type:  string
+              
+        - name: department
+          in: query
+          description: The department of the user
+
+          schema:
+              type:  string
+          
+        - name: age
+          in: query
+          description: The age of the user
+          schema:
+              type:  string
+              format: date-time
+          
+        - name: location
+          in: query
+          description: The location of the user
+          schema:
+              type:  string
+          
+        - name: project
+          in: query
+          description: The project of the user
+          schema:
+              type:  string
+            
+        - name: sex
+          in: query
+          description: The sex of the user
+          schema:
+              type:  string
+            
+        - name: permanent_address
+          in: query
+          description: The permanent_address of the user
+          schema:
+              type:  string
+              
+        - name: seniority
+          in: query
+          description: The seniority of the user
+          schema:
+              type:  string
+                
+        - name: contract
+          in: query
+          description: The contract of the user
+          schema:
+              type:  string
+                
+        - name: temporary_address
+          in: query
+          description: The temporary_address of the user
+          schema:
+              type:  string
+                
+        - name: issued_by
+          in: query
+          description: The issued_by of the user
+          schema:
+              type:  string
+                
+        - name: personal_email
+          in: query
+          description: The personal_email of the user
+          schema:
+              type:  string
+                
+        - name: cccd
+          in: query
+          description: The cccd of the user
+          required: true
+          schema:
+              type: integer
+                  
+        - name: tax_code
+          in: query
+          description: The tax_code of the user
+          schema:
+              type:  string
+                
+        - name: leave_days
+          in: query
+          description: The leave_days of the user
+          schema:
+              type: integer
+                
+        - name: use_property
+          in: query
+          description: The use_property of the user
+          schema:
+              type:  string
+                
+        - name: avatar
+          in: query
+          description: The avatar of the user
+          schema:
+              type: file
+                  
+        - name: working_day
+          in: query
+          description: The working_day of the user
+          schema:
+              type:  string
+              format: date-time
+                  
+        - name: promotion_day
+          in: query
+          description: The promotion_day of the user
+          schema:
+              type:  string
+              format: date-time
+                  
+        - name: date_range
+          in: query
+          description: The date_range of the user
+          schema:
+              type:  string
+              format: date-time
+          
+      responses: 
+          '200': 
+           description:  OK
+          '404':
+           description: false
+          '422': 
+           description:  false
+
+ 
+  /api/updateUserLoggedIn: 
+    put: 
+      summary:  updateUserLoggedIn
+      tags: 
+        - User
+      security:
+        - bearerAuth: []
+
+      parameters: 
+        - name:  position
+          in:  query
+          description:  The position of the user
+          schema: 
+            type:   string
+          
+        - name:  department
+          in:  query
+          description:  The department of the user
+          schema: 
+            type:  string
+          
+        - name:  age
+          in:  query
+          description:  The age of the user
+          schema: 
+            type:   string
+            format:  date-time
+          
+        - name:  location
+          in:  query
+          description:  The location of the user
+          schema: 
+            type:   string
+          
+        - name:  sex
+          in:  query
+          description:  The sex of the user
+          schema: 
+            type:   string
+          
+        - name:  permanent_address
+          in:  query
+          description:  The permanent_address of the user
+          schema: 
+            type:   string
+          
+        - name:  temporary_address
+          in:  query
+          description:  The temporary_address of the user
+          schema: 
+            type:   string
+          
+        - name:  issued_by
+          in:  query
+          description:  The issued_by of the user
+          schema: 
+            type:   string
+          
+        - name:  cccd
+          in:  query
+          description:  The cccd of the user
+          required:  true
+          schema: 
+            type:  integer
+         
+        - name:  tax_code
+          in:  query
+          description:  The tax_code of the user
+          schema: 
+            type:   string
+          
+        - name:  avatar
+          in:  query
+          description:  The avatar of the user
+          schema: 
+            type:  file
+      responses: 
+        '204': 
+          description:  OK
+        '404': 
+          description:  false
+ 
+  /api/getUser/{id}: 
+    get: 
+      summary:  Get User
+      tags: 
+        - User
+      parameters: 
+        - name:  id
+          in:  path
+          description:  The id of the user
+          required:  true
+          schema: 
+            type:  integer
+            format:  int64
+      responses: 
+        '202': 
+          description:    
+        '404': 
+          description: 
+          status: false
+          message:  Call to a member function first) on null'
+
+  /api/getUserLogin: 
+    get: 
+      summary:  Get the current logged in user
+      description:  Get the user details of the currently logged in user
+      tags: 
+        - User
+      security:
+        - bearerAuth: []
+
+      responses: 
+        '200': 
+          description:  Successful operation
+          content: 
+            application/json: 
+              schema: 
+                $ref:  '#/components/schemas/User'
+        '500': 
+          description:  Internal Server Error
+          content: 
+            application/json: 
+              schema: 
+                type:  object
+                properties: 
+                  status: 
+                    type:  boolean
+                    example:  false
+                  message: 
+                    type:   string
+                    example:  Internal Server Error
+        '401': 
+          description:  Unauthorized
+          content: 
+            application/json: 
+              schema: 
+                type:  object
+                properties: 
+                  message: 
+                    type:   string
+                    example:  Unauthorized
+ 
+  /api/deleteUser/{id}: 
+    delete: 
+      tags: 
+        - User
+      summary:  Delete User
+      description:  Delete a user by their ID
+      parameters: 
+        - name:  id
+          in:  path
+          description:  The ID of the user to delete
+          required:  true
+          schema: 
+            type:  integer
+            format:  int64
+      responses: 
+        '202': 
+          description:  OK
+          content: 
+            application/json: 
+              schema: 
+                type:  object
+                properties: 
+                  message: 
+                    type:   string
+                    example:  delete user successful
+                  data: 
+                    $ref:  '#/components/schemas/User'
+        '404': 
+          description:  Not Found
+          content: 
+            application/json: 
+              schema: 
+                type:  object
+                properties: 
+                  status: 
+                    type:  boolean
+                    example:  false
+                  message: 
+                    type:   string
+                    example:  Call to a member function first) on null
+ 
+  /api/login: 
+    post: 
+      tags: 
+        - User
+      summary:  Log in a user
+      parameters: 
+        - name:  email
+          in:  query
+          description:  The email of the user
+          required:  true
+          schema: 
+            type:   string
+        - name:  password
+          in:  query
+          description:  The password of the user
+          required:  true
+          schema: 
+            type:   string
+            format:  password
+      responses: 
+        '202': 
+          description: ok
+          message:  login successful
+          status: false
+        '404': 
+          description: 
+          status: false
+          message:  email not found
+        '422': 
+          description: 
+          status: false
+          message:  password not match
+  /api/logout: 
+    get: 
+      summary:  Logout User
+      tags: 
+        - User
+      security:
+        - bearerAuth: []
+
+      responses: 
+        '200': 
+          description:  'status: true  message:  logout successful'
+        '500': 
+          description:  'status: false'
+
+  /api/changePassword: 
+    post: 
+      summary:  changePassword Users
+      tags: 
+        - User
+      security:
+        - bearerAuth: []
+
+      parameters: 
+        - name:  email
+          in:  query
+          description:  The email of the user
+          required:  true
+          schema: 
+            type:   string
+        - name:  old_password
+          in:  query
+          description:  The old_password of the user
+          required:  true
+          schema: 
+            type:   string
+            format:  password
+        - name:  new_password
+          in:  query
+          description:  The new_password of the user
+          required:  true
+          schema: 
+            type:   string
+            format:  password
+      responses: 
+        '200': 
+          description: 
+          message:  change password successful
+        '404': 
+          description:  
+          status: false 
+          message: email not found
+        '422': 
+          description:  
+          status: false 
+          message:  old password not match
+        '500': 
+          description:  
+          status: false
+components: 
+  schemas: 
+    User: 
+      type:  object
+      properties: 
+        id: 
+          type:  integer
+          format:  int64
+        name: 
+          type:   string
+        email: 
+          type:   string
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
