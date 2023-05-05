@@ -11,11 +11,11 @@ schemes:
 # produces:
 #   - application/json
 paths: 
-  /api/registerAuth:
+  /api/auth/register:
     post:
       summary: Register User
       tags:
-        - User
+        - Auth
       parameters:
         - name: name
           in: query
@@ -41,7 +41,7 @@ paths:
         '422':
           description: false
 
-  /api/updateUser/{id}:  
+  /api/users/update/user/{id}:  
     put: 
       summary:  updateUserById
       tags: 
@@ -204,7 +204,7 @@ paths:
            description:  false
 
  
-  /api/updateUserLoggedIn: 
+  /api/users/update/my-account: 
     put: 
       summary:  updateUserLoggedIn
       tags: 
@@ -286,7 +286,7 @@ paths:
         '404': 
           description:  false
  
-  /api/getUser/{id}: 
+  /api/users/get-user/{id}: 
     get: 
       summary:  Get User
       tags: 
@@ -307,7 +307,7 @@ paths:
           status: false
           message:  Call to a member function first) on null'
 
-  /api/getUserLogin: 
+  /api/users/my-account: 
     get: 
       summary:  Get the current logged in user
       description:  Get the user details of the currently logged in user
@@ -347,7 +347,7 @@ paths:
                     type:   string
                     example:  Unauthorized
  
-  /api/deleteUser/{id}: 
+  /api/users/delete/users/{id}: 
     delete: 
       tags: 
         - User
@@ -388,10 +388,10 @@ paths:
                     type:   string
                     example:  Call to a member function first) on null
  
-  /api/login: 
+  /api/auth/login: 
     post: 
       tags: 
-        - User
+        - Auth
       summary:  Log in a user
       parameters: 
         - name:  email
@@ -420,11 +420,11 @@ paths:
           description: 
           status: false
           message:  password not match
-  /api/logout: 
+  /api/auth/logout: 
     get: 
       summary:  Logout User
       tags: 
-        - User
+        - Auth
       security:
         - bearerAuth: []
 
@@ -434,11 +434,11 @@ paths:
         '500': 
           description:  'status: false'
 
-  /api/changePassword: 
+  /api/auth/change-password: 
     post: 
       summary:  changePassword Users
       tags: 
-        - User
+        - Auth
       security:
         - bearerAuth: []
 

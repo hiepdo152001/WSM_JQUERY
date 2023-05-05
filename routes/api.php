@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
@@ -20,13 +20,26 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::post('/registerAuth', [UserController::class,'RegisterAccount']);
-Route::put('/updateUser/{id}', [UserController::class,'updateUserById']);
-Route::put('/updateUserLoggedIn', [UserController::class,'updateUserLoggedIn']);
 
-Route::get('/getUser/{id}',[UserController::class,'getUserbyId']);
-Route::get('/getUserLoggin',[UserController::class,'getUserLoggin']);
-Route::delete('/deleteUser/{id}',[UserController::class,'deleteUserById']);
-Route::post('/loggin',[UserController::class,'loggin']);
-Route::get('/logout',[UserController::class,'logout']);
-Route::post('/changePassword',[UserController::class,'changePassword']);
+
+Route::group(['prefix' => '/auth'], function () {
+    Route::post('/register', [AuthController::class, 'registerAccount']);
+    Route::post('/login', [AuthController::class, 'loginAuth']);
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
+});
+
+Route::group(['prefix' => '/users'], function () {
+    Route::get('/my-account', [UserController::class, 'getUserLogin']);
+    Route::put('/update/my-account', [UserController::class, 'updateUserLoggedIn']);
+    Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
+    Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
+    Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
+});
+
+// xu li tat ca cac route khong ton tai
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact info@website.com'
+    ], 404);
+});
