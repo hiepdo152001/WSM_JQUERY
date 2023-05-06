@@ -27,13 +27,13 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-                'name' => 'required|max:255',
-                'email' => 'unique:users,email|required|',
-                'password' => 'required|min:6',
+            'name' => 'required|max:255',
+            'email' => 'unique:users,email|required|',
+            'password' => 'required|min:6',
         ];
         // regex:/^([a-z0-9\+_.\-]{4,65}+)(\.[a-z0-9\+_\-]{4,65}+)*@([a-z0-9\-]{2,65}+\.)+[a-z]{2,6}$/ix',
     }
-   
+
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
 
@@ -42,6 +42,8 @@ class RegisterRequest extends FormRequest
             [
                 'error' => $errors,
                 'status_code' => 422,
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
+            ],
+            JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+        ));
     }
 }

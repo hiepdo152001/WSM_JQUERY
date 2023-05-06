@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table='users';
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -20,31 +20,31 @@ class User extends Authenticatable
      */
     protected $fillable = [
 
-            
-            'email',
-            'name',
-            'password',
-            'department',
-            'position',
-            'phone',
-            'age',
-            'project',
-            'sex',
-            'permanent_address',
-            'seniority',
-            'working_day',
-            'promotion_day',
-            'contract',
-            'temporary_address',
-            'CCCD',
-            'date_range',
-            'issued_by',
-            'personal_email',
-            'tax_code',
-            'leave_days',
-            'use_property',
-            'avatar'
-           
+
+        'email',
+        'name',
+        'password',
+        'department',
+        'position',
+        'phone',
+        'age',
+        'project',
+        'sex',
+        'permanent_address',
+        'seniority',
+        'working_day',
+        'promotion_day',
+        'contract',
+        'temporary_address',
+        'cccd',
+        'date_range',
+        'issued_by',
+        'personal_email',
+        'tax_code',
+        'leave_days',
+        'use_property',
+        'avatar'
+
     ];
 
     /**
@@ -65,11 +65,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
-    public function contact(){
-        return $this->hasMany(contact::class,'user_id','id');
+
+    public function contact()
+    {
+        return $this->hasMany(contact::class, 'user_id', 'id');
     }
-    public function timeKeep(){
-        return $this->hasMany(time_keep::class,'user_id','id');
+    public function timeKeep()
+    {
+        return $this->hasMany(time_keep::class, 'user_id', 'id');
     }
 }

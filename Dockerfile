@@ -19,4 +19,6 @@ RUN apt-get install -y nodejs
 
 RUN npm install -g npm@latest
 
+# USER hiep98
+
 WORKDIR /var/www/html

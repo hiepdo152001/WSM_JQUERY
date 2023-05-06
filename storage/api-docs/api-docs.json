@@ -7,6 +7,9 @@
     "paths": {
         "/api/registerAuth": {
             "post": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Register User",
                 "operationId": "e33f1826a6c48543523951b30637b68d",
                 "parameters": [
@@ -50,6 +53,9 @@
         },
         "/api/updateUser/{id}": {
             "put": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Update User",
                 "operationId": "a304952143f474e9673b8f6473055723",
                 "parameters": [
@@ -102,7 +108,8 @@
                         "in": "query",
                         "description": "The age of the user",
                         "schema": {
-                            "type": "date-time"
+                            "type": "string",
+                            "format": "date-time"
                         }
                     },
                     {
@@ -166,7 +173,7 @@
                         "in": "query",
                         "description": "The issued_by of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
@@ -174,7 +181,7 @@
                         "in": "query",
                         "description": "The personal_email of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
@@ -207,7 +214,7 @@
                         "in": "query",
                         "description": "The use_property of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     },
                     {
@@ -215,7 +222,7 @@
                         "in": "query",
                         "description": "The avatar of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "file"
                         }
                     },
                     {
@@ -223,7 +230,8 @@
                         "in": "query",
                         "description": "The working_day of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "format": "date-time"
                         }
                     },
                     {
@@ -231,7 +239,8 @@
                         "in": "query",
                         "description": "The promotion_day of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "format": "date-time"
                         }
                     },
                     {
@@ -239,7 +248,8 @@
                         "in": "query",
                         "description": "The date_range of the user",
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "format": "date-time"
                         }
                     }
                 ],
@@ -253,8 +263,125 @@
                 }
             }
         },
+        "/api/updateUserLoggedIn": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "updateUserLoggedIn",
+                "operationId": "3fdba0f69c615ddfbc379a77fc40b351",
+                "parameters": [
+                    {
+                        "name": "position",
+                        "in": "query",
+                        "description": "The position of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "department",
+                        "in": "query",
+                        "description": "The department of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "age",
+                        "in": "query",
+                        "description": "The age of the user",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "description": "The location of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sex",
+                        "in": "query",
+                        "description": "The sex of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "permanent_address",
+                        "in": "query",
+                        "description": "The permanent_address of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "temporary_address",
+                        "in": "query",
+                        "description": "The temporary_address of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "issued_by",
+                        "in": "query",
+                        "description": "The issued_by of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "CCCD",
+                        "in": "query",
+                        "description": "The CCCD of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tax_code",
+                        "in": "query",
+                        "description": "The tax_code of the user",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "avatar",
+                        "in": "query",
+                        "description": "The avatar of the user",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "false"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/getUser/{id}": {
             "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Get User",
                 "operationId": "970d55d515b1aa466e74ccee7ad31827",
                 "parameters": [
@@ -271,7 +398,7 @@
                 ],
                 "responses": {
                     "202": {
-                        "description": "message: delete user successfull,user delete: {id: 7, email: a@123,  name: 123,...}"
+                        "description": "message: delete user successful,user delete: {id: 7, email: a@123,  name: 123,...}"
                     },
                     "404": {
                         "description": "status:false,message: Call to a member function first() on null"
@@ -281,34 +408,72 @@
         },
         "/api/getUserLoggin": {
             "get": {
-                "summary": "Get current logged-in user",
-                "description": "Retrieve the information of the current logged-in user",
-                "operationId": "0cbfa7b60ccee240cb651256c0db6703",
-                "parameters": [
-                    {
-                        "parameter": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer Token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+                "tags": [
+                    "User"
                 ],
+                "summary": "Get the current logged in user",
+                "description": "Get the user details of the currently logged in user",
+                "operationId": "0cbfa7b60ccee240cb651256c0db6703",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "App\\Models\\User;"
+                                }
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Internal server error"
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal Server Error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/deleteUser/{id}": {
             "delete": {
-                "summary": "Delete User",
+                "tags": [
+                    "User"
+                ],
                 "operationId": "3cedaf2c8991b02a8ce1073a1a0fb020",
                 "parameters": [
                     {
@@ -324,7 +489,7 @@
                 ],
                 "responses": {
                     "202": {
-                        "description": "OK, message:delete user successfull,data: detail user,example : user: id=1,name=abc,..."
+                        "description": "OK, message:delete user successful,data: detail user,example : user: id=1,name=abc,..."
                     },
                     "404": {
                         "description": "status:false,message: Call to a member function first() on null"
@@ -334,7 +499,10 @@
         },
         "/api/loggin": {
             "post": {
-                "summary": "Loggin User",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login User",
                 "operationId": "97f37ed41999efa01a348b1689f7176f",
                 "parameters": [
                     {
@@ -369,20 +537,11 @@
         },
         "/api/logout": {
             "get": {
+                "tags": [
+                    "User"
+                ],
                 "summary": "Logout User",
                 "operationId": "b5b0e4026ed3cc40a861d3e9c4b7f0e4",
-                "parameters": [
-                    {
-                        "parameter": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer Token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "status:true,  message: logout successfull"
@@ -390,24 +549,23 @@
                     "500": {
                         "description": "status:false"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/changePassword": {
             "post": {
-                "summary": "changePassword User",
+                "tags": [
+                    "User"
+                ],
+                "summary": "changePassword Users",
+                "description": "Get the user details of the currently changepassword in user",
                 "operationId": "151872945dc8b73689bf8e6ae53cd202",
                 "parameters": [
-                    {
-                        "parameter": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer Token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     {
                         "name": "email",
                         "in": "query",
@@ -448,7 +606,12 @@
                     "500": {
                         "description": "status:false"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -462,15 +625,5 @@
                 "scheme": "bearer"
             }
         }
-    },
-    "tags": [
-        {
-            "name": "Auth",
-            "description": "Auth endpoints"
-        },
-        {
-            "name": "Users",
-            "description": "Users endpoints"
-        }
-    ]
+    }
 }

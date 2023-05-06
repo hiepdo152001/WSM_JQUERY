@@ -14,33 +14,33 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table-> id();
-            $table-> string('department')->nullable();
-            $table-> string('position')->nullable();
-            $table-> string('email')->unique();
-            $table-> string('password');
-            $table-> string('name')->nullable();
-            $table-> integer('phone')->nullable();
-            $table-> timestamp('age')->nullable();
+            $table->id();
+            $table->string('department')->nullable();
+            $table->string('position')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('name')->nullable();
+            $table->integer('phone')->nullable();
+            $table->timestamp('age')->nullable();
             // $table-> string('location')->nullable();
-            $table-> string('project')->nullable();
-            $table-> string('sex')->nullable()->nullable();
-            $table-> string('permanent_address')->nullable();
-            $table-> string('seniority')->nullable();
-            $table-> timestamp('working_day')->nullable();
-            $table-> timestamp('promotion_day')->nullable();
-            $table-> string('contract')->nullable();
-            $table-> string('temporary_address')->nullable();
-            $table-> string('CCCD')->unique()->nullable();
-            $table-> timestamp('date_range')->nullable();
-            $table-> string('issued_by')->nullable();
-            $table-> string('personal_email')->nullable();
-            $table-> string('tax_code')->nullable();
-            $table-> integer('leave_days')->nullable();
-            $table-> string('use_property')->nullable();
-            $table-> string('avatar')->nullable();
-            $table-> rememberToken();
-            $table-> timestamps();
+            $table->string('project')->nullable();
+            $table->string('sex')->nullable()->nullable();
+            $table->string('permanent_address')->nullable();
+            $table->string('seniority')->nullable();
+            $table->timestamp('working_day')->nullable();
+            $table->timestamp('promotion_day')->nullable();
+            $table->string('contract')->nullable();
+            $table->string('temporary_address')->nullable();
+            $table->string('cccd')->unique()->nullable();
+            $table->timestamp('date_range')->nullable();
+            $table->string('issued_by')->nullable();
+            $table->string('personal_email')->nullable();
+            $table->string('tax_code')->nullable();
+            $table->integer('leave_days')->nullable();
+            $table->string('use_property')->nullable();
+            $table->string('avatar')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
