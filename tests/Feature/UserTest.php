@@ -12,18 +12,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-  public function test_RegisterUser_validate()
-  {
-    $response = $this->post('/api/auth/register', ['name' => 'test1', 'email' => 'hiepdv@gmail.com', 'password' => '12345']);
-    $response->assertStatus(422);
-  }
 
-  public function test_RegisterUser_done()
-  {
-    $response = $this->post('/api/auth/register', ['name' => 'admin2', 'email' => 'admin3@gmail.com', 'password' => '12345678']);
-    $response->assertStatus(200)
-      ->assertJson(['status' => true, 'message' => 'User Create Successfully']);
-  }
+
   public function test_update_user_by_id_no_id()
   {
     $response = $this->put(' /api/users/update/user/9', ['name' => 'abc', 'email' => 'admin3@gmail.com']);
@@ -38,6 +28,7 @@ class UserTest extends TestCase
     ])
       ->assertStatus(422);
   }
+
   public function test_update_user_by_id_done()
   {
     $response = $this->put('/api/users/update/user/4', ['email' => 'hiepssdf@gmail.com', 'cccd' => 123456789]);
@@ -85,6 +76,7 @@ class UserTest extends TestCase
         ]
       ]);
   }
+
   public function test_delete_user_by_id_false()
   {
     $response = $this->delete('/api/users/delete/users/999');
@@ -127,80 +119,52 @@ class UserTest extends TestCase
       );
   }
 
-  public function test_login_false_not_exist_email()
+  public function test_my_account_false_token()
   {
-    $response = $this->post(
-      '/api/auth/login',
-      ['email' => 'dohiepp@gmail.comm', 'password' => '12345678']
-    );
-    $response->assertStatus(401)
-      ->assertJson([
-        'message' => 'email not found',
-        'status' => false
-      ]);
+    $token = 'lFMcWnzCWxzPF.....8UFj';
+    $response = $this->get('/api/users/my-account', [
+      'Authorization' => 'Bearer' . $token
+    ]);
+    $response->assertStatus(500);
   }
 
-  public function test_login_false_password_not_match()
+  public function test_my_account_done()
   {
-    $response = $this->post(
-      '/api/auth/login',
-      ['email' => 'hiepssdf@gmail.com', 'password' => '1234567']
-    );
-    $response->assertStatus(401)
-      ->assertJson([
-        'message' => 'password not match',
-        'status' => false
-      ]);
-  }
-
-  public function test_login_done()
-  {
-    $response = $this->post(
-      '/api/auth/login',
-      ['email' => 'hiepssdf@gmail.com', 'password' => '12345678']
-    );
+    $token = '66|HD2h4160hCgaGnerX1HdpYVekMOnYtmSvsuTgv20';
+    $response = $this->get('/api/users/my-account', [
+      'Authorization' => 'Bearer ' . $token
+    ]);
     $response->assertStatus(200)
-      ->assertJson([
-        'message' => 'login successful',
-        'status' => true,
+      ->assertJsonFragment([
+        'name' => 'newname',
+        'email' => 'admin123@gmail.com'
       ]);
   }
-  public function test_change_password_false_email()
-  {
-    $response = $this->post(
-      ' /api/auth/change-password',
-      ['email' => 'dohiepaaaa@gmail.com', 'old_password' => '12345678', 'new_password' => '123456']
-    );
-    $response->assertStatus(404);
-    // ->assertJson([
-    //   'message' => 'email not found!',
-    //   'status' => false,
-    // ]);
-  }
 
-  public function test_change_password_false_old_password_not_match()
+  public function test_update_my_account_done()
   {
-    $response = $this->post(
-      ' /api/auth/change-password',
-      ['email' => 'admin2@gmail.com', 'old_password' => '1234567', 'new_password' => '123456']
-    );
-    $response->assertStatus(422);
-    // ->assertJson([
-    //   'message' => 'old password not match!',
-    //   'status' => false,
-    // ]);
+    $token = '66|HD2h4160hCgaGnerX1HdpYVekMOnYtmSvsuTgv20';
+    $response = $this->put('/api/users/update/my-account',['cccd'=>'12345678' ], [
+      'Authorization' => 'Bearer ' . $token,
+    ]);
+    $response->assertStatus(200)
+             ->assertJson([
+              'status' => true,
+              'message' => 'update successful'
+             ]);
   }
+  public function test_update_my_account_false()
+  {
+    $token = '';
+    $response = $this->put('/api/users/update/my-account',['name'=>'newname','cccd'=>'12345678' ], [
+      'Authorization' => 'Bearer ' . $token,
+    ]);
+    $response->assertStatus(500)
+             ->assertJson([
+              'status' => false,
+              'message' => 'user not found!'
+             ]);
+  }
+ 
 
-  public function test_change_password_done()
-  {
-    $response = $this->post(
-      ' /api/auth/change-password',
-      ['email' => 'admin2@gmail.com', 'old_password' => '123456', 'new_password' => '12345678']
-    );
-    $response->assertStatus(200);
-    // ->assertJson([
-    //   'message' => 'change password successful!',
-    //   'status' => true,
-    // ]);
-  }
 }

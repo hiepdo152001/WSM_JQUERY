@@ -63,23 +63,20 @@ class UserController extends Controller
 
     public function updateUserLoggedIn(Request $request)
     {
-        try {
+        
             $user = $this->getCurrentLoggedIn();
-            if (isset($user)) {
-                $this->userService->editUser($user->id, $request->input());
+            if ($user===null) {
                 return response()->json([
-                    'status' => true,
+                    'status' => false,
+                    'message' => 'user not found!'
+                ], 500);
+            }
+            $this->userService->editUser($user->id, $request->input());
+            return response()->json([
+                'status' => true,
                     'message' => 'update successful'
                 ], 200);
-            } else {
-                abort(401);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' =>  false,
-                'message' => $th->getMessage(),
-            ], 422);
-        };
+    
     }
 
     public function getUserById($id)
@@ -116,7 +113,7 @@ class UserController extends Controller
 
     public function deleteUserById($id)
     {
-        $user = $this->userService->getUserbyId($id);
+        $user = $this->userService->getUserById($id);
 
         if ($user === null) {
             return response()->json([

@@ -63,12 +63,12 @@ class AuthController extends Controller
         }
 
         $user->tokens()->delete();
-
+        
         return response()->json([
             'message' => 'login successful',
             'status' => true,
             'token' => $user->createToken("API TOKEN")->plainTextToken
-        ], 200);
+        ], 200)->withCookie($user->createToken("API TOKEN")->plainTextToken );
     }
 
 
@@ -100,7 +100,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'old password not match!',
-            ], 422);
+            ], 404);
         }
 
         $this->userService->newPassword($user->email, $request->new_password);
@@ -109,5 +109,27 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'change password successful!',
         ], 200);
+    }
+
+/**
+     * Set cookie details and return cookie
+     *
+     * @param string $token JWT
+     *
+     * @return \Illuminate\Cookie\CookieJar|\Symfony\Component\HttpFoundation\Cookie
+     */
+    private function getCookie($token)
+    {
+        return cookie(
+            env('AUTH_COOKIE_NAME'),
+            $token,
+            auth()->factory()->getTTL(),
+            null,
+            null,
+            env('APP_DEBUG') ? false : true,
+            true,
+            false,
+            'Strict'
+        );
     }
 }
