@@ -111,25 +111,5 @@ class AuthController extends Controller
         ], 200);
     }
 
-/**
-     * Set cookie details and return cookie
-     *
-     * @param string $token JWT
-     *
-     * @return \Illuminate\Cookie\CookieJar|\Symfony\Component\HttpFoundation\Cookie
-     */
-    private function getCookie($token)
-    {
-        return cookie(
-            env('AUTH_COOKIE_NAME'),
-            $token,
-            auth()->factory()->getTTL(),
-            null,
-            null,
-            env('APP_DEBUG') ? false : true,
-            true,
-            false,
-            'Strict'
-        );
-    }
+
 }
