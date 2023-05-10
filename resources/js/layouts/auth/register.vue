@@ -40,26 +40,23 @@
       const checkPassword=ref('')
       const router= useRouter()
 			const form = reactive({
-        name:'www',
-				email:'er@gmail.com',
-				password:'123'
+        name:'',
+				email:'',
+				password:''
 			});
 			const register = async()=>{
         try{
 				let res = await axios.post('api/auth/register',form)
-        console.log(res.data)
 				if(res.data.status===true){
           await router.push('/login')
           alert(res.data.message)
         }
 			}
       catch (error) {
-       
         if (error.response.status === 422) {
                 for (const key in error.response.data.error) {
                     errors.value = error.response.data.error
                 }
-                console.log(typeof errors.value)
                 if (errors.value.hasOwnProperty('email')) 
                       checkEmail.value=errors.value.email[0]
                     }
