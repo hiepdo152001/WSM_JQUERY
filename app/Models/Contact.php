@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class contact extends Model
+class Contact extends Model
 {
-    use HasFactory;
-    protected $table='Contact';
-    protected $fillable=[
+    use HasFactory, Notifiable;
+    protected $table = 'contacts';
+    protected $fillable = [
         'user_id',
         'content',
         'type',
@@ -21,7 +22,8 @@ class contact extends Model
         'status',
         'dealine',
     ];
-    public function users(){
+    public function users()
+    {
         return $this->belongsTo(User::class);
     }
 }
