@@ -45,3 +45,11 @@ services:
       # PMA_USER: root
       # PMA_PASSWORD: 123
       PMA_ARBITRARY: 1
+  mailhog:
+    image: mailhog/mailhog
+    container_name: m-mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
