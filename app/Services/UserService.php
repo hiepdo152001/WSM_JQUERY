@@ -56,4 +56,12 @@ class UserService
         $email = User::where('id', $id)->value('email');
         return $email;
     }
+    public function getEmailByPosition($department, $position)
+    {
+        $email = User::where('position', $position)
+            ->where('department', $department)
+            ->value('email');
+
+        return $email;
+    }
 }

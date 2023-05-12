@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
+use App\Mail\MailRegitser;
+use App\Notifications\RegisterNotify;
 use Exception;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class AuthController extends Controller
@@ -35,6 +38,11 @@ class AuthController extends Controller
     {
 
         $user = $this->userService->createUser($request);
+        $user->notify(new RegisterNotify($user));
+
+        // queue mail
+        // $userMail = $user->email;
+        // Mail::to("{{$userMail}}")->queue(new MailRegitser($user));
 
         return response()->json([
             'status' =>  true,
@@ -63,12 +71,12 @@ class AuthController extends Controller
         }
 
         $user->tokens()->delete();
-        
+
         return response()->json([
             'message' => 'login successful',
             'status' => true,
             'token' => $user->createToken("API TOKEN")->plainTextToken
-        ], 200)->withCookie($user->createToken("API TOKEN")->plainTextToken );
+        ], 200)->withCookie($user->createToken("API TOKEN")->plainTextToken);
     }
 
 
@@ -110,6 +118,4 @@ class AuthController extends Controller
             'message' => 'change password successful!',
         ], 200);
     }
-
-
 }
