@@ -13,12 +13,16 @@ class TimeKeep extends Migration
      */
     public function up()
     {
-        Schema::create('timeKeep', function(Blueprint  $table){
-          $table-> id();
-          $table-> integer('user_id');
-          $table-> timestamp('time_in');
-          $table-> timestamp('time_out');
-          $table-> timestamp('day');
+        Schema::create('timeKeep', function (Blueprint  $table) {
+            $table->id();
+            $table->timestamp('time_in');
+            $table->timestamp('time_out');
+            $table->timestamp('day');
+        });
+        Schema::table('timeKeep', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

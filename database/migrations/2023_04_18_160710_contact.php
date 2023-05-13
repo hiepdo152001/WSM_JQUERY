@@ -15,7 +15,6 @@ class Contact extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
             $table->string('content');
             $table->integer('type');
             $table->integer('phone');
@@ -26,6 +25,11 @@ class Contact extends Migration
             $table->integer('status');
             $table->timestamp('dealine')->nullable();
             $table->timestamps();
+        });
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
