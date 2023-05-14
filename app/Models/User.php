@@ -67,7 +67,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function contact()
+    public function contacts()
     {
         return $this->hasMany(contact::class, 'user_id', 'id');
     }
