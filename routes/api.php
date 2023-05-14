@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
@@ -35,6 +36,9 @@ Route::group(['prefix' => '/users'], function () {
     Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
     Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
     Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
+    Route::post('/request/new', [ContactController::class, 'ContactCreate']);
+    Route::get('/request', [ContactController::class, 'getContact']);
+    Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
 });
 
 // xu li tat ca cac route khong ton tai
