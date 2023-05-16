@@ -27,20 +27,21 @@ Route::group(['prefix' => '/auth'], function () {
     Route::post('/register', [AuthController::class, 'registerAccount']);
     Route::post('/login', [AuthController::class, 'loginAuth']);
     Route::get('/logout', [AuthController::class, 'logout']);
-    Route::post('/change-password', [AuthController::class, 'changePassword']);
+    Route::put('/change-password', [AuthController::class, 'changePassword']);
 });
 
-Route::group(['prefix' => '/users'], function () {
-    Route::get('/my-account', [UserController::class, 'getUserLogin']);
-    Route::put('/update/my-account', [UserController::class, 'updateUserLoggedIn']);
-    Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
-    Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
-    Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
-    Route::post('/request/new', [ContactController::class, 'ContactCreate']);
-    Route::get('/request', [ContactController::class, 'getContact']);
-    Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['prefix' => '/users'], function () {
+        Route::get('/my-account', [UserController::class, 'getUserLogin']);
+        Route::put('/update/my-account', [UserController::class, 'updateUserLoggedIn']);
+        Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
+        Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
+        Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
+        Route::post('/request/new', [ContactController::class, 'ContactCreate']);
+        Route::get('/request', [ContactController::class, 'getContact']);
+        Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
+    });
 });
-
 // xu li tat ca cac route khong ton tai
 Route::fallback(function () {
     return response()->json([
