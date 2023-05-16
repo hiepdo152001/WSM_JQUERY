@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 
@@ -71,12 +72,12 @@ class AuthController extends Controller
         }
 
         $user->tokens()->delete();
-
+        $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([
             'message' => 'login successful',
             'status' => true,
-            'token' => $user->createToken("API TOKEN")->plainTextToken
-        ], 200)->withCookie($user->createToken("API TOKEN")->plainTextToken);
+            'token' => $token
+        ], 200)->cookie('api_token',  $token, 60 * 24);
     }
 
 
@@ -86,10 +87,11 @@ class AuthController extends Controller
         if ($user) {
             $user->tokens()->delete();
         }
+        $cookie = Cookie::forget('api_token');
         return response()->json([
             'status' => true,
             'message' => 'logout successful',
-        ], 200);
+        ], 200)->withCookie($cookie);
     }
 
 

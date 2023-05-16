@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
-		<div class="row justify-content-center">
-			
-			<div class="col-sm-4 mt-5">
+    <div class="card card-default" style="padding-bottom: 50px;">
+			<div class="card-header">Change Password</div>
+			<div class="col-sm-4 mt-5" style="margin: auto;">
 				<form @submit.prevent="changePassword" >
           <div class="form-group">
 						<label for="email">Email</label>
@@ -35,16 +35,19 @@
   import { useRouter } from 'vue-router';
   import axios from 'axios';
   import { reactive,ref } from 'vue';
+  import ApiService from '../common/apiService'
+	import { APICHANGEPASSWORD,LOGIN } from '../store/url'
+	import jwtService from '../common/jwt.service'
   export default{
    setup(){
         const errors=ref([])
         const message=ref('')
         const router= useRouter()
         const form=reactive({
-            email:'a123@gmail.com',
-            old_password:'12345678',
-            new_password:'123456',
-            confirm_password:'123456'
+            email:'',
+            old_password:'',
+            new_password:'',
+            confirm_password:''
         });
         const changePassword=async()=>{
             try {
@@ -52,9 +55,9 @@
                  message.value="confirm password not match!"
               }
               else{
-                let res=await axios.post('api/auth/change-password',form);
+                let res=await ApiService.put(APICHANGEPASSWORD,'',form);
                 if(res.data.status===true){
-                  await router.push('/login')
+                  await router.push(LOGIN)
                   alert(res.data.message)
                 }
               }

@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-      <div class="card card-default">
+      <div class="card card-default" style="padding-bottom: 50px;">
         <div class="card-header">Register</div>
-        <div class="col-sm-4 mt-5">
+        <div class="col-sm-4 mt-5" style="margin: auto;">
           <form @submit.prevent="register" >
             <div class="form-group">
               <label for="name">Name</label>
@@ -31,8 +31,9 @@
   </template>
   <script>
 	import { reactive,ref, onMounted } from 'vue';
-	import axios from 'axios';
   import { useRouter } from 'vue-router';
+  import ApiService from '../common/apiService'
+	import { APIREGISTER,LOGIN } from '../store/url'
 	export default{
 		setup(){
       const errors = ref([])
@@ -46,9 +47,9 @@
 			});
 			const register = async()=>{
         try{
-				let res = await axios.post('api/auth/register',form)
+				let res = await ApiService.post(APIREGISTER,form)
 				if(res.data.status===true){
-          await router.push('/login')
+          await router.push(LOGIN)
           alert(res.data.message)
         }
 			}

@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
-		<div class="row justify-content-center">
-			
-			<div class="col-sm-4 mt-5">
+		<div class="card card-default" style="padding-bottom: 50px;">
+			<div class="card-header">Login</div>
+			<div class="col-sm-4 mt-5" style="margin: auto;">
 				<form @submit.prevent="login" >
 					<div class="form-group">
 						<label for="email">Email</label>
@@ -25,23 +25,28 @@
 <script>
 	import { reactive,ref, onMounted } from 'vue';
 	import axios from 'axios';
-  import { useRouter } from 'vue-router';
+    import { useRouter } from 'vue-router';
+	import ApiService from '../common/apiService'
+	import { APILOGIN,HOME } from '../store/url'
+	import jwtService from '../common/jwt.service'
 	export default{
 		setup(){
 		const errors = ref([])
 		const check=ref('')
 		const router= useRouter()
 		const form = reactive({
-			email:'',
-			password:''
+			email:'admin@gmail.com',
+			password:'12345678'
 		});
 		const login = async()=>{
 		try{
-			let res = await axios.post('api/auth/login',form)
+			let res = await ApiService.post(APILOGIN,form)
+			 console.log(res.data.token);
 			if(res.data.status===true){
-				await router.push('/home')
+				jwtService.setToken(JSON.stringify(res.data.token));
+				window.location.href = HOME
 				alert(res.data.message)
-			   	}
+			    	}
 			}
 		catch (error) {
 			if (error.response.status === 401) {
