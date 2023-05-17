@@ -50,4 +50,11 @@ class ContactService
         $contact->save();
         return $contact;
     }
+    public function getContactByStatus($user_id, $status)
+    {
+        $contact = Contact::where('user_id', $user_id)
+            ->where('status', $status)
+            ->get();
+        return $contact;
+    }
 }

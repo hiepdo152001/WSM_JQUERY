@@ -90,4 +90,41 @@ class ContactController extends Controller
             'message' => 'update success!'
         ], 200);
     }
+    public function getManager()
+    {
+        $user = $this->getCurrentLoggedIn();
+        $department = $user->department;
+        $position = "truong phong";
+        $email = $this->users->getEmailByPosition($department, $position);
+        $usermng = $this->users->getUserByEmail($email);
+        return response()->json([
+            'name' => $usermng->name
+        ]);
+    }
+    public function getRequestStatus($type)
+    {
+
+        $user = $this->getCurrentLoggedIn();
+        $status = 1;
+        if ($type === 'pending') {
+            $status = 1;
+        }
+        if ($type === 'confirmed') {
+            $status = 2;
+        }
+        if ($type === 'approved') {
+            $status = 3;
+        }
+        if ($type === 'declined') {
+            $status = 4;
+        }
+        if ($type === 'canceled') {
+            $status = 5;
+        }
+        $user_id = $user->id;
+        $requests = $this->contacts->getContactByStatus($user_id, $status);
+        return response()->json([
+            'data' => $requests,
+        ], 200);
+    }
 }

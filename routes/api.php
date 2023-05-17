@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/request/new', [ContactController::class, 'ContactCreate']);
         Route::get('/request', [ContactController::class, 'getContact']);
         Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
+        Route::get('/request/manager', [ContactController::class, 'getManager']);
+        Route::get('/member/request/{type}', [ContactController::class, 'getRequestStatus']);
     });
 });
 // xu li tat ca cac route khong ton tai
