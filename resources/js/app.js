@@ -13,6 +13,7 @@ import {
 import 'ant-design-vue/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'bootstrap/dist/css/bootstrap-utilities.min.css';
+
 const app = createApp(App);
 
 app.use(router);

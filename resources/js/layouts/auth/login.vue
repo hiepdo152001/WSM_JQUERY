@@ -1,39 +1,37 @@
 <template>
 	<div class="container">
-		<div class="card card-default" style="padding-bottom: 50px;">
-			<div class="card-header">Login</div>
-			<div class="col-sm-4 mt-5" style="margin: auto;">
-				<form @submit.prevent="login" >
-					<div class="form-group">
-						<label for="email">Email</label>
-              			<input type="email"  class="form-control" v-model="form.email" required/>
-					</div>			
-					<div class="form-group">
-						<label for="password">Password</label>
-						<input type="password" class="form-control" v-model="form.password" required/>
-					</div>			
-					<div class="alert alert-danger" v-if="check">
-						{{ check }}
-					</div>
-					<button type="submit" class="btn btn-dark">Login</button>
-				</form>
+	  <div class="card card-default" style="padding-bottom: 50px;">
+		<div class="card-header">Login</div>
+		<div class="col-sm-4 mt-5" style="margin: auto;">
+		  <form @submit.prevent="login">
+			<div class="form-group">
+			  <label for="email">Email</label>
+			  <input type="email" class="form-control" v-model="form.email" required/>
 			</div>
-			
+			<div class="form-group">
+			  <label for="password">Password</label>
+			  <input type="password" class="form-control" v-model="form.password" required/>
+			</div>
+			<div class="alert alert-danger" v-if="check">
+			  {{ check }}
+			</div>
+			<button type="submit" class="btn btn-dark">Login</button>
+		  </form>
 		</div>
+	  </div>
 	</div>
-</template>
+  </template>
+  
 <script>
 	import { reactive,ref, onMounted } from 'vue';
-	import axios from 'axios';
-    import { useRouter } from 'vue-router';
 	import ApiService from '../common/apiService'
 	import { APILOGIN,HOME } from '../store/url'
-	import jwtService from '../common/jwt.service'
+	import jwtService from '../common/jwtService'
+	
 	export default{
 		setup(){
 		const errors = ref([])
 		const check=ref('')
-		const router= useRouter()
 		const form = reactive({
 			email:'admin@gmail.com',
 			password:'12345678'

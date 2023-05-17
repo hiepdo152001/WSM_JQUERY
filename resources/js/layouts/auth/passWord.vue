@@ -33,11 +33,10 @@
 
   <script>
   import { useRouter } from 'vue-router';
-  import axios from 'axios';
   import { reactive,ref } from 'vue';
   import ApiService from '../common/apiService'
 	import { APICHANGEPASSWORD,LOGIN } from '../store/url'
-	import jwtService from '../common/jwt.service'
+  
   export default{
    setup(){
         const errors=ref([])
