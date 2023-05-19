@@ -17,7 +17,7 @@ class Contact extends Migration
             $table->id();
             $table->string('content');
             $table->integer('type');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('project');
             $table->string('reason');
             $table->timestamp('time_start')->nullable();

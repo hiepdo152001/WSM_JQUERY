@@ -12,14 +12,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
+use App\Http\Traits\FileUploadTrait;
 use Exception;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class UserController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * @var UserService
      */
@@ -63,20 +67,19 @@ class UserController extends Controller
 
     public function updateUserLoggedIn(Request $request)
     {
-        
-            $user = $this->getCurrentLoggedIn();
-            if ($user===null) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'user not found!'
-                ], 500);
-            }
-            $this->userService->editUser($user->id, $request->input());
+
+        $user = $this->getCurrentLoggedIn();
+        if ($user === null) {
             return response()->json([
-                'status' => true,
-                    'message' => 'update successful'
-                ], 200);
-    
+                'status' => false,
+                'message' => 'user not found!'
+            ], 500);
+        }
+        $this->userService->editUser($user->id, $request->input());
+        return response()->json([
+            'status' => true,
+            'message' => 'update successful'
+        ], 200);
     }
 
     public function getUserById($id)
@@ -128,5 +131,28 @@ class UserController extends Controller
             'message' => 'delete user successful',
             'user delete' => $user,
         ], 202);
+    }
+    public function editAvatar(Request $request)
+    {
+        $user = $this->getCurrentLoggedIn();
+        $id = $user->id;
+        if (isset($user)) {
+            if ($request->file('image_data')) {
+                $pathName = $this->getFilePath($request->file('image_data'), 'profile');
+
+                $userUpdate =  $this->userService->editUser($id, [
+                    'avatar' => $pathName,
+                ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Success',
+                    'data' => $userUpdate
+                ], 200);
+            }
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Not success',
+        ], 500);
     }
 }

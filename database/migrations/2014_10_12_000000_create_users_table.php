@@ -20,11 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('name')->nullable();
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamp('age')->nullable();
             // $table-> string('location')->nullable();
             $table->string('project')->nullable();
-            $table->string('sex')->nullable()->nullable();
+            $table->string('sex')->nullable();
             $table->string('permanent_address')->nullable();
             $table->string('seniority')->nullable();
             $table->timestamp('working_day')->nullable();
@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
             $table->string('issued_by')->nullable();
             $table->string('personal_email')->nullable();
             $table->string('tax_code')->nullable();
-            $table->integer('leave_days')->nullable();
+            $table->string('leave_days')->nullable();
             $table->string('use_property')->nullable();
             $table->string('avatar')->nullable();
             $table->rememberToken();
