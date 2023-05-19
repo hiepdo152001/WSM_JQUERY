@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/update/my-account', [UserController::class, 'updateUserLoggedIn']);
         Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
         Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
+        Route::post('/update/avatar', [UserController::class, 'editAvatar']);
         Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
         Route::post('/request/new', [ContactController::class, 'ContactCreate']);
         Route::get('/request', [ContactController::class, 'getContact']);
