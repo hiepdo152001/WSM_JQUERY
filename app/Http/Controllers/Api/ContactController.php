@@ -36,8 +36,9 @@ class ContactController extends Controller
         }
         // $contact->email = $user->email;
         $department = $user->department;
-        $position = "truong phong";
+        $position = "tld";
         $email = $this->users->getEmailByPosition($department, $position);
+
         $touser = $this->users->getUserByEmail($email);
 
         $touser->notify(new RequestNotify($contact, $user));
@@ -94,7 +95,7 @@ class ContactController extends Controller
     {
         $user = $this->getCurrentLoggedIn();
         $department = $user->department;
-        $position = "truong phong";
+        $position = "tld";
         $email = $this->users->getEmailByPosition($department, $position);
         $usermng = $this->users->getUserByEmail($email);
         return response()->json([
