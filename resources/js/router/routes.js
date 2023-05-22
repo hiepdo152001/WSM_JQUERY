@@ -6,18 +6,14 @@ const admin = [
         {
           path: "login",
           name: "login-auth",
-          component: () => import("../layouts/auth/login.vue"),
+          component: () => import("../layouts/homePage.vue"),
         },
         {
           path: "register",
           name: "register-auth",
-          component: () => import("../layouts/auth/register.vue"),
+          component: () => import("../layouts/homePage.vue"),
         },
-        {
-          path: "change-password",
-          name: "change-password-auth",
-          component: () => import("../layouts/auth/passWord.vue"),
-        },
+        
       ],
     },
     {
@@ -38,6 +34,11 @@ const admin = [
           path: "request/new",
           name: "new-request",
           component: () => import("../layouts/user/createRequest.vue"),
+        },
+        {
+          path: "change-password",
+          name: "change-password-auth",
+          component: () => import("../layouts/auth/passWord.vue"),
         },
         {
           path: "member/request",
@@ -75,6 +76,11 @@ const admin = [
           path: "user",
           name: "user",
           component: () => import("../layouts/user/user.vue"),
+        },
+        {
+          path: "edit/profile",
+          name: "edit-profile",
+          component: () => import("../layouts/user/editprofile.vue"),
         },
       ],
     },
