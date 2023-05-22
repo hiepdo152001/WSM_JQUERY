@@ -1,55 +1,75 @@
 <template>
-    <div class="d-flex">
+    <div >
+      <div>
+        <div class="panel-hdr">
+          <h2 class="text-center">Thông tin cá nhân</h2>
+      </div>
+        <div class="col-6">
+        <router-link :to="{name: 'edit-profile'}">
+          <button class="btn btn-primary btn-sm waves-effect waves-themed" >
+            <!-- <i class="fal fa-pencil"></i> -->
+            edit user
+            </button>
+          </router-link>
+        </div>
+      </div>
+    </div>  
+      <div class="d-flex mt-4">
         <div class="col-md-6">
         <div class="panel-hdr">
-            <h2 class="text-center">Thong tin ca nhan</h2>
+            <h2 class="text-center">Thông tin nhân viên</h2>
         </div>
         
-      <table class="table table-striped table-bordered table-hover ">
-        <tbody >
-            <tr v-for="(value, key) in users" :key="key">
-                <td v-if="key !=='created_at' && key !=='updated_at' && key !=='use_property'  && key !=='avatar'  " :key="key"><strong>{{ key }}</strong></td>
-                <td v-if="key !=='created_at' && key !=='updated_at' && key !=='use_property'  && key !=='avatar' " :key="key">{{ value }}</td>
-              </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-md-6">
-        <div class="panel-hdr">
-            <h2 class="text-center">Tai san dang su dung</h2>
+        <!-- <img :src="filename" alt="Avatar Image">
+        <input type="file" class="form-control" id="customFile" /> -->
+          <table class="table table-striped table-bordered table-hover " >
+            <tbody >
+                <tr v-for="(value, key) in users" :key="key">
+                    <td v-if="key !=='created_at' && key !=='updated_at' && key !=='use_property'  && key !=='avatar'  " :key="key"><strong>{{ key }}</strong></td>
+                    <td v-if="key !=='created_at' && key !=='updated_at' && key !=='use_property'  && key !=='avatar' " :key="key">{{ value }}</td>
+                  </tr>
+            </tbody>
+          </table>
         </div>
-        
-      <table class="table table-striped table-bordered table-hover ">
-        <tbody >
-            <tr v-for="(value, key) in users" :key="key">
-                <td v-if="key ==='use_property'" :key="key"><strong>{{ key }}</strong></td>
-                <td v-if="key ==='use_property'" :key="key">{{ value }}</td>
-              </tr>
-        </tbody>
-      </table>
-    </div>
-    </div>
+        <div class="col-md-6">
+            <div class="panel-hdr">
+                <h2 class="text-center">Tài sản đang sử dụng</h2>
+            </div>
+          <table class="table table-striped table-bordered table-hover ">
+            <tbody >
+                <tr v-for="(value, key) in users" :key="key">
+                    <td v-if="key ==='use_property'" :key="key"><strong>{{ key }}</strong></td>
+                    <td v-if="key ==='use_property'" :key="key">{{ value }}</td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
   </template>
   
   <script>
   import { ref, onMounted } from 'vue';
   import ApiService from '../common/apiService'
-	import { APIMYACCOUNT,HOME } from '../store/url'
+	import { APIMYACCOUNT,PATHIMAGE } from '../store/url'
   export default {
     setup() {
       const users = ref([]);
-  
+      const filename=ref('')
       onMounted(async () => {
         try {
           const headers = ApiService.setHeader();
           const apiResponse = await ApiService.get(APIMYACCOUNT,{ headers});
           users.value = apiResponse.data.data;
+          filename.value=PATHIMAGE + users.value.avatar
+        
         } catch (error) {
           console.error(error);
         }
       });
       return {
         users,
+        filename
       };
     },
   };
