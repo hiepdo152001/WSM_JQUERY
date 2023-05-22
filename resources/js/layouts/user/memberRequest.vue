@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar ">
     <div class="">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav" style="display: block;">
         <li> 
           <router-link :to="{name: 'pending'}">
             <span class="custom-span">Đang chờ duyệt</span>
