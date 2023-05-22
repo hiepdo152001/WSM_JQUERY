@@ -28,11 +28,14 @@ const AppService={
     getParameter(resource,slug, params) {
         return axiosClient.get(`${resource}/${slug}`, params);
       },
-    post(resource,data,header){
+    post(resource,data){
         return axiosClient.post(`${resource}`,data);
     },
     postAuth(resource,data,header){
         return axiosClient.post(`${resource}`,data,header);
+    },
+    putAvatar(resource,data,header){
+        return axiosClient.put(`${resource}`,data,header);
     },
     put(resource,slug, params) {
         return axiosClient.put(`${resource}/${slug}`, params);
