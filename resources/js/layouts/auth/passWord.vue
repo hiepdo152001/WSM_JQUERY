@@ -1,41 +1,42 @@
 <template>
-	<div class="container">
-    <div class="card card-default" style="padding-bottom: 50px;">
-			<div class="card-header">Change Password</div>
-			<div class="col-sm-4 mt-5" style="margin: auto;">
-				<form @submit.prevent="changePassword" >
+  <div class="login-page">
+    <div class="wallpaper-register"></div>
+    <div class="container">
+       <div class="row">
+          <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
+        <form @submit.prevent="changePassword">
           <div class="form-group">
-						<label for="email">Email</label>
-            <input type="email"  class="form-control" v-model="form.email" required/>
-					</div>	
-					<div class="form-group">
-						<label for="old_password">Old Password</label>
-            <input type="password"  class="form-control" v-model="form.old_password" required/>
-					</div>			
-					<div class="form-group">
-						<label for="new_password">New Password</label>
-		        <input type="password" class="form-control" v-model="form.new_password" required/>
-					</div>			
+            <label for="email">Email</label>
+            <input type="email" class="form-control" v-model="form.email" required/>
+          </div>
           <div class="form-group">
-						<label for="confirm_password"> Confirm Password</label>
-            <input type="password"  class="form-control" v-model="form.confirm_password" required/>
-					</div>
-					<div class="alert alert-danger" v-if="message">
-						{{ message }}
-					</div>
-					<button type="submit" class="btn btn-dark">Change Password</button>
-				</form>
-			</div>
-			
-		</div>
-	</div>
+            <label for="old_password">Old Password</label>
+            <input type="password" class="form-control" v-model="form.old_password" required/>
+          </div>
+          <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" class="form-control" v-model="form.new_password" required/>
+          </div>
+          <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" class="form-control" v-model="form.confirm_password" required/>
+          </div>
+          <div class="alert alert-danger" v-if="message">
+            {{ message }}
+          </div>
+          <button type="submit" class="btn btn-primary">Change Password</button>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
 </template>
 
   <script>
   import { useRouter } from 'vue-router';
   import { reactive,ref } from 'vue';
   import ApiService from '../common/apiService'
-	import { APICHANGEPASSWORD,LOGIN } from '../store/url'
+	import { APICHANGEPASSWORD} from '../store/url'
   
   export default{
    setup(){
@@ -56,7 +57,6 @@
               else{
                 let res=await ApiService.put(APICHANGEPASSWORD,'',form);
                 if(res.data.status===true){
-                  await router.push(LOGIN)
                   alert(res.data.message)
                 }
               }
@@ -86,3 +86,8 @@
     }
   }
 </script>
+<style>
+.custom-card {
+  max-width: 400px;
+}
+</style>
