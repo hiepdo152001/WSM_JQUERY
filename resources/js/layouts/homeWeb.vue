@@ -5,9 +5,6 @@
       <div class="col-sm-2 d-none d-sm-flex">
         <a-list bordered style="width: 100%">
           <TheMenu />
-          <template #header>
-            <div>BẢNG ĐIỀU KHIỂN</div>
-          </template>
         </a-list>
       </div>
 
