@@ -4,9 +4,9 @@
       <h1 class="title">Yêu cầu của tôi</h1>
   </div>
   <router-link :to="{name: 'new-request'}">
-    <button class="profile" >+ Thêm yêu cầu</button>
+    <button class="btn btn-primary btn-sm waves-effect waves-themed" >+ Thêm yêu cầu</button>
     </router-link>
-      <table class="table">
+      <table class="table" style="margin-top: 30px;">
         <thead>
           <tr>
             <th>Nội dung</th>
@@ -102,5 +102,10 @@
   .status-pending {
     color: #2196f3;
   }
+  .btn-primary:hover {
+   
+    background-color: #7453a6;
+    border-color: #6e4e9e;
+}
   </style>
   
