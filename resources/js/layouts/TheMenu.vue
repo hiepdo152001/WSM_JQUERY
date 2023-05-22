@@ -7,22 +7,25 @@
 
   <a-menu-item key="lich-lam-viec">
    <router-link :to="{name: 'lich-lam-viec'}">
-    <span>lich lam viec</span>
+    <i class="fal fa-window"></i>
+    <span>Lịch làm việc</span>
    </router-link>
   </a-menu-item>
   <a-sub-menu key="menu-request" >
     <template #icon>
       <MailOutlined />
     </template>
-    <template #title>Cac yeu cau</template>
+    <template #title>
+      <i class="fal fa-share-square"></i>
+      Các yêu cầu</template>
     <a-menu-item key="yeu-cau-cua-toi">
       <router-link :to="{name: 'yeu-cau-cua-toi'}">
-       <span>Yeu cau cua toi</span>
+       <span>Yêu cầu của tôi</span>
       </router-link>
      </a-menu-item>
     <a-menu-item key="member-request">
       <router-link :to="{name: 'member-request'}">
-       <span>Yeu cau can duyet</span>
+       <span>Yêu cầu cần duyệt</span>
       </router-link>
      </a-menu-item>
     
@@ -48,4 +51,5 @@ export default defineComponent({
   },
 });
 </script>
+
  
