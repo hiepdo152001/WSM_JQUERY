@@ -14,6 +14,7 @@ class Time_keep extends Model
         'time_in',
         'time_out',
         'day',
+        'month',
     ];
     public function users()
     {
