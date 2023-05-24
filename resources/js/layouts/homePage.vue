@@ -65,7 +65,7 @@
 <script>
 	import { reactive,ref } from 'vue';
 	import ApiService from './common/apiService'
-	import { APILOGIN,HOME ,APIREGISTER} from './store/url'
+	import { APILOGIN,APP_URL ,APIREGISTER} from './store/url'
 	import jwtService from './common/jwtService'
 	
 	export default{
@@ -107,11 +107,12 @@
       try{
         let res = await ApiService.post(APIREGISTER,formregis)
         if(res.data.status===true){
-        registerActive=false
           alert(res.data.message)
+          window.location.href=APP_URL
         }
       }
       catch (error) {
+        console.log(error.response)
         if (error.response.status === 422) {
           checkEmail.value="";
           checkPassword.value="";
