@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CalendarController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Auth\Events\Logout;
@@ -43,6 +44,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
         Route::get('/request/manager', [ContactController::class, 'getManager']);
         Route::get('/member/request/{type}', [ContactController::class, 'getRequestStatus']);
+        Route::get('/time-keep/new', [CalendarController::class, 'createTimeKeep']);
+        Route::get('/time-keep/update', [CalendarController::class, 'updateTimeKeep']);
+        Route::get('/time-keep/get', [CalendarController::class, 'getTimeKeep']);
+        Route::get('/time-keep/getByDay', [CalendarController::class, 'getByDay']);
     });
 });
 // xu li tat ca cac route khong ton tai
