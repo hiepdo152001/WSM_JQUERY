@@ -69,9 +69,21 @@ const AppService={
             element.assignee=assignee;
             element.deadline=deadline.value;
             }
-    });
-  }
-
+       }); 
+    },
+    
+    getTimeCheck(res,checks){
+        const time_in=res.time_in;
+        const date= new Date(time_in);
+        const checkin =date.getHours() + ":" + date.getMinutes();
+        checks.check_in=checkin;
+        if(res.time_out!==null){
+        const time_out=res.time_out;
+        const date_out= new Date(time_out);
+        const checkout =date_out.getHours() + ":" + date_out.getMinutes();
+        checks.check_out=checkout;
+        }
+    }
 };  
 
 
