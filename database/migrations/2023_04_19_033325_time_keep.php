@@ -15,14 +15,13 @@ class TimeKeep extends Migration
     {
         Schema::create('timeKeep', function (Blueprint  $table) {
             $table->id();
-            $table->timestamp('time_in');
-            $table->timestamp('time_out');
-            $table->timestamp('day');
-        });
-        Schema::table('timeKeep', function (Blueprint $table) {
+            $table->timestamp('time_in')->nullable();
+            $table->timestamp('time_out')->nullable();
+            $table->string('day')->nullable();
+            $table->string('month')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-
             $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 

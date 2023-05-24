@@ -20,10 +20,10 @@ class Contact extends Migration
             $table->string('phone');
             $table->string('project');
             $table->string('reason');
-            $table->timestamp('time_start')->nullable();
-            $table->timestamp('time_end')->nullable();
+            $table->timestamp('time_start')->nullable(); // start_at
+            $table->timestamp('time_end')->nullable(); // end_at
             $table->integer('status');
-            $table->timestamp('dealine')->nullable();
+            $table->timestamp('dealine')->nullable(); // expired_at
             $table->timestamps();
         });
         Schema::table('contacts', function (Blueprint $table) {
