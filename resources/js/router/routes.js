@@ -23,7 +23,7 @@ const admin = [
         {
           path: "lich",
           name: "lich-lam-viec",
-          component: () => import("../layouts/user/lich.vue"),
+          component: () => import("../layouts/user/calendar.vue"),
         },
         {
           path: "request",
