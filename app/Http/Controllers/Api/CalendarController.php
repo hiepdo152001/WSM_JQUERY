@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\ExcelExports;
 use App\Http\Controllers\Controller;
 use App\Services\CalendarService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CalendarController extends Controller
 {
@@ -84,5 +86,21 @@ class CalendarController extends Controller
         return response()->json(
             $time_keep,
         );
+    }
+
+    public function getWorkTime()
+    {
+        $user = $this->getCurrentLoggedIn();
+        $id = $user->id;
+        $work_time = $this->calendarService->getWorkTime($id);
+
+        return response()->json(
+            $work_time,
+        );
+    }
+
+    public function export()
+    {
+        return Excel::download(new ExcelExports(), 'bangchamcong.xlsx');
     }
 }
