@@ -48,6 +48,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/time-keep/update', [CalendarController::class, 'updateTimeKeep']);
         Route::get('/time-keep/get', [CalendarController::class, 'getTimeKeep']);
         Route::get('/time-keep/getByDay', [CalendarController::class, 'getByDay']);
+        Route::get('/time-keep/getWorkTime', [CalendarController::class, 'getWorkTime']);
+        Route::get('/exports', [CalendarController::class, 'export']);
     });
 });
 // xu li tat ca cac route khong ton tai
