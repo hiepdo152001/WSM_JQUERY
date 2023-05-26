@@ -65,7 +65,7 @@
 <script>
 	import { reactive,ref } from 'vue';
 	import ApiService from './common/apiService'
-	import { APILOGIN,APP_URL ,APIREGISTER} from './store/url'
+	import { APILOGIN,APP_URL ,APIREGISTER,HOME} from './store/url'
 	import jwtService from './common/jwtService'
 	
 	export default{
