@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/time-keep/get', [CalendarController::class, 'getTimeKeep']);
         Route::get('/time-keep/getByDay', [CalendarController::class, 'getByDay']);
         Route::get('/time-keep/getWorkTime', [CalendarController::class, 'getWorkTime']);
+        Route::get('/time-keep/getNotWork/{year}/{month}', [CalendarController::class, 'getNotWork']);
         Route::get('/exports', [CalendarController::class, 'export']);
     });
 });
