@@ -1,126 +1,234 @@
 <template>
   <div>
     <div class="check-in-out" :class="{ 'd-none': off }">
-      <button class="btn btn-danger btn-sm" v-if="showCheckOutButton" @click="options.customButtons.customButton.click">
-       <i class="bi bi-box-arrow-right"></i> {{ options.customButtons.customButton.text }}
+      <button
+        class="btn btn-danger btn-sm"
+        v-if="showCheckOutButton"
+        @click="options.customButtons.customButton.click"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        {{ options.customButtons.customButton.text }}
       </button>
-      <button class="btn btn-danger btn-sm" v-else @click="options.customButtons.customButton2.click">
-      <i class="bi bi-box-arrow-right"></i>  {{ options.customButtons.customButton2.text }}
+      <button
+        class="btn btn-danger btn-sm"
+        v-else
+        @click="options.customButtons.customButton2.click"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        {{ options.customButtons.customButton2.text }}
       </button>
     </div>
     <FullCalendar :options="options" ref="calendarRef" />
-    
   </div>
 </template>
-<style>
-.fc-toolbar-chunk{
-  position: relative;
-}
-.check-in-out{
-  position: absolute;
-    margin-left: 74%;
-    top: 8%;
-}
-</style>
+
 <script>
-import { ref,onMounted} from 'vue';
-import FullCalendar from '@fullcalendar/vue3';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listGridPlugin from '@fullcalendar/list';
-import interactionGridPlugin from '@fullcalendar/interaction';
-import ApiService from '../common/apiService';
+import { ref, onMounted } from "vue";
+import FullCalendar from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listGridPlugin from "@fullcalendar/list";
+import interactionGridPlugin from "@fullcalendar/interaction";
+import ApiService from "../common/apiService";
 import {
-  APICREATETIMEKEEP, 
-  APIUPDATETIMEKEEP,
-  APIGETTIMEKEEP,
-  HOMECALENDAR,
-  APIGETTIMEKEEPBYDAY 
-} from '../store/url';
+  API_CREATE_TIME_KEEP,
+  API_UPDATE_TIME_KEEP,
+  API_GET_TIME_KEEP,
+  HOME_CALENDAR,
+  API_GET_TIME_KEEP_BY_DAY,
+  API_GET_NOT_WORK,
+} from "../store/url";
 
 export default {
   components: {
     FullCalendar,
   },
-  //customButton,customButton2,dayGridMonth,listDay
+
   setup() {
     const calendarRef = ref(null);
     const checks = ref([]);
-    const checkout = ref([]);
-    const checkin = ref([]);
+    const color = ref([]);
     const headers = ApiService.setHeader();
-    const showCheckOutButton =ref(true);
-    const off = ref(false)
+    const showCheckOutButton = ref(true);
+    const off = ref(false);
+    const checkClick = ref([]);
     onMounted(async () => {
-      const timeKeep= await ApiService.get(APIGETTIMEKEEP,{headers});
-      const timeKeepToDay= await ApiService.get(APIGETTIMEKEEPBYDAY, {headers} )
-      const dataKeys = Object.keys(timeKeepToDay.data);
-      
       const calendarApi = calendarRef.value.getApi();
+      const currentDate = calendarApi.getDate();
+      const timeKeep = await ApiService.get(API_GET_TIME_KEEP, { headers });
+      const timeKeepToDay = await ApiService.get(API_GET_TIME_KEEP_BY_DAY, {
+        headers,
+      });
 
-      timeKeep.data.forEach((event) => {
-          ApiService.getTimeCheck(event, checks);
-          checkin.value = checks.check_in;
-          checkout.value=checks.check_out;
-         
-          const defaultEvent = {
-          title:checkin.value + " " + checks.check_out ,
-          start: event.created_at,
-          end: event.updated_at,
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+
+      const year = currentDate.getFullYear();
+
+      checkClick.value.push(month);
+
+      const notwork = await ApiService.getNotWork(
+        API_GET_NOT_WORK,
+        year,
+        month,
+        { headers }
+      );
+
+      const holiday = ApiService.holiday();
+      Object.entries(holiday).forEach(([key, value]) => {
+        const defaultEvent = {
+          title: value,
+          start: key,
+          end: key,
+          color: "#107066",
           allDay: true,
         };
-        calendarApi.addEvent(defaultEvent); 
+
+        calendarApi.addEvent(defaultEvent);
         options.events = [defaultEvent];
-        });
+      });
 
-        if(timeKeep.data[timeKeep.data.length -1].time_in !==null){
-          showCheckOutButton.value=false
+      notwork.data.forEach((event) => {
+        if (!Object.keys(holiday).includes(event)) {
+          const defaultEvent = {
+            title: "K",
+            start: event,
+            end: event,
+            color: "#fd3995",
+            allDay: true,
+          };
+
+          calendarApi.addEvent(defaultEvent);
+          options.events = [defaultEvent];
+        }
+      });
+
+      timeKeep.data.forEach((event) => {
+        ApiService.getTimeCheck(event, checks, color);
+
+        const defaultEvent = {
+          title: checks.check_in,
+          start: event.created_at,
+          end: event.updated_at,
+          color: color.check_in,
+          allDay: true,
+        };
+
+        calendarApi.addEvent(defaultEvent);
+
+        if (checks.check_out !== "") {
+          const defaultEventCheckOut = {
+            title: checks.check_out,
+            start: event.created_at,
+            end: event.updated_at,
+            color: color.check_out,
+            allDay: true,
+          };
+
+          calendarApi.addEvent(defaultEventCheckOut);
         }
 
-        if(timeKeep.data[timeKeep.data.length -1].time_in !==null && timeKeep.data[timeKeep.data.length -1].time_out !==null){
-          off.value=true;
-        }
+        options.events = [defaultEvent];
+        checks.check_in = "";
+        checks.check_out = "";
+      });
 
-        if (dataKeys.length === 0) {
-          off.value=false;
-          showCheckOutButton.value=true
-        }
-        
+      const dataKeys = Object.keys(timeKeepToDay.data);
+
+      //set status button check-in check-out
+      ApiService.checkButton(
+        timeKeep,
+        showCheckOutButton,
+        off,
+        holiday,
+        dataKeys
+      );
     });
 
     const options = {
-      plugins: [dayGridPlugin, timeGridPlugin, listGridPlugin, interactionGridPlugin],
-      initialView: 'dayGridMonth',
+      plugins: [
+        dayGridPlugin,
+        timeGridPlugin,
+        listGridPlugin,
+        interactionGridPlugin,
+      ],
+
+      initialView: "dayGridMonth",
       headerToolbar: {
-        left: 'title',
-        center: '',
+        left: "title",
+        center: "",
+        right: "today prev,next",
       },
-      editable: true,
-      selectable: true,
+
       weekends: true,
+      firstDay: 1,
+
       events: [],
+
       customButtons: {
         customButton: {
-          text: 'Check-in',
+          text: "Check-in",
           click: async function () {
             try {
-              const res = await ApiService.get(APICREATETIMEKEEP, { headers });
-              if(res.data.time_in !== null){
-                window.location.href=HOMECALENDAR
+              const res = await ApiService.get(API_CREATE_TIME_KEEP, {
+                headers,
+              });
+              if (res.data.time_in !== null) {
+                window.location.href = HOME_CALENDAR;
               }
-            } catch (error) {
-            }
+            } catch (error) {}
           },
         },
+
         customButton2: {
-          text: 'Check-out',
+          text: "Check-out",
           click: async function () {
             try {
-              const res = await ApiService.get(APIUPDATETIMEKEEP, { headers });
+              const res = await ApiService.get(API_UPDATE_TIME_KEEP, {
+                headers,
+              });
 
-              window.location.href=HOMECALENDAR
-            } catch (error) {
-            }
+              window.location.href = HOME_CALENDAR;
+            } catch (error) {}
+          },
+        },
+
+        prev: {
+          click: async function () {
+            const calendarApi = calendarRef.value.getApi();
+            calendarApi.prev();
+            const currentDate = calendarApi.getDate();
+
+            const month = (currentDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0");
+
+            const year = currentDate.getFullYear();
+
+            const notwork = await ApiService.getNotWork(
+              API_GET_NOT_WORK,
+              year,
+              month,
+              { headers }
+            );
+            const holiday = ApiService.holiday();
+            notwork.data.forEach((event) => {
+              // month khong co trong checkClick
+              if (
+                !checkClick.value.includes(month) &&
+                !Object.keys(holiday).includes(event)
+              ) {
+                const defaultEvent = {
+                  title: "K",
+                  start: event,
+                  end: event,
+                  color: "#fd3995",
+                  allDay: true,
+                };
+                calendarApi.addEvent(defaultEvent);
+                options.events = [defaultEvent];
+              }
+            });
+            checkClick.value.push(month);
           },
         },
       },
@@ -129,8 +237,66 @@ export default {
       options,
       calendarRef,
       showCheckOutButton,
-      off
+      off,
+      checkClick,
     };
   },
 };
 </script>
+
+<style>
+.fc-event-title {
+  font-weight: 600;
+}
+.fc .fc-scrollgrid-liquid {
+  height: 85% !important;
+}
+
+.check-in-out {
+  position: absolute;
+  right: 25%;
+}
+.btn {
+  padding: 7px 10px;
+}
+.fc-daygrid-day-events {
+  display: flex;
+  justify-content: center;
+}
+.fc-event-title {
+  padding: 0px 8px !important;
+}
+.fc-day-sat {
+  background-color: #ccbfdf;
+}
+.fc-day-sun {
+  background-color: #ccbfdf;
+}
+.fc-daygrid-day-number {
+  color: #7777;
+  font-size: 18px;
+  font-weight: 600;
+}
+.fc-col-header-cell {
+  background-color: #886ab5;
+  padding: 10px !important;
+}
+.fc-col-header-cell-cushion {
+  color: white;
+  font-weight: 500px;
+  font-size: 20px;
+}
+
+.fc-prev-button,
+.fc-next-button,
+.fc-today-button {
+  background-color: #886ab5 !important ;
+}
+.fc-icon {
+  font-size: 16px !important;
+}
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid #886ab5 !important;
+}
+</style>
