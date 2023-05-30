@@ -6,8 +6,10 @@ use App\Models\Time_keep;
 use App\Models\User;
 use Date;
 use DateTime;
+use DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use TimeKeep;
 
 class CalendarService
 {
@@ -26,14 +28,17 @@ class CalendarService
         $dateNow = date('Y-m-d H:i:s');
         $day = date('d', strtotime($dateNow));
         $month_keep = date('m', strtotime($dateNow));
+
         $time_keep = Time_keep::create([
             'user_id' => $id,
             'time_in' => $dateNow,
             'day' => $day,
             'month' => $month_keep,
         ]);
+
         return $time_keep;
     }
+
     public function update($id)
     {
         $dateNow = date('Y-m-d H:i:s');
@@ -77,8 +82,14 @@ class CalendarService
             $time = $time_in_dt->diff($time13h);
             $time_redundant = $time->h + ($time->i / 60);
             $work_time -= $time_redundant;
+            if ($work_time > 0.6) {
+                $work_time = 0.6;
+            }
         }
         $work_time = round(($work_time / 8), 1);
+        if ($work_time > 1) {
+            $work_time = 1;
+        }
         $time_keep->work_time = $work_time;
 
         $time_keep->save();
@@ -109,5 +120,74 @@ class CalendarService
         return Time_keep::where('user_id', $id)
             ->where('month', $month_keep)
             ->sum('work_time');
+    }
+
+    public function getNotWork($year, $month, $id)
+    {
+
+        $now = date('Y-m-d H:i:s');
+        $lastDayOfMonth = date('t', strtotime("$year-$month-01"));
+
+        $monthNow = date('m', strtotime($now));
+
+        if ($month >= $monthNow) {
+            $notWork = Time_Keep::selectRaw("DATE ")
+
+                ->from(DB::raw("
+            (SELECT DATE_ADD(DATE('$year-$month-01'), INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) AS date
+            
+            FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+
+            CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+
+            CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS c
+
+            WHERE a.a + (10 * b.a) + (100 * c.a)  < $lastDayOfMonth
+            ) AS dates"))
+
+                ->leftJoin('timeKeep', function ($join) use ($id) {
+                    $join->on(DB::raw('DATE(dates.date)'), '=', DB::raw('DATE(timeKeep.created_at)'))
+                        ->where('timeKeep.user_id', $id);
+                })
+                ->where(DB::raw("DATE(dates.date)"), '>=', "$year-$month-01")
+                ->where(DB::raw("DATE(dates.date)"), '<', DB::raw("DATE(NOW())"))
+                ->whereNull('timeKeep.created_at')
+                ->whereRaw("DAYOFWEEK(dates.date) NOT IN (1, 7)")
+                ->get();
+
+            return $notWork->pluck('date');
+        }
+
+        $notWork = Time_Keep::selectRaw("DATE ")
+            ->from(DB::raw("
+            (SELECT DATE_ADD(DATE('$year-$month-01'), INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) AS date
+            FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+            CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS b
+            CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7
+                UNION ALL SELECT 8 UNION ALL SELECT 9) AS c
+            WHERE a.a + (10 * b.a) + (100 * c.a) < $lastDayOfMonth
+        ) AS dates"))
+            ->leftJoin('timeKeep', function ($join) use ($id) {
+                $join->on(DB::raw('DATE(dates.date)'), '=', DB::raw('DATE(timeKeep.created_at)'))
+                    ->where('timeKeep.user_id', $id);
+            })
+            ->where(DB::raw("DATE(dates.date)"), '>=', "$year-$month-01")
+            ->where(DB::raw("DATE(dates.date)"), '<=', DB::raw("LAST_DAY('$year-$month-01')"))
+            ->whereNull('timeKeep.created_at')
+            ->whereRaw("DAYOFWEEK(dates.date) NOT IN (1, 7)")
+            ->get();
+
+        return $notWork->pluck('date');
     }
 }

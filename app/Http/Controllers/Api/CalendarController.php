@@ -99,6 +99,15 @@ class CalendarController extends Controller
         );
     }
 
+    public function getNotWork($year, $month)
+    {
+        $user = $this->getCurrentLoggedIn();
+        $notWork = $this->calendarService->getNotWork($year, $month, $user->id);
+        return response()->json(
+            $notWork,
+        );
+    }
+
     public function export()
     {
         return Excel::download(new ExcelExports(), 'bangchamcong.xlsx');
