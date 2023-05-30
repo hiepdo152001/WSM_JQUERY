@@ -210,10 +210,10 @@
 import { ref, onMounted, reactive } from "vue";
 import ApiService from "../common/apiService";
 import {
-  APIMYACCOUNT,
-  APIAVATAR,
-  APIUPDATEACCOUNT,
-  PATHIMAGE,
+  API_MY_ACCOUNT,
+  API_AVATAR,
+  API_UPDATE_ACCOUNT,
+  PATH_IMAGE,
   PROFILE,
 } from "../store/url";
 
@@ -252,7 +252,7 @@ export default {
     onMounted(async () => {
       try {
         const headers = ApiService.setHeader();
-        const res = await ApiService.get(APIMYACCOUNT, { headers });
+        const res = await ApiService.get(API_MY_ACCOUNT, { headers });
 
         user.value = res.data.data;
         form.sex = user.value.sex;
@@ -265,7 +265,7 @@ export default {
         form.date_range = user.value.date_range;
         form.issued_by = user.value.issued_by;
         form.tax_code = user.value.tax_code;
-        filename.value = PATHIMAGE + user.value.avatar;
+        filename.value = PATH_IMAGE + user.value.avatar;
       } catch (error) {
         console.error(error);
       }
@@ -275,7 +275,7 @@ export default {
       try {
         if (file.value === null) {
           const updateUser = await ApiService.putAvatar(
-            APIUPDATEACCOUNT,
+            API_UPDATE_ACCOUNT,
             form,
             { headers }
           );
@@ -286,12 +286,16 @@ export default {
         }
         let formData = new FormData();
         formData.append("image_data", file.value);
-        const res = await ApiService.postAuth(APIAVATAR, formData, {
+        const res = await ApiService.postAuth(API_AVATAR, formData, {
           headers,
         });
-        const updateUser = await ApiService.putAvatar(APIUPDATEACCOUNT, form, {
-          headers,
-        });
+        const updateUser = await ApiService.putAvatar(
+          API_UPDATE_ACCOUNT,
+          form,
+          {
+            headers,
+          }
+        );
         if (res != null && updateUser != null) {
           alert("Update successful!");
           window.location.href = PROFILE;

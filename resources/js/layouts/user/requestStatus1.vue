@@ -24,7 +24,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import ApiService from "../common/apiService";
-import { APIREQUESTSTATUS, APIUSERMNG } from "../store/url";
+import { API_REQUEST_STATUS, API_USER_MNG } from "../store/url";
 
 export default {
   setup() {
@@ -36,13 +36,13 @@ export default {
         const headers = ApiService.setHeader();
 
         const apiResponse = await ApiService.getParameter(
-          APIREQUESTSTATUS,
+          API_REQUEST_STATUS,
           type,
           { headers }
         );
 
         contacts.value = apiResponse.data.data;
-        const usermng = await ApiService.get(APIUSERMNG, { headers });
+        const usermng = await ApiService.get(API_USER_MNG, { headers });
         const assignee = usermng.data.name;
 
         ApiService.setDealine(contacts, assignee);

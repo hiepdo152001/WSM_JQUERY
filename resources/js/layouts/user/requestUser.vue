@@ -1,111 +1,110 @@
 <template>
-    <div class="contacts">
-      <div>
+  <div class="contacts">
+    <div>
       <h1 class="title">Yêu cầu của tôi</h1>
-  </div>
-  <router-link :to="{name: 'new-request'}">
-    <button class="btn btn-primary btn-sm waves-effect waves-themed" >+ Thêm yêu cầu</button>
-    </router-link>
-      <table class="table" style="margin-top: 30px;">
-        <thead>
-          <tr>
-            <th>Nội dung</th>
-            <th>Trạng thái</th>
-            <th>Người xử lí</th>
-            <th>Thời hạn</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="contact in contacts" :key="contact.id" class="contact-row">
-            <td>{{ contact.content }}</td>
-            <td >{{ contact.status }}</td>
-            <td>{{ contact.assignee }}</td>
-            <td>{{ contact.deadline }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-  </template>
-  
-  <script>
-  import { ref, onMounted } from 'vue';
-  import ApiService from '../common/apiService'
-	import { APIREQUEST,APIUSERMNG } from '../store/url'
+    <router-link :to="{ name: 'new-request' }">
+      <button class="btn btn-primary btn-sm waves-effect waves-themed">
+        + Thêm yêu cầu
+      </button>
+    </router-link>
+    <table class="table" style="margin-top: 30px">
+      <thead>
+        <tr>
+          <th>Nội dung</th>
+          <th>Trạng thái</th>
+          <th>Người xử lí</th>
+          <th>Thời hạn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="contact in contacts" :key="contact.id" class="contact-row">
+          <td>{{ contact.content }}</td>
+          <td>{{ contact.status }}</td>
+          <td>{{ contact.assignee }}</td>
+          <td>{{ contact.deadline }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
 
-  export default {
-    setup() {
-      const contacts = ref([]);
-     
-      onMounted(async () => {
-        try {
-          const headers = ApiService.setHeader()
-          const apiResponse = await ApiService.get(APIREQUEST, { headers });
-          contacts.value = apiResponse.data.data;
+<script>
+import { ref, onMounted } from "vue";
+import ApiService from "../common/apiService";
+import { API_REQUEST, API_USER_MNG } from "../store/url";
 
-          const usermng= await ApiService.get(APIUSERMNG,{headers});
-          const assignee=usermng.data.name;
-          ApiService.setDealine(contacts,assignee);
-         
-        } catch (error) {
-          console.error(error);
-        }
-      });
-      return {
-        contacts,
-      };
-    },
-  };
-  </script>
-  
-  <style>
-  .contacts {
-    margin: 20px;
-  }
-  
-  .title {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .contact-row {
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .contact-row:hover {
-    background-color: #f5f5f5;
-  }
-  
-  th {
-    text-align: left;
-    font-weight: bold;
-    padding: 10px;
-    background-color: #f0f0f0;
-  }
-  
-  td {
-    padding: 10px;
-  }
-  
-  .status-processing {
-    color: #ff9800;
-  }
-  
-  .status-completed {
-    color: #4caf50;
-  }
-  
-  .status-pending {
-    color: #2196f3;
-  }
-  .btn-primary:hover {
-   
-    background-color: #7453a6;
-    border-color: #6e4e9e;
+export default {
+  setup() {
+    const contacts = ref([]);
+
+    onMounted(async () => {
+      try {
+        const headers = ApiService.setHeader();
+        const apiResponse = await ApiService.get(API_REQUEST, { headers });
+        contacts.value = apiResponse.data.data;
+
+        const usermng = await ApiService.get(API_USER_MNG, { headers });
+        const assignee = usermng.data.name;
+        ApiService.setDealine(contacts, assignee);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    return {
+      contacts,
+    };
+  },
+};
+</script>
+
+<style>
+.contacts {
+  margin: 20px;
 }
-  </style>
-  
+
+.title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contact-row {
+  border-bottom: 1px solid #ccc;
+}
+
+.contact-row:hover {
+  background-color: #f5f5f5;
+}
+
+th {
+  text-align: left;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+td {
+  padding: 10px;
+}
+
+.status-processing {
+  color: #ff9800;
+}
+
+.status-completed {
+  color: #4caf50;
+}
+
+.status-pending {
+  color: #2196f3;
+}
+.btn-primary:hover {
+  background-color: #7453a6;
+  border-color: #6e4e9e;
+}
+</style>
