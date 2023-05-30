@@ -75,7 +75,8 @@ class UserController extends Controller
                 'message' => 'user not found!'
             ], 500);
         }
-        $this->userService->editUser($user->id, $request->input());
+        $this->userService->editUser($user->id, $request->except(['position', 'department']));
+
         return response()->json([
             'status' => true,
             'message' => 'update successful'
