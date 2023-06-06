@@ -75,4 +75,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(time_keep::class, 'user_id', 'id');
     }
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'user_id', 'id');
+    }
 }

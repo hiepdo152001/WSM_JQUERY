@@ -20,7 +20,10 @@ class Contact extends Model
         'time_start',
         'time_end',
         'status',
-        'dealine',
+        'deadline',
+        'flag',
+        'month',
+        'assets_id'
     ];
     public function users()
     {
