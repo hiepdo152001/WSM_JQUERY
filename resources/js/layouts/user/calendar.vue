@@ -1,24 +1,26 @@
 <template>
-  <div>
-    <div class="check-in-out" :class="{ 'd-none': off }">
-      <button
-        class="btn btn-danger btn-sm"
-        v-if="showCheckOutButton"
-        @click="options.customButtons.customButton.click"
-      >
-        <i class="bi bi-box-arrow-right"></i>
-        {{ options.customButtons.customButton.text }}
-      </button>
-      <button
-        class="btn btn-danger btn-sm"
-        v-else
-        @click="options.customButtons.customButton2.click"
-      >
-        <i class="bi bi-box-arrow-right"></i>
-        {{ options.customButtons.customButton2.text }}
-      </button>
+  <div class="panel">
+    <div class="p-5">
+      <div class="check-in-out" :class="{ 'd-none': off }">
+        <button
+          class="btn btn-danger btn-sm"
+          v-if="showCheckOutButton"
+          @click="options.customButtons.customButton.click"
+        >
+          <i class="bi bi-box-arrow-in-right"></i>
+          {{ options.customButtons.customButton.text }}
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          v-else
+          @click="options.customButtons.customButton2.click"
+        >
+          <i class="bi bi-box-arrow-right"></i>
+          {{ options.customButtons.customButton2.text }}
+        </button>
+      </div>
+      <FullCalendar :options="options" ref="calendarRef" />
     </div>
-    <FullCalendar :options="options" ref="calendarRef" />
   </div>
 </template>
 
@@ -59,7 +61,6 @@ export default {
       const timeKeepToDay = await ApiService.get(API_GET_TIME_KEEP_BY_DAY, {
         headers,
       });
-
       const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
 
       const year = currentDate.getFullYear();
@@ -104,18 +105,19 @@ export default {
 
       timeKeep.data.forEach((event) => {
         ApiService.getTimeCheck(event, checks, color);
+        if (event.time_in !== null) {
+          const defaultEvent = {
+            title: checks.check_in,
+            start: event.created_at,
+            end: event.updated_at,
+            color: color.check_in,
+            allDay: true,
+          };
 
-        const defaultEvent = {
-          title: checks.check_in,
-          start: event.created_at,
-          end: event.updated_at,
-          color: color.check_in,
-          allDay: true,
-        };
-
-        calendarApi.addEvent(defaultEvent);
-
-        if (checks.check_out !== "") {
+          calendarApi.addEvent(defaultEvent);
+          options.events = [defaultEvent];
+        }
+        if (event.time_out !== null) {
           const defaultEventCheckOut = {
             title: checks.check_out,
             start: event.created_at,
@@ -125,15 +127,14 @@ export default {
           };
 
           calendarApi.addEvent(defaultEventCheckOut);
+          options.events = [defaultEventCheckOut];
         }
 
-        options.events = [defaultEvent];
         checks.check_in = "";
         checks.check_out = "";
       });
 
       const dataKeys = Object.keys(timeKeepToDay.data);
-
       //set status button check-in check-out
       ApiService.checkButton(
         timeKeep,
@@ -245,6 +246,26 @@ export default {
 </script>
 
 <style>
+.panel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  background-color: #fff;
+  -webkit-box-shadow: 0px 0px 13px 0px rgba(62, 44, 90, 0.08);
+  box-shadow: 0px 0px 13px 0px rgba(62, 44, 90, 0.08);
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 4px;
+  -webkit-transition: border 500ms ease-out;
+  transition: border 500ms ease-out;
+}
 .fc-event-title {
   font-weight: 600;
 }
