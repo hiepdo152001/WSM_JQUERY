@@ -23,7 +23,7 @@ class Contact extends Migration
             $table->timestamp('time_start')->nullable(); // start_at
             $table->timestamp('time_end')->nullable(); // end_at
             $table->integer('status');
-            $table->timestamp('dealine')->nullable(); // expired_at
+            $table->timestamp('deadline')->nullable(); // expired_at
             $table->timestamps();
         });
         Schema::table('contacts', function (Blueprint $table) {

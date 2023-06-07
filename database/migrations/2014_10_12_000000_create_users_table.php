@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration
             $table->string('issued_by')->nullable();
             $table->string('personal_email')->nullable();
             $table->string('tax_code')->nullable();
-            $table->string('leave_days')->nullable();
+            $table->float('leave_days')->nullable();
             $table->string('use_property')->nullable();
             $table->string('avatar')->nullable();
             $table->rememberToken();
