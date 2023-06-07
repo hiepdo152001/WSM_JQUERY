@@ -23,7 +23,7 @@ const admin = [
     component: () => import("../layouts/homeWeb.vue"),
     children: [
       {
-        path: "lich",
+        path: "calendar",
         name: "lich-lam-viec",
         component: () => import("../layouts/user/calendar.vue"),
       },
@@ -32,6 +32,12 @@ const admin = [
         name: "yeu-cau-cua-toi",
         component: () => import("../layouts/user/requestUser.vue"),
       },
+      {
+        path: "request/:id",
+        name: "view-request",
+        component: () => import("../layouts/user/viewRequest.vue"),
+      },
+
       {
         path: "request/new",
         name: "new-request",
@@ -43,32 +49,32 @@ const admin = [
         component: () => import("../layouts/auth/passWord.vue"),
       },
       {
-        path: "member/request",
+        path: "member/request/",
         name: "member-request",
         component: () => import("../layouts/user/memberRequest.vue"),
         children: [
           {
-            path: "?type=pending",
+            path: "",
             name: "pending",
             component: () => import("../layouts/user/requestStatus1.vue"),
           },
           {
-            path: "?type=confirmed",
+            path: "",
             name: "confirmed",
             component: () => import("../layouts/user/requestStatus2.vue"),
           },
           {
-            path: "?type=approved",
+            path: "",
             name: "approved",
             component: () => import("../layouts/user/requestStatus3.vue"),
           },
           {
-            path: "?type=declined",
+            path: "",
             name: "declined",
             component: () => import("../layouts/user/requestStatus4.vue"),
           },
           {
-            path: "?type=canceled",
+            path: "",
             name: "canceled",
             component: () => import("../layouts/user/requestStatus5.vue"),
           },
