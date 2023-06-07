@@ -38,11 +38,16 @@ const AppService = {
   putAvatar(resource, data, header) {
     return axiosClient.put(`${resource}`, data, header);
   },
-  put(resource, slug, params) {
-    return axiosClient.put(`${resource}/${slug}`, params);
+  put(resource, slug, header) {
+    return axiosClient.put(`${resource}/${slug}`, header);
   },
-
-  setDealine(contacts, assignee) {
+  putStatus(resource, slug, status, header) {
+    return axiosClient.put(`${resource}/${slug}`, status, header);
+  },
+  delete(resource, slug, header) {
+    return axiosClient.delete(`${resource}/${slug}`, header);
+  },
+  setDeadline(contacts, assignee) {
     const timestamp = ref("");
     const deadline = ref("");
     const now = Date.now();
@@ -73,7 +78,52 @@ const AppService = {
       }
     });
   },
-
+  changeStatus(contacts) {
+    const changes = {
+      1: "Chờ duyệt",
+      2: "Xác nhận",
+      3: "Đồng ý",
+      4: "Từ chối",
+      5: "Hủy",
+    };
+    const color = {
+      1: "#66FFCC",
+      2: "#CCFF00",
+      3: "#62fc03",
+      4: "#FF9966",
+      5: "#FF6600",
+    };
+    contacts.forEach((item) => {
+      item.statuses = changes[item.status] ?? "Chờ duyệt";
+      item.color = color[item.status] ?? "#66FFCC";
+    });
+    return contacts;
+  },
+  changeTypeRequest(contacts) {
+    const changes = {
+      1: "request thường",
+      2: "request bù",
+    };
+    contacts.forEach((item) => {
+      item.type = changes[item.type] ?? "pending";
+    });
+    return contacts;
+  },
+  changeContent(contacts) {
+    const changes = {
+      days_on: "Nghỉ phép có lương",
+      days_off: "Nghỉ phép không lương",
+      over_time: "Làm thêm giờ",
+      take_device_out: "Mang thiết bị về nhà",
+      forgot_to_check: "Cập nhật thời gian làm việc",
+      device_recall: "Thu hồi thiết bị",
+      special_take_leave: "Nghỉ việc riêng có lương",
+    };
+    contacts.forEach((item) => {
+      item.contents = changes[item.content] ?? "";
+    });
+    return contacts;
+  },
   getTimeCheck(res, checks, color) {
     // TODO: checkIn
 
@@ -170,9 +220,36 @@ const AppService = {
     const today = new Date().getDay();
     const now = AppService.now();
 
-    if (today === 6 || today === 7 || Object.keys(holiday).includes(now)) {
+    if (today === 6 || today === 0 || Object.keys(holiday).includes(now)) {
       off.value = true;
     }
+  },
+
+  Onchange(event, active) {
+    if (event.target.value === "days_on" || event.target.value === "days_off") {
+      active.value = "days_on";
+    }
+    if (event.target.value === "forgot_to_check") {
+      active.value = "";
+      active.value = "forgot_to_check";
+    }
+    if (event.target.value === "over_time") {
+      active.value = "";
+      active.value = "over_time";
+    }
+    if (event.target.value === "special_take_leave") {
+      active.value = "";
+      active.value = "special_take_leave";
+    }
+    if (event.target.value === "take_device_out") {
+      active.value = "";
+      active.value = "take_device_out";
+    }
+    if (event.target.value === "device_recall") {
+      active.value = "";
+      active.value = "device_recall";
+    }
+    return active.value;
   },
 };
 
