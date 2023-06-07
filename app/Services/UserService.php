@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Type\Integer;
 
 class UserService
 {
@@ -12,9 +14,15 @@ class UserService
      */
     protected $user;
 
-    public function __construct(User $user)
+    /**
+     * @var CalendarService
+     */
+    protected $calendarService;
+
+    public function __construct(User $user, CalendarService $calendarService)
     {
         $this->user = $user;
+        $this->calendarService = $calendarService;
     }
 
     public function createUser($request)
@@ -63,5 +71,44 @@ class UserService
             ->value('email');
 
         return $email;
+    }
+
+    public function getTime($timeStart, $timeEnd)
+    {
+        $datetime1 = new DateTime($timeStart);
+
+        $datetime2 = new DateTime($timeEnd);
+        $dayOn = 0;
+        $diff = $datetime1->diff($datetime2);
+
+        $time = $diff->d * 24 + $diff->h + $diff->i / 60;
+
+        $days = $diff->d;
+
+        //cung mot ngay
+        if ($days === 0) {
+            if ($time < 8) {
+                $dayOn += $this->calendarService->setTime($timeStart, $timeEnd);
+            } else {
+                $dayOn += 1;
+            }
+        } else {
+            // qua mot ngay
+            $dayOn += $days;
+
+            $residual = $time - $days * 24;
+
+            if ($residual > 0) {
+                $time_in = new DateTime($timeStart);
+                $time_out = new DateTime($timeEnd);
+
+                $time_in->setDate($time_out->format('Y'), $time_out->format('m'), $time_out->format('d'));
+
+                $times_in = $time_in->format('Y-m-d H:i:s.u');
+
+                $dayOn += $this->calendarService->setTime($times_in, $timeEnd);
+            }
+        }
+        return $dayOn;
     }
 }
