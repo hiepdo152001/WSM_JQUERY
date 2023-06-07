@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Notifications\RequestNotify;
 use App\Notifications\StatusReqNotify;
+use App\Services\CalendarService;
 use App\Services\ContactService;
 use App\Services\UserService;
+use DateTime;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -22,10 +24,15 @@ class ContactController extends Controller
      */
     protected $users;
 
-    public function __construct(ContactService $contacts, UserService $users)
+    /**
+     *@var CalendarService
+     */
+    protected $calendarService;
+    public function __construct(ContactService $contacts, UserService $users, CalendarService $calendarService)
     {
         $this->contacts = $contacts;
         $this->users = $users;
+        $this->calendarService = $calendarService;
     }
 
     public function ContactCreate(Request $request)
@@ -74,6 +81,17 @@ class ContactController extends Controller
         ], 200);
     }
 
+    public function get($id)
+    {
+        $contact = $this->contacts->getContactById($id);
+        if ($contact === null) {
+            return response()->json([], 404);
+        }
+        return response()->json([
+            $contact
+        ], 200);
+    }
+
     public function setStatusRequest($id, Request $request)
     {
         $user = $this->getCurrentLoggedIn();
@@ -85,16 +103,17 @@ class ContactController extends Controller
             ], 404);
         }
 
-        $newContact = $this->contacts->updateContactById($id, $request);
+        $newContact = $this->contacts->updateContactById($id, $request->all());
+        $times = new DateTime($newContact->time_start);
+        $month = $times->format("m");
+
+        $payload = $this->contacts->handleRequest($newContact, $user, $month);
+
+        $newContact = $this->contacts->updateContactById($id, $payload);
+
+        $this->users->editUser($contact->user_id, $payload);
 
         $toUser = $this->users->getUserById($contact->user_id);
-
-        if ($toUser === null) {
-            return response()->json([
-                'status' => false,
-                'message' => 'update success!'
-            ], 200);
-        }
 
         $toUser->notify(new StatusReqNotify($newContact, $user));
 
@@ -103,17 +122,20 @@ class ContactController extends Controller
             'message' => 'update success!'
         ], 200);
     }
+
     public function getManager()
     {
         $user = $this->getCurrentLoggedIn();
         $department = $user->department;
         $position = "tld";
         $email = $this->users->getEmailByPosition($department, $position);
-        $usermng = $this->users->getUserByEmail($email);
+        $userMng = $this->users->getUserByEmail($email);
         return response()->json([
-            'name' => $usermng->name
+            'name' => $userMng->name
         ]);
     }
+
+
     public function getRequestStatus($type)
     {
         $user = $this->getCurrentLoggedIn();
@@ -127,11 +149,35 @@ class ContactController extends Controller
         ];
         $status = $statuses[$type] ?? 1;
 
-        $user_id = $user->id;
-        $requests = $this->contacts->getContactByStatus($user_id, $status);
+        $department = $user->department;
+        $requests = $this->contacts->get($department, $status);
 
         return response()->json([
             'data' => $requests,
+        ], 200);
+    }
+
+    public function edit($id, Request $request)
+    {
+        $contact = $this->contacts->edit($id, $request->input());
+
+        return response()->json([
+            $contact
+        ], 200);
+    }
+
+    public function delete($id)
+    {
+        $contact = $this->contacts->delete($id);
+
+        return response()->json([], 200);
+    }
+
+    public function userCreate($id)
+    {
+        $user = $this->contacts->userCreate($id);
+        return response()->json([
+            $user
         ], 200);
     }
 }
