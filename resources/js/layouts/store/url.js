@@ -1,8 +1,14 @@
 export const APP_URL = "http://localhost:8080/";
+
 export const HOME = APP_URL + "home";
-export const HOME_CALENDAR = APP_URL + "home/lich";
+
+export const HOME_CALENDAR = APP_URL + "home/calendar";
+
 export const LOGIN = APP_URL + "login";
+
 export const REQUEST = APP_URL + "home/request";
+
+export const GET_REQUEST = APP_URL + "api/users/request/get";
 
 export const PROFILE = APP_URL + "home/edit/profile";
 
@@ -20,11 +26,19 @@ export const API_MY_ACCOUNT = "api/users/my-account";
 
 export const API_REQUEST = "api/users/request";
 
+export const API_USER_CREATE = "api/users/request/user-create";
+
 export const API_USER_MNG = "api/users/request/manager";
 
 export const API_REQUEST_STATUS = "api/users/member/request";
 
 export const API_CREATE_REQUEST = "api/users/request/new";
+
+export const API_REQUEST_DELETE = "api/users/request/delete";
+
+export const API_REQUEST_UPDATE = "api/users/request/update";
+
+export const STATUS_2 = "home/member/request/?type=pending";
 
 export const PATH_IMAGE = "../../../../storage/";
 
