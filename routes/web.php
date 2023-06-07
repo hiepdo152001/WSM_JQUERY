@@ -25,7 +25,13 @@ Route::get('/register', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+Route::get('/home/calendar', function () {
+    return view('welcome');
+});
 Route::get('/home/user', function () {
+    return view('welcome');
+});
+Route::get('/home/edit/profile', function () {
     return view('welcome');
 });
 Route::get('/home/request', function () {
