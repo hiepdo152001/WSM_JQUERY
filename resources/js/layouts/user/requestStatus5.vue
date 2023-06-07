@@ -1,20 +1,36 @@
 <template>
-  <div class="contacts">
-    <table class="table">
+  <div class="contacts" v-if="position === 'tld'">
+    <table class="table table-bordered" style="margin-top: 30px">
       <thead>
         <tr>
           <th>Nội dung</th>
-          <th>Trạng thái</th>
-          <th>Người xử lí</th>
+          <th>Người tạo</th>
+          <th>Loại request</th>
           <th>Thời hạn</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="contact in contacts" :key="contact.id" class="contact-row">
-          <td>{{ contact.content }}</td>
-          <td>{{ contact.status }}</td>
-          <td>{{ contact.assignee }}</td>
-          <td>{{ contact.deadline }}</td>
+          <td>{{ contact.contents }}</td>
+          <td>{{ contact.userCreate }}</td>
+          <td>{{ contact.type }}</td>
+          <td>{{ contact.time_start }} -> {{ contact.time_end }}</td>
+          <td>
+            <button
+              class="btn"
+              type="button"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="View"
+            >
+              <router-link
+                :to="{ name: 'view-request', params: { id: contact.id } }"
+              >
+                <i class="bi bi-eye-fill"></i>
+              </router-link>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -22,19 +38,29 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import ApiService from "../common/apiService";
-import { API_REQUEST_STATUS, API_USER_MNG } from "../store/url";
+import {
+  API_REQUEST_STATUS,
+  API_USER_CREATE,
+  API_MY_ACCOUNT,
+  API_REQUEST_UPDATE,
+} from "../store/url";
 
 export default {
   setup() {
     const contacts = ref([]);
-
+    const form = reactive({
+      status: 2,
+    });
+    const position = ref([]);
+    const headers = ApiService.setHeader();
     onMounted(async () => {
       try {
         const type = ApiService.getTypeParameter();
-        const headers = ApiService.setHeader();
 
+        const res = await ApiService.get(API_MY_ACCOUNT, { headers });
+        position.value = res.data.data.position;
         const apiResponse = await ApiService.getParameter(
           API_REQUEST_STATUS,
           type,
@@ -42,15 +68,25 @@ export default {
         );
 
         contacts.value = apiResponse.data.data;
-        const usermng = await ApiService.get(API_USER_MNG, { headers });
-        const assignee = usermng.data.name;
-        ApiService.setDealine(contacts, assignee);
+        contacts.value.forEach(async (contact) => {
+          const res = await ApiService.getParameter(
+            API_USER_CREATE,
+            contact.id,
+            { headers }
+          );
+          contact.userCreate = res.data[0];
+        });
+
+        contacts.value = ApiService.changeContent(contacts.value);
+        contacts.value = ApiService.changeTypeRequest(contacts.value);
       } catch (error) {
         console.error(error);
       }
     });
+
     return {
       contacts,
+      position,
     };
   },
 };
