@@ -254,18 +254,23 @@ export default {
         const headers = ApiService.setHeader();
         const res = await ApiService.get(API_MY_ACCOUNT, { headers });
 
-        user.value = res.data.data;
-        form.sex = user.value.sex;
-        form.department = user.value.department;
-        form.position = user.value.position;
-        form.age = user.value.age;
-        form.permanent_address = user.value.permanent_address;
-        form.temporary_address = user.value.temporary_address;
-        form.cccd = user.value.cccd;
-        form.date_range = user.value.date_range;
-        form.issued_by = user.value.issued_by;
-        form.tax_code = user.value.tax_code;
-        filename.value = PATH_IMAGE + user.value.avatar;
+        const { data } = res.data;
+
+        user.value = data;
+        filename.value = PATH_IMAGE + data.avatar;
+
+        Object.assign(form, {
+          sex: data.sex,
+          department: data.department,
+          position: data.position,
+          age: data.age,
+          permanent_address: data.permanent_address,
+          temporary_address: data.temporary_address,
+          cccd: data.cccd,
+          date_range: data.date_range,
+          issued_by: data.issued_by,
+          tax_code: data.tax_code,
+        });
       } catch (error) {
         console.error(error);
       }
