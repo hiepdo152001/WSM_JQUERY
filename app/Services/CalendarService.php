@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Contact;
 use App\Models\Time_keep;
 use App\Models\User;
 use Date;
@@ -39,6 +40,57 @@ class CalendarService
         return $time_keep;
     }
 
+    public function setTime($time_in, $time_out)
+    {
+
+        // lay ngay trung voi ngay contact
+        $time_in_dt = new DateTime($time_in);
+        $time_out_dt = new DateTime($time_out);
+
+        $time13h = new DateTime();
+        $time12h = new DateTime();
+
+        $time13h->setTime(13, 0, 0);
+        $time13h->setDate($time_in_dt->format('Y'), $time_in_dt->format('m'), $time_in_dt->format('d'));
+        $time13h->format('Y-m-d H:i:s');
+        $time12h->setTime(12, 0, 0);
+        $time12h->setDate($time_in_dt->format('Y'), $time_in_dt->format('m'), $time_in_dt->format('d'));
+        $time12h->format('Y-m-d H:i:s');
+
+        $diff = $time_in_dt->diff($time_out_dt);
+        $h = $diff->h;
+        $i = $diff->i;
+        $result = $h  + $i / 60;
+
+        $work_time = round($result, 1);
+
+        if ($time_in_dt <= $time12h &&  $time13h <= $time_out_dt) {
+            $work_time -= 1;
+        } elseif ($time_in_dt <= $time12h &&  $time12h <= $time_out_dt  &&  $time_out_dt <= $time13h) {
+
+            $time = $time12h->diff($time_out_dt);
+            $time_redundant = $time->h + ($time->i / 60);
+            $work_time -= $time_redundant;
+
+            if ($work_time > 3.2) {
+                $work_time = 3.2;
+            }
+        } elseif ($time12h <= $time_in_dt &&  $time_in_dt <= $time13h && $time_out_dt >= $time13h) {
+
+            $time = $time_in_dt->diff($time13h);
+            $time_redundant = $time->h + ($time->i / 60);
+            $work_time -= $time_redundant;
+            if ($work_time > 4.8) {
+                $work_time = 4.8;
+            }
+        }
+        $work_time = round(($work_time / 8), 1);
+        if ($work_time > 1) {
+            $work_time = 1;
+        }
+
+        return $work_time;
+    }
     public function update($id)
     {
         $dateNow = date('Y-m-d H:i:s');
@@ -52,49 +104,26 @@ class CalendarService
         $time_keep->time_out = $dateNow;
         $time_keep->save();
 
-        $time_in = $time_keep->time_in;
-        $time_out = $time_keep->time_out;
+        $work_time = $this->setTime($time_keep->time_in, $time_keep->time_out);
 
-        $time_in_dt = new DateTime($time_in);
-        $time_out_dt = new DateTime($time_out);
-
-        $time13h = new DateTime();
-        $time12h = new DateTime();
-        $time13h->setTime(13, 0, 0);
-        $time13h->format('Y-m-d H:i:s');
-        $time12h->setTime(12, 0, 0);
-        $time12h->format('Y-m-d H:i:s');
-
-        $diff = $time_in_dt->diff($time_out_dt);
-        $h = $diff->h;
-        $i = $diff->i;
-        $result = $h  + $i / 60;
-
-        $work_time = round($result, 1);
-
-        if ($time_in_dt <= $time12h &&  $time13h <= $time_out_dt) {
-            $work_time -= 1;
-        } elseif ($time_in_dt <= $time12h &&  $time12h <= $time_out_dt  &&  $time_out_dt <= $time13h) {
-            $time = $time12h->diff($time_out_dt);
-            $time_redundant = $time->h + ($time->i / 60);
-            $work_time -= $time_redundant;
-        } elseif ($time12h <= $time_in_dt &&  $time_in_dt <= $time13h && $time_out_dt >= $time13h) {
-            $time = $time_in_dt->diff($time13h);
-            $time_redundant = $time->h + ($time->i / 60);
-            $work_time -= $time_redundant;
-            if ($work_time > 0.6) {
-                $work_time = 0.6;
-            }
-        }
-        $work_time = round(($work_time / 8), 1);
-        if ($work_time > 1) {
-            $work_time = 1;
-        }
         $time_keep->work_time = $work_time;
 
         $time_keep->save();
 
         return $time_keep;
+    }
+
+    public function updateRequest($id, $time_in, $time_out, $day, $month)
+    {
+        $time_keep = Time_Keep::find($id)
+            ->where('month', $month)
+            ->where('day', $day)->first();
+        $time_keep->time_in = $time_in;
+        $time_keep->time_out = $time_out;
+        $work_time = $this->setTime($time_keep->time_in, $time_keep->time_out);
+
+        $time_keep->work_time = $work_time;
+        $time_keep->save();
     }
 
     public function getByUserId($id)
@@ -117,9 +146,13 @@ class CalendarService
     {
         $dateNow = date('Y-m-d H:i:s');
         $month_keep = date('m', strtotime('-1 month', strtotime($dateNow)));
-        return Time_keep::where('user_id', $id)
+        $timeKeep = Time_keep::where('user_id', $id)
             ->where('month', $month_keep)
             ->sum('work_time');
+        $timeContact = Contact::where('user_id', $id)
+            ->where('month', $month_keep)
+            ->sum('flag');
+        return $timeKeep + $timeContact;
     }
 
     public function getNotWork($year, $month, $id)
