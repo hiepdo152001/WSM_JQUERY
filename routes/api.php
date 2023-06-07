@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AssetsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CalendarController;
 use App\Http\Controllers\Api\ContactController;
@@ -39,18 +40,36 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
         Route::post('/update/avatar', [UserController::class, 'editAvatar']);
         Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
-        Route::post('/request/new', [ContactController::class, 'ContactCreate']);
-        Route::get('/request', [ContactController::class, 'getContact']);
-        Route::put('/request/update/{id}', [ContactController::class, 'setStatusRequest']);
-        Route::get('/request/manager', [ContactController::class, 'getManager']);
+
+        Route::group(['prefix' => '/request'], function () {
+            Route::post('/new', [ContactController::class, 'ContactCreate']);
+            Route::get('', [ContactController::class, 'getContact']);
+            Route::get('/get/{id}', [ContactController::class, 'get']);
+            Route::put('/update/{id}', [ContactController::class, 'setStatusRequest']);
+            Route::put('/edit/{id}', [ContactController::class, 'edit']);
+            Route::delete('/delete/{id}', [ContactController::class, 'delete']);
+            Route::get('/manager', [ContactController::class, 'getManager']);
+            Route::get('/user-create/{id}', [ContactController::class, 'userCreate']);
+        });
+
         Route::get('/member/request/{type}', [ContactController::class, 'getRequestStatus']);
-        Route::get('/time-keep/new', [CalendarController::class, 'createTimeKeep']);
-        Route::get('/time-keep/update', [CalendarController::class, 'updateTimeKeep']);
-        Route::get('/time-keep/get', [CalendarController::class, 'getTimeKeep']);
-        Route::get('/time-keep/getByDay', [CalendarController::class, 'getByDay']);
-        Route::get('/time-keep/getWorkTime', [CalendarController::class, 'getWorkTime']);
-        Route::get('/time-keep/getNotWork/{year}/{month}', [CalendarController::class, 'getNotWork']);
+
+        Route::group(['prefix' => '/time-keep'], function () {
+            Route::get('/new', [CalendarController::class, 'createTimeKeep']);
+            Route::get('/update', [CalendarController::class, 'updateTimeKeep']);
+            Route::get('/get', [CalendarController::class, 'getTimeKeep']);
+            Route::get('/getByDay', [CalendarController::class, 'getByDay']);
+            Route::get('/getWorkTime', [CalendarController::class, 'getWorkTime']);
+            Route::get('/getNotWork/{year}/{month}', [CalendarController::class, 'getNotWork']);
+        });
         Route::get('/exports', [CalendarController::class, 'export']);
+
+        Route::group(['prefix' => '/assets'], function () {
+            Route::post('/new', [AssetsController::class, 'create']);
+            Route::patch('/edit/{id}', [AssetsController::class, 'edit']);
+            Route::get('/get/{id}', [AssetsController::class, 'getById']);
+            Route::get('/get-user-id/{id}', [AssetsController::class, 'getByUserId']);
+        });
     });
 });
 // xu li tat ca cac route khong ton tai
