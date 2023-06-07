@@ -107,9 +107,4 @@ class CalendarController extends Controller
             $notWork,
         );
     }
-
-    public function export()
-    {
-        return Excel::download(new ExcelExports(), 'bangchamcong.xlsx');
-    }
 }
