@@ -52,7 +52,9 @@ class ContactController extends Controller
         $department = $user->department;
         $position = "tld";
         $email = $this->users->getEmailByPosition($department, $position);
-
+        if ($email === null) {
+            return response()->json([], 404);
+        }
         $toUser = $this->users->getUserByEmail($email);
 
         $toUser->notify(new RequestNotify($contact, $user));
@@ -68,7 +70,7 @@ class ContactController extends Controller
         $user = $this->getCurrentLoggedIn();
         $requests = $this->contacts->getContact($user->id);
 
-        if ($requests === null) {
+        if ($requests->count() === 0) {
             return response()->json([
                 'status' => false,
                 'message' => 'Not request!'
@@ -104,22 +106,25 @@ class ContactController extends Controller
         }
 
         $newContact = $this->contacts->updateContactById($id, $request->all());
-        $times = new DateTime($newContact->time_start);
-        $month = $times->format("m");
 
-        $payload = $this->contacts->handleRequest($newContact, $user, $month);
+        if ($newContact->status === 3) {
+            $times = new DateTime($newContact->time_start);
+            $month = $times->format("m");
 
-        $newContact = $this->contacts->updateContactById($id, $payload);
+            $payload = $this->contacts->handleRequest($newContact, $user, $month);
 
-        $this->users->editUser($contact->user_id, $payload);
+            $newContact = $this->contacts->updateContactById($id, $payload);
+
+            $this->users->editUser($contact->user_id, $payload);
+        }
 
         $toUser = $this->users->getUserById($contact->user_id);
 
         $toUser->notify(new StatusReqNotify($newContact, $user));
 
         return response()->json([
-            'status' => true,
-            'message' => 'update success!'
+            $newContact,
+            $toUser
         ], 200);
     }
 
@@ -128,11 +133,18 @@ class ContactController extends Controller
         $user = $this->getCurrentLoggedIn();
         $department = $user->department;
         $position = "tld";
+
         $email = $this->users->getEmailByPosition($department, $position);
+        if ($email === null) {
+            return response()->json([
+                'name' => ""
+            ], 200);
+        }
         $userMng = $this->users->getUserByEmail($email);
+
         return response()->json([
             'name' => $userMng->name
-        ]);
+        ], 200);
     }
 
 
@@ -169,7 +181,9 @@ class ContactController extends Controller
     public function delete($id)
     {
         $contact = $this->contacts->delete($id);
-
+        if ($contact === null) {
+            return response()->json([], 404);
+        }
         return response()->json([], 200);
     }
 

@@ -41,6 +41,9 @@ const AppService = {
   put(resource, slug, header) {
     return axiosClient.put(`${resource}/${slug}`, header);
   },
+  putMember(resource, slug, form, header) {
+    return axiosClient.put(`${resource}/${slug}`, form, header);
+  },
   putStatus(resource, slug, status, header) {
     return axiosClient.put(`${resource}/${slug}`, status, header);
   },
@@ -201,6 +204,13 @@ const AppService = {
   },
 
   checkButton(timeKeep, showCheckOutButton, off, holiday, dataKeys) {
+    const today = new Date().getDay();
+    const now = AppService.now();
+
+    if (today === 6 || today === 0 || Object.keys(holiday).includes(now)) {
+      off.value = true;
+    }
+
     if (timeKeep.data[timeKeep.data.length - 1].time_in !== null) {
       showCheckOutButton.value = false;
     }
@@ -215,13 +225,6 @@ const AppService = {
     if (dataKeys.length === 0) {
       off.value = false;
       showCheckOutButton.value = true;
-    }
-
-    const today = new Date().getDay();
-    const now = AppService.now();
-
-    if (today === 6 || today === 0 || Object.keys(holiday).includes(now)) {
-      off.value = true;
     }
   },
 

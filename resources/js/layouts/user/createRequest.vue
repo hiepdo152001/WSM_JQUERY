@@ -96,9 +96,16 @@
               required
             />
           </div>
-          <div class="col-md-8" style="margin-bottom: 15px">
+          <div
+            class="col-md-8"
+            style="margin-bottom: 15px"
+            :class="{
+              'd-none':
+                active !== 'take_device_out' && active !== 'device_recall',
+            }"
+          >
             <label class="form-label" for="time_start">Thiết bị + Mã</label>
-            <select
+            <!-- <select
               class="form-control kind-select"
               aria-label="Default select example"
               v-model="form.use_property"
@@ -107,7 +114,7 @@
               <option :value="user.use_property">
                 {{ user.use_property }}
               </option>
-            </select>
+            </select> -->
           </div>
           <div
             class="form-group"
@@ -335,7 +342,6 @@ export default {
             window.location.href = REQUEST;
           }
         } else {
-          console.log(form);
           const res = await ApiService.postAuth(API_CREATE_REQUEST, form, {
             headers,
           });

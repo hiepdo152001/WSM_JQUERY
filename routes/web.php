@@ -31,6 +31,9 @@ Route::get('/home/calendar', function () {
 Route::get('/home/user', function () {
     return view('welcome');
 });
+Route::get('/home/member', function () {
+    return view('welcome');
+});
 Route::get('/home/edit/profile', function () {
     return view('welcome');
 });

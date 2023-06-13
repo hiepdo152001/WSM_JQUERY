@@ -98,8 +98,6 @@ export default {
       const res = await ApiService.putStatus(API_REQUEST_UPDATE, id, form, {
         headers,
       });
-
-      console.log(res);
     };
 
     return {

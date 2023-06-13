@@ -80,6 +80,9 @@ class ContactService
     {
         $contact = Contact::find($id);
 
+        if ($contact === null) {
+            return null;
+        }
         return  $contact->delete();
     }
 
@@ -87,7 +90,13 @@ class ContactService
     public function userCreate($id)
     {
         $user_id = Contact::where('id', $id)->value('user_id');
+        if ($user_id === null) {
+            return null;
+        }
         $user = $this->userService->getUserById($user_id);
+        if ($user === null) {
+            return null;
+        }
         return $user->name;
     }
 

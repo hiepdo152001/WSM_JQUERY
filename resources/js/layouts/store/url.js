@@ -10,6 +10,8 @@ export const REQUEST = APP_URL + "home/request";
 
 export const GET_REQUEST = APP_URL + "api/users/request/get";
 
+export const GET_USER = APP_URL + "api/users/get-user";
+
 export const PROFILE = APP_URL + "home/edit/profile";
 
 export const CHANGE_PASSWORD = APP_URL + "change-password";
@@ -45,6 +47,8 @@ export const PATH_IMAGE = "../../../../storage/";
 export const API_AVATAR = "api/users/update/avatar";
 
 export const API_UPDATE_ACCOUNT = "api/users/update/my-account";
+
+export const API_UPDATE_MEMBER = "api/users/update/user";
 
 export const API_CREATE_TIME_KEEP = "api/users/time-keep/new";
 

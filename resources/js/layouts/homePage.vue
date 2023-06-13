@@ -142,7 +142,6 @@ export default {
           window.location.href = APP_URL;
         }
       } catch (error) {
-        console.log(error.response);
         if (error.response.status === 422) {
           checkEmail.value = "";
           checkPassword.value = "";

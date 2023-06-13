@@ -66,12 +66,6 @@ class CalendarController extends Controller
 
         $time_keep = $this->calendarService->getByUserId($id);
 
-        if ($time_keep === null) {
-            return response()->json([
-                'message' => 'not found'
-            ], 404);
-        }
-
         return response()->json(
             $time_keep,
             200
