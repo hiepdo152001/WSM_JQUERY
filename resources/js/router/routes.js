@@ -90,6 +90,11 @@ const admin = [
         name: "edit-profile",
         component: () => import("../layouts/user/editprofile.vue"),
       },
+      {
+        path: "member",
+        name: "member",
+        component: () => import("../layouts/admin/user.vue"),
+      },
     ],
     meta: {
       requiresAuth: true,

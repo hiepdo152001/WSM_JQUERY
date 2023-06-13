@@ -140,7 +140,9 @@ class UserController extends Controller
         if (isset($user)) {
             if ($request->file('image_data')) {
                 $pathName = $this->getFilePath($request->file('image_data'), 'profile');
-
+                if ($pathName === false) {
+                    return response()->json([], 422);
+                }
                 $userUpdate =  $this->userService->editUser($id, [
                     'avatar' => $pathName,
                 ]);

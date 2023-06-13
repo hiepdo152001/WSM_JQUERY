@@ -49,7 +49,6 @@ export default {
     const login = async () => {
       try {
         let res = await ApiService.post(API_LOGIN, form);
-        console.log(res.data.token);
         if (res.data.status === true) {
           jwtService.setToken(JSON.stringify(res.data.token));
           window.location.href = HOME;

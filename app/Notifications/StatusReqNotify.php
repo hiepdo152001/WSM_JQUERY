@@ -63,16 +63,15 @@ class StatusReqNotify extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        if ($notifiable->status === 1) {
-            $notifiable->message = 'New Request';
-        } elseif ($notifiable->status === 2) {
-            $notifiable->message = 'Da Xac nhan';
-        } elseif ($notifiable->status === 3) {
-            $notifiable->message = 'Da chap nhan';
-        } elseif ($notifiable->status === 4) {
-            $notifiable->message = 'Tu choi';
-        } else
-            $notifiable->message = 'Huy';
+        $stt = [
+            1 => 'Yêu cầu mới',
+            2 => 'Đã Xác nhận',
+            3 => 'Đã chấp nhận',
+            4 => 'Từ chối',
+            5 => 'Hủy',
+        ];
+        $notifiable->message = $stt[$notifiable->status];
+
 
         return [
             'message' => $notifiable->message,
