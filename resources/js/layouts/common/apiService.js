@@ -26,6 +26,7 @@ const AppService = {
   getParameter(resource, slug, params) {
     return axiosClient.get(`${resource}/${slug}`, params);
   },
+
   getNotWork(resource, year, month, header) {
     return axiosClient.get(`${resource}/${year}/${month}`, header);
   },
@@ -46,6 +47,12 @@ const AppService = {
   },
   putStatus(resource, slug, status, header) {
     return axiosClient.put(`${resource}/${slug}`, status, header);
+  },
+  putStatus(resource, slug, status, header) {
+    return axiosClient.put(`${resource}/${slug}`, status, header);
+  },
+  patch(resource, slug, status, header) {
+    return axiosClient.patch(`${resource}/${slug}`, status, header);
   },
   delete(resource, slug, header) {
     return axiosClient.delete(`${resource}/${slug}`, header);
@@ -81,6 +88,29 @@ const AppService = {
       }
     });
   },
+  changeDepartment(users, departments) {
+    const changes = {
+      d1: "Division1",
+      d2: "Division1",
+      d3: "Division1",
+    };
+    users.forEach((item) => {
+      departments.forEach((department) => {
+        if (item.department_id === department.id) {
+          item.department = department.name;
+        }
+      });
+    });
+    return users;
+  },
+  changeStatusUser(users, user) {
+    users.forEach((item) => {
+      if (item.id === user.id) {
+        item.status = user.status;
+      }
+    });
+    return users;
+  },
   changeStatus(contacts) {
     const changes = {
       1: "Chờ duyệt",
@@ -112,7 +142,7 @@ const AppService = {
     });
     return contacts;
   },
-  changeContent(contacts) {
+  changeContent(contacts, assets) {
     const changes = {
       days_on: "Nghỉ phép có lương",
       days_off: "Nghỉ phép không lương",
@@ -122,11 +152,18 @@ const AppService = {
       device_recall: "Thu hồi thiết bị",
       special_take_leave: "Nghỉ việc riêng có lương",
     };
-    contacts.forEach((item) => {
-      item.contents = changes[item.content] ?? "";
-    });
+
+    if (assets === null) {
+      contacts.contents = changes[contacts.content] ?? "";
+    } else {
+      const content = assets.name + " " + assets.code;
+      const contents = changes[contacts.content] ?? "";
+      const set = contents + "-" + content;
+      contacts.contents = set;
+    }
     return contacts;
   },
+
   getTimeCheck(res, checks, color) {
     // TODO: checkIn
 
