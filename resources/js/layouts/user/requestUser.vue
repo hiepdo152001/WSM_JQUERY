@@ -89,6 +89,7 @@ import {
   API_MY_ACCOUNT,
   API_REQUEST_DELETE,
   REQUEST,
+  API_GET_ASSETS_ID,
 } from "../store/url";
 
 export default {
@@ -105,7 +106,28 @@ export default {
         const userMng = await ApiService.get(API_USER_MNG, { headers });
         const assignee = userMng.data.name;
         ApiService.setDeadline(contacts, assignee);
-        contacts.value = ApiService.changeContent(contacts.value);
+
+        contacts.value.forEach(async (contact) => {
+          if (contact.content === "device_recall") {
+            const assetId = contact.assets_id;
+            if (assetId !== null) {
+              const assets = await ApiService.getParameter(
+                API_GET_ASSETS_ID,
+                assetId,
+                {
+                  headers,
+                }
+              );
+              if (assets.data.length > 0) {
+                contact = ApiService.changeContent(contact, assets.data[0]);
+              }
+            } else {
+              contact = ApiService.changeContent(contact, null);
+            }
+          } else {
+            contact = ApiService.changeContent(contact, null);
+          }
+        });
         contacts.value = ApiService.changeStatus(contacts.value);
       } catch (error) {
         console.error(error);
@@ -140,9 +162,7 @@ export default {
   text-align: center;
   font-weight: 600;
 }
-.bi {
-  color: black;
-}
+
 .page-content .panel {
   margin-bottom: 1.5rem;
 }
@@ -249,9 +269,5 @@ td {
 
 .status-pending {
   color: #2196f3;
-}
-.btn-primary:hover {
-  background-color: #7453a6;
-  border-color: #6e4e9e;
 }
 </style>

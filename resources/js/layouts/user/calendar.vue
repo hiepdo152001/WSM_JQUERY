@@ -184,11 +184,13 @@ export default {
           text: "Check-out",
           click: async function () {
             try {
-              const res = await ApiService.get(API_UPDATE_TIME_KEEP, {
-                headers,
-              });
+              if (confirm("Bạn muốn check-out ngay bây giờ ?")) {
+                const res = await ApiService.get(API_UPDATE_TIME_KEEP, {
+                  headers,
+                });
 
-              window.location.href = HOME_CALENDAR;
+                window.location.href = HOME_CALENDAR;
+              }
             } catch (error) {}
           },
         },

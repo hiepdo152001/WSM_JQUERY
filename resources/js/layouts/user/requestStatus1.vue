@@ -1,5 +1,12 @@
 <template>
-  <div class="contacts" v-if="position === 'tld'">
+  <div :class="{ 'd-none': check !== 'null' }" style="text-align: center">
+    <h3 style="line-height: 50px">Không có dữ liệu</h3>
+  </div>
+  <div
+    class="contacts"
+    v-if="position === 'tld'"
+    :class="{ 'd-none': check === 'null' }"
+  >
     <table class="table table-bordered" style="margin-top: 30px">
       <thead>
         <tr>
@@ -7,7 +14,7 @@
           <th>Người tạo</th>
           <th>Loại request</th>
           <th>Thời hạn</th>
-          <th></th>
+          <th>Xử lí</th>
         </tr>
       </thead>
       <tbody>
@@ -66,6 +73,7 @@ import {
   API_USER_CREATE,
   API_MY_ACCOUNT,
   API_REQUEST_UPDATE,
+  API_GET_ASSETS_ID,
 } from "../store/url";
 import { useRouter } from "vue-router";
 
@@ -79,7 +87,7 @@ export default {
     const position = ref([]);
     const headers = ApiService.setHeader();
     const router = useRouter();
-
+    const check = ref();
     onMounted(async () => {
       try {
         const type = ApiService.getTypeParameter();
@@ -92,6 +100,10 @@ export default {
         );
 
         contacts.value = apiResponse.data.data;
+
+        if (contacts.value.length === 0 || res.data.data.position !== "tld") {
+          check.value = "null";
+        }
         contacts.value.forEach(async (contact) => {
           const res = await ApiService.getParameter(
             API_USER_CREATE,
@@ -101,7 +113,27 @@ export default {
           contact.userCreate = res.data[0];
         });
 
-        contacts.value = ApiService.changeContent(contacts.value);
+        contacts.value.forEach(async (contact) => {
+          if (contact.content === "device_recall") {
+            const assetId = contact.assets_id;
+            if (assetId !== null) {
+              const assets = await ApiService.getParameter(
+                API_GET_ASSETS_ID,
+                assetId,
+                {
+                  headers,
+                }
+              );
+              if (assets.data.length > 0) {
+                contact = ApiService.changeContent(contact, assets.data[0]);
+              }
+            } else {
+              contact = ApiService.changeContent(contact, null);
+            }
+          } else {
+            contact = ApiService.changeContent(contact, null);
+          }
+        });
         contacts.value = ApiService.changeTypeRequest(contacts.value);
       } catch (error) {
         console.error(error);
@@ -112,8 +144,9 @@ export default {
         const res = await ApiService.putStatus(API_REQUEST_UPDATE, id, form, {
           headers,
         });
-        if (res.data.status === true) {
+        if (res.status === 200) {
           alert("Xác nhận thành công!");
+          location.reload();
         }
       } catch (error) {}
     };
@@ -123,7 +156,7 @@ export default {
         const res = await ApiService.putStatus(API_REQUEST_UPDATE, id, form, {
           headers,
         });
-        if (res.data.status === true) {
+        if (res.status === 200) {
           alert("Bạn đã từ chối yêu cầu !");
         }
       } catch (error) {}
@@ -134,6 +167,7 @@ export default {
       position,
       cancel,
       router,
+      check,
     };
   },
 };

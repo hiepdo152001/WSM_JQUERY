@@ -51,7 +51,7 @@
 import { ref, onMounted } from "vue";
 import ApiService from "../common/apiService";
 import { useRouter } from "vue-router";
-import { GET_REQUEST, REQUEST } from "../store/url";
+import { GET_REQUEST, REQUEST, API_GET_ASSETS_ID } from "../store/url";
 
 export default {
   setup() {
@@ -64,9 +64,23 @@ export default {
         const res = await ApiService.getParameter(GET_REQUEST, id, {
           headers,
         });
+        const assetId = res.data[0].assets_id;
+        if (assetId !== null) {
+          const assets = await ApiService.getParameter(
+            API_GET_ASSETS_ID,
+            assetId,
+            {
+              headers,
+            }
+          );
+          console.log(assets);
+          res.data[0] = ApiService.changeContent(res.data[0], assets.data[0]);
+        } else {
+          res.data[0] = ApiService.changeContent(res.data[0], null);
+        }
 
         res.data = ApiService.changeStatus(res.data);
-        res.data = ApiService.changeContent(res.data);
+
         contact.value = res.data[0];
       } catch (error) {
         console.error(error);
