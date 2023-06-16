@@ -48,9 +48,10 @@ class AssetsController extends Controller
         return response()->json([$asset], 200);
     }
 
-    public function getByUserId($id)
+    public function getByUserLogin()
     {
-        $assets = $this->assetsService->getByUserId($id);
+        $user = $this->getCurrentLoggedIn();
+        $assets = $this->assetsService->getByUserId($user->id);
         if ($assets === null) {
             return response()->json([], 404);
         }

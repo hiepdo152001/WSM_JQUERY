@@ -49,9 +49,9 @@ class ContactController extends Controller
         }
 
         // $contact->email = $user->email;
-        $department = $user->department;
+        $department_id = $user->department_id;
         $position = "tld";
-        $email = $this->users->getEmailByPosition($department, $position);
+        $email = $this->users->getEmailByPosition($department_id, $position);
         if ($email === null) {
             return response()->json([], 404);
         }
@@ -131,10 +131,10 @@ class ContactController extends Controller
     public function getManager()
     {
         $user = $this->getCurrentLoggedIn();
-        $department = $user->department;
+        $department_id = $user->department_id;
         $position = "tld";
 
-        $email = $this->users->getEmailByPosition($department, $position);
+        $email = $this->users->getEmailByPosition($department_id, $position);
         if ($email === null) {
             return response()->json([
                 'name' => ""
@@ -161,8 +161,8 @@ class ContactController extends Controller
         ];
         $status = $statuses[$type] ?? 1;
 
-        $department = $user->department;
-        $requests = $this->contacts->get($department, $status);
+        $department_id = $user->department_id;
+        $requests = $this->contacts->get($department_id, $status);
 
         return response()->json([
             'data' => $requests,

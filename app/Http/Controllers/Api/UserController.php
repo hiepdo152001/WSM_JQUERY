@@ -75,7 +75,7 @@ class UserController extends Controller
                 'message' => 'user not found!'
             ], 500);
         }
-        $this->userService->editUser($user->id, $request->except(['position', 'department']));
+        $this->userService->editUser($user->id, $request->except(['position', 'department_id']));
 
         return response()->json([
             'status' => true,
@@ -85,7 +85,7 @@ class UserController extends Controller
 
     public function getUserById($id)
     {
-        $user = $this->userService->getUserbyId($id);
+        $user = $this->userService->getUserById($id);
 
         if ($user === null) {
             return response()->json([
@@ -117,21 +117,23 @@ class UserController extends Controller
 
     public function deleteUserById($id)
     {
-        $user = $this->userService->getUserById($id);
-
+        $user = $this->userService->deActive($id);
         if ($user === null) {
             return response()->json([
-                'status' =>  false,
-                'message' => 'user id not found',
+                "message" => "user not found",
             ], 404);
         }
-
-        $user->delete();
-
-        return response()->json([
-            'message' => 'delete user successful',
-            'user delete' => $user,
-        ], 202);
+        return response()->json([$user], 202);
+    }
+    public function activeUserById($id)
+    {
+        $user = $this->userService->Active($id);
+        if ($user === false) {
+            return response()->json([
+                "message" => "user not found",
+            ], 404);
+        }
+        return response()->json([$user], 202);
     }
     public function editAvatar(Request $request)
     {
@@ -157,5 +159,29 @@ class UserController extends Controller
             'status' => false,
             'message' => 'Not success',
         ], 500);
+    }
+
+    public function get()
+    {
+        $users = $this->userService->get();
+        return response()->json([
+            $users
+        ], 200);
+    }
+
+    public function getByDepartment($department_id)
+    {
+        $users = $this->userService->getDepartment($department_id);
+        return response()->json([
+            $users
+        ], 200);
+    }
+
+    public function search($search)
+    {
+        $users = $this->userService->search($search);
+        return response()->json([
+            $users
+        ], 200);
     }
 }
