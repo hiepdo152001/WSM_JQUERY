@@ -25,7 +25,7 @@ class User extends Authenticatable
         'email',
         'name',
         'password',
-        'department',
+        'department_id',
         'position',
         'phone',
         'age',
@@ -44,7 +44,8 @@ class User extends Authenticatable
         'tax_code',
         'leave_days',
         'use_property',
-        'avatar'
+        'avatar',
+        'status'
 
     ];
 
@@ -78,5 +79,9 @@ class User extends Authenticatable
     public function assets()
     {
         return $this->hasMany(Asset::class, 'user_id', 'id');
+    }
+    public function department()
+    {
+        return $this->belongsTo(Departments::class);
     }
 }
