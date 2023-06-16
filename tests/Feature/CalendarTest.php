@@ -120,11 +120,19 @@ class CalendarTest extends TestCase
 
     public function test_get_work_time_done_2()
     {
+
         $dateNow = date('Y-m-d H:i:s');
         $month_keep = date('m', strtotime('-1 month', strtotime($dateNow)));
+
+        $timeKeep = Time_keep::factory()->create();
+        $timeKeep->month = $month_keep;
+        $timeKeep->user_id = $this->user->id;
+        $timeKeep->work_time = 0.4;
+        $timeKeep->save();
+
         $this->timeKeep->user_id = $this->user->id;
         $this->timeKeep->month = $month_keep;
-        $this->timeKeep->work_time = 1.5;
+        $this->timeKeep->work_time = 0.8;
         $this->timeKeep->save();
 
         $user2 = User::factory()->create();
@@ -135,7 +143,8 @@ class CalendarTest extends TestCase
 
         $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/getWorkTime');
         $data = $res->json();
+
         $res->assertStatus(200);
-        $this->assertEquals($data, 1.5);
+        $this->assertEquals($data, 1.2);
     }
 }

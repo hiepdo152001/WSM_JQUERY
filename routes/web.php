@@ -25,10 +25,17 @@ Route::get('/register', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+Route::get('/home/register', function () {
+    return view('welcome');
+});
+
 Route::get('/home/calendar', function () {
     return view('welcome');
 });
 Route::get('/home/user', function () {
+    return view('welcome');
+});
+Route::get('/home/department', function () {
     return view('welcome');
 });
 Route::get('/home/member', function () {
@@ -41,6 +48,10 @@ Route::get('/home/request', function () {
     return view('welcome');
 });
 Route::get('/home/request/new', function () {
+    return view('welcome');
+});
+
+Route::get('home/department/new', function () {
     return view('welcome');
 });
 Route::get('/home/member/request', function () {

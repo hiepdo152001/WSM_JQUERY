@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AssetsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CalendarController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/update/avatar', [UserController::class, 'editAvatar']);
         Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
 
+        Route::get('/gets', [UserController::class, 'get']);
+        Route::get('/search/{search}', [UserController::class, 'search']);
+        Route::get('/get/department/{department}', [UserController::class, 'getByDepartment']);
+
         Route::group(['prefix' => '/request'], function () {
             Route::post('/new', [ContactController::class, 'ContactCreate']);
             Route::get('', [ContactController::class, 'getContact']);
@@ -68,10 +73,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::post('/new', [AssetsController::class, 'create']);
             Route::patch('/edit/{id}', [AssetsController::class, 'edit']);
             Route::get('/get/{id}', [AssetsController::class, 'getById']);
-            Route::get('/get-user-id/{id}', [AssetsController::class, 'getByUserId']);
+            Route::get('/get', [AssetsController::class, 'getByUserLogin']);
+        });
+
+        Route::group(['prefix' => '/department'], function () {
+            Route::post('/new', [DepartmentController::class, 'create']);
+            Route::patch('/edit/{id}', [DepartmentController::class, 'edit']);
+            Route::get('/get', [DepartmentController::class, 'get']);
+            Route::get('/get/{id}', [DepartmentController::class, 'getById']);
         });
     });
 });
+Route::put('/users/active/users/{id}', [UserController::class, 'activeUserById']);
 // xu li tat ca cac route khong ton tai
 Route::fallback(function () {
     return response()->json([
