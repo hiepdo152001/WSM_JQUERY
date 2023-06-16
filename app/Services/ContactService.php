@@ -25,11 +25,17 @@ class ContactService
      */
     protected $calendarService;
 
-    public function __construct(Contact $contact, UserService $userService, CalendarService $calendarService)
+    /**
+     *@var AssetsService
+     */
+    protected $assetsService;
+
+    public function __construct(Contact $contact, UserService $userService, CalendarService $calendarService, AssetsService $assetsService)
     {
         $this->contact = $contact;
         $this->userService = $userService;
         $this->calendarService = $calendarService;
+        $this->assetsService = $assetsService;
     }
 
     public function ContactsCreate($id, $request)
@@ -43,6 +49,7 @@ class ContactService
             'reason' => $request->reason,
             'time_start' => $request->time_start,
             'time_end' => $request->time_end,
+            'assets_id' => $request->assets_id,
             'status' => 1,
         ]);
         return $contact;
@@ -100,12 +107,12 @@ class ContactService
         return $user->name;
     }
 
-    public function get($department, $status)
+    public function get($department_id, $status)
     {
         $contacts = Contact::select('contacts.*')
             ->join('users', 'users.id', '=', 'contacts.user_id')
             ->where('contacts.status', $status)
-            ->where('users.department', $department)
+            ->where('users.department_id', $department_id)
             ->get();
 
         return $contacts;
@@ -126,8 +133,7 @@ class ContactService
                     $payload = ['leave_days' => 0, 'flag' => round($user->leave_days - $daysOn, 1), 'month' => $month];
                 }
             } elseif ($newContact->content === 'days_off') {
-                $daysOff = $this->userService->getTime($newContact->time_start, $newContact->time_end);
-                $payload = ['flag' => round(-$daysOff, 2), 'month' => $month];
+                $payload = [];
             } elseif ($newContact->content === 'special_take_leave') {
                 $days = $this->userService->getTime($newContact->time_start, $newContact->time_end);
                 $payload = ['flag' => round($days, 2), 'month' => $month];
@@ -139,6 +145,13 @@ class ContactService
                 $month = date('m', strtotime($newContact->time_start));
                 $id = $newContact->user_id;
                 $this->calendarService->updateRequest($id, $newContact->time_start, $newContact->time_end, $day, $month);
+                $payload = [];
+            } elseif ($newContact->content === 'device_recall') {
+                $id = $newContact->assets_id;
+
+                $assets = $this->assetsService->getById($id);
+                $assets->user_id = null;
+                $assets->save();
                 $payload = [];
             }
 

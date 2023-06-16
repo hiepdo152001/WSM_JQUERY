@@ -49,15 +49,20 @@ class CalendarService
 
         $time13h = new DateTime();
         $time12h = new DateTime();
+        $time9h = new DateTime();
 
+        $time9h->setTime(9, 0, 0);
         $time13h->setTime(13, 0, 0);
         $time13h->setDate($time_in_dt->format('Y'), $time_in_dt->format('m'), $time_in_dt->format('d'));
         $time13h->format('Y-m-d H:i:s');
         $time12h->setTime(12, 0, 0);
         $time12h->setDate($time_in_dt->format('Y'), $time_in_dt->format('m'), $time_in_dt->format('d'));
         $time12h->format('Y-m-d H:i:s');
-
-        $diff = $time_in_dt->diff($time_out_dt);
+        if ($time_in_dt < $time9h) {
+            $diff = $time9h->diff($time_out_dt);
+        } else {
+            $diff = $time_in_dt->diff($time_out_dt);
+        }
         $h = $diff->h;
         $i = $diff->i;
         $result = $h  + $i / 60;
@@ -100,6 +105,7 @@ class CalendarService
 
         $time_keep = Time_keep::where('user_id', $id)
             ->where('day', $dayCheck)
+            ->where('month', $month)
             ->first();
         $time_keep->time_out = $dateNow;
         $time_keep->save();

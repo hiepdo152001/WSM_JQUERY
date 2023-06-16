@@ -36,11 +36,19 @@ class AssetsService
         return $asset->update($payload);
     }
 
+
+    public function deleteId($id)
+    {
+        $asset = Asset::find($id);
+        return $asset->delete();
+    }
+
     public function getById($id)
     {
         $asset = Asset::find($id);
         return $asset;
     }
+
     public function getByUserId($id)
     {
         $assets = Asset::where('user_id', $id)->get();
