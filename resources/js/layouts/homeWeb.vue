@@ -2,13 +2,13 @@
   <div class="container-fluid mt-3">
     <div class="row">
       <TheHeader />
-      <div class="col-sm-2 d-none d-sm-flex">
+      <div class="col-sm-2 d-none d-sm-flex" style="padding: 0">
         <a-list bordered style="width: 100%">
           <TheMenu />
         </a-list>
       </div>
 
-      <div class="col-12 col-sm-10">
+      <div class="col-12 col-sm-10" style="padding: 0; height: 880px">
         <router-view></router-view>
       </div>
     </div>
