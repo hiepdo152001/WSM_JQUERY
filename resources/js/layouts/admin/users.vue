@@ -54,10 +54,10 @@
               type="button"
               data-toggle="tooltip"
               data-placement="top"
-              title="View"
+              title="edit"
             >
               <router-link :to="{ name: 'user-view', params: { id: user.id } }">
-                <i class="bi bi-eye-fill" style="color: black !important"></i>
+                <i class="bi bi-pencil-fill" style="color: black"></i>
               </router-link>
             </button>
             <button
@@ -67,9 +67,9 @@
               @click="deletes(user.id)"
               data-toggle="tooltip"
               data-placement="top"
-              title="delete"
+              title="block"
             >
-              <i class="bi bi-trash-fill"></i>
+              <i class="bi bi-lock-fill"></i>
             </button>
             <button
               v-if="user.status === 'deActive'"
@@ -80,7 +80,7 @@
               data-placement="top"
               title="active"
             >
-              <i class="bi bi-key"></i>
+              <i class="bi bi-key-fill"></i>
             </button>
           </td>
         </tr>
@@ -142,7 +142,7 @@ export default {
 
     const deletes = async (id) => {
       try {
-        const res = await ApiService.delete(API_DELETE_USER, id, {
+        const res = await ApiService.putStatus(API_DELETE_USER, id, "", {
           headers,
         });
 
@@ -154,9 +154,10 @@ export default {
     };
     const active = async (id) => {
       try {
-        const res = await ApiService.put(API_ACTIVE_USER, id, {
+        const res = await ApiService.putStatus(API_ACTIVE_USER, id, "", {
           headers,
         });
+
         if (res.status === 202) {
           const user = res.data[0];
           users.value = ApiService.changeStatusUser(users.value, user);
