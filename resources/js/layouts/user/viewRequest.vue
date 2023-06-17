@@ -73,7 +73,6 @@ export default {
               headers,
             }
           );
-          console.log(assets);
           res.data[0] = ApiService.changeContent(res.data[0], assets.data[0]);
         } else {
           res.data[0] = ApiService.changeContent(res.data[0], null);

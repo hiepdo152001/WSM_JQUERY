@@ -81,7 +81,6 @@ export default {
     onMounted(async () => {
       try {
         const id = router.currentRoute.value.params.id;
-        console.log(id);
         const res = await ApiService.getParameter(DEPARTMENT_GETS, id, {
           headers,
         });
@@ -96,7 +95,6 @@ export default {
         const res = await ApiService.patch(DEPARTMENT_EDIT, form.id, form, {
           headers,
         });
-        console.log(res.status);
         if (res.status === 200) {
           window.location.href = DEPARTMENT;
         }
@@ -112,7 +110,6 @@ export default {
       check,
       form,
       checkName,
-
       editDepartment,
     };
   },

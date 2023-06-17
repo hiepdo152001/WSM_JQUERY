@@ -84,7 +84,6 @@ export default {
         const headers = ApiService.setHeader();
         const apiResponse = await ApiService.get(API_MY_ACCOUNT, { headers });
         const assets = await ApiService.get(API_GET_ASSETS, { headers });
-        console.log(assets);
         users.value = apiResponse.data.data;
         asset.value = assets.data;
 

@@ -309,7 +309,6 @@ export default {
         departments.value = response.data[0];
         if (res) {
           const { data } = res.data;
-          console.log(data.leave_days);
           user.value = data;
           filename.value = "../../../storage/" + data.avatar;
           Object.assign(form, {
@@ -350,9 +349,7 @@ export default {
         if (updateUser != null) {
           alert("Update successful!");
         }
-      } catch (error) {
-        console.log(1);
-      }
+      } catch (error) {}
     };
 
     return {
