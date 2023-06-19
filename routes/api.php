@@ -40,11 +40,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
         Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
         Route::post('/update/avatar', [UserController::class, 'editAvatar']);
-        Route::delete('/delete/users/{id}', [UserController::class, 'deleteUserById']);
+        Route::put('/delete/users/{id}', [UserController::class, 'deleteUserById']);
+        Route::put('/active/users/{id}', [UserController::class, 'activeUserById']);
 
         Route::get('/gets', [UserController::class, 'get']);
         Route::get('/search/{search}', [UserController::class, 'search']);
-        Route::get('/get/department/{department}', [UserController::class, 'getByDepartment']);
+        Route::get('/get/department/{department_id}', [UserController::class, 'getByDepartment']);
 
         Route::group(['prefix' => '/request'], function () {
             Route::post('/new', [ContactController::class, 'ContactCreate']);
@@ -84,7 +85,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         });
     });
 });
-Route::put('/users/active/users/{id}', [UserController::class, 'activeUserById']);
+
 // xu li tat ca cac route khong ton tai
 Route::fallback(function () {
     return response()->json([
