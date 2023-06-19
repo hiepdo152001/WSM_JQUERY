@@ -43798,6 +43798,18 @@ var admin = [{
       return __webpack_require__.e(/*! import() */ "resources_js_layouts_auth_passWord_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/auth/passWord.vue */ "./resources/js/layouts/auth/passWord.vue"));
     }
   }, {
+    path: "register",
+    name: "register",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_auth_register_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/auth/register.vue */ "./resources/js/layouts/auth/register.vue"));
+    }
+  }, {
+    path: "department/new",
+    name: "department-new",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_newDepartment_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/newDepartment.vue */ "./resources/js/layouts/admin/newDepartment.vue"));
+    }
+  }, {
     path: "member/request/",
     name: "member-request",
     component: function component() {
@@ -43845,6 +43857,36 @@ var admin = [{
     name: "edit-profile",
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_layouts_user_editprofile_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/user/editprofile.vue */ "./resources/js/layouts/user/editprofile.vue"));
+    }
+  }, {
+    path: "asset/:id",
+    name: "asset-user",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_assets_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/assets.vue */ "./resources/js/layouts/admin/assets.vue"));
+    }
+  }, {
+    path: "member",
+    name: "member",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_users_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/users.vue */ "./resources/js/layouts/admin/users.vue"));
+    }
+  }, {
+    path: "department",
+    name: "department",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_department_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/department.vue */ "./resources/js/layouts/admin/department.vue"));
+    }
+  }, {
+    path: "department/:id",
+    name: "edit-department",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_editDepartment_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/editDepartment.vue */ "./resources/js/layouts/admin/editDepartment.vue"));
+    }
+  }, {
+    path: "user/:id",
+    name: "user-view",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_layouts_admin_userView_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/admin/userView.vue */ "./resources/js/layouts/admin/userView.vue"));
     }
   }],
   meta: {
@@ -73521,7 +73563,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_layouts_homePage_vue":1,"resources_js_layouts_homeWeb_vue":1,"resources_js_layouts_user_calendar_vue":1,"resources_js_layouts_user_requestUser_vue":1,"resources_js_layouts_user_viewRequest_vue":1,"resources_js_layouts_user_createRequest_vue":1,"resources_js_layouts_auth_passWord_vue":1,"resources_js_layouts_user_memberRequest_vue":1,"resources_js_layouts_user_requestStatus1_vue":1,"resources_js_layouts_user_requestStatus2_vue":1,"resources_js_layouts_user_requestStatus3_vue":1,"resources_js_layouts_user_requestStatus4_vue":1,"resources_js_layouts_user_requestStatus5_vue":1,"resources_js_layouts_user_user_vue":1,"resources_js_layouts_user_editprofile_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_layouts_homePage_vue":1,"resources_js_layouts_homeWeb_vue":1,"resources_js_layouts_user_calendar_vue":1,"resources_js_layouts_user_requestUser_vue":1,"resources_js_layouts_user_viewRequest_vue":1,"resources_js_layouts_user_createRequest_vue":1,"resources_js_layouts_auth_passWord_vue":1,"resources_js_layouts_auth_register_vue":1,"resources_js_layouts_admin_newDepartment_vue":1,"resources_js_layouts_user_memberRequest_vue":1,"resources_js_layouts_user_requestStatus1_vue":1,"resources_js_layouts_user_requestStatus2_vue":1,"resources_js_layouts_user_requestStatus3_vue":1,"resources_js_layouts_user_requestStatus4_vue":1,"resources_js_layouts_user_requestStatus5_vue":1,"resources_js_layouts_user_user_vue":1,"resources_js_layouts_user_editprofile_vue":1,"resources_js_layouts_admin_assets_vue":1,"resources_js_layouts_admin_users_vue":1,"resources_js_layouts_admin_department_vue":1,"resources_js_layouts_admin_editDepartment_vue":1,"resources_js_layouts_admin_userView_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
