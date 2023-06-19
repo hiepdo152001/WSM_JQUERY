@@ -1,0 +1,153 @@
+Page:
+  type: integer
+  minimum: 1
+  example: 1
+
+Limit:
+  type: integer
+  minimum: 1
+  maximum: 100
+  example: 20
+
+Token:
+  type: string
+  maxLength: 255
+  example: "XXXXXXXXXXXXXXX"
+
+Email:
+  type: email
+  maxLength: 256
+  example: "test@gmail.com"
+
+Name:
+  type: string
+  maxLength: 256
+  example: "admin"
+
+Password:
+  type: string
+  format: password
+  maxLength: 20
+  example: "Password"
+
+Id:
+  type: integer
+  format: int64
+  example: 1
+department_id:
+  type: integer
+  format: int64
+  example: 1
+position:
+  type: string
+  maxLength: 256
+  example: "tld"
+phone:
+  type: string
+  maxLength: 256
+  example: "12345678"
+age:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+project:
+  type: string
+  maxLength: 25
+  example: "fresher"
+sex:
+  type: string
+  maxLength: 25
+  example: "nam"
+permanent_address:
+  type: string
+  maxLength: 255
+  example: "hanoi"
+seniority:
+  type: string
+  maxLength: 25
+  example: "1 nam"
+working_day:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+promotion_day:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+contract:
+  type: string
+  maxLength: 25
+  example: "hop dong"
+
+temporary_address:
+  type: string
+  maxLength: 25
+  example: "dia chi tam thoi"
+
+cccd:
+  type: string
+  maxLength: 25
+  example: "can cuoc cong dan"
+date_range:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+issued_by:
+  type: string
+  maxLength: 25
+  example: "noi cap"
+personal_email:
+  type: email
+  maxLength: 256
+  example: "test@gmail.com"
+tax_code:
+  type: string
+  maxLength: 25
+  example: "123456"
+leave_days:
+  type: integer
+  format: int64
+  example: 12
+assets_id:
+  type: integer
+  format: int64
+  example: 5
+avatar:
+  type: string
+  maxLength: 256
+  example: "path/XXXXXXX"
+status:
+  type: string
+  maxLength: 25
+  example: "active"
+reason:
+  type: string
+  example: "ly do"
+
+location:
+  type: string
+  example: "vi tri"
+user_id:
+  type: integer
+  example: 1
+content:
+  type: string
+  example: "day_off"
+
+type:
+  type: integer
+  example: 1
+
+time_start:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+
+time_in:
+  type: string
+  maxLength: 25
+  example: "2000-01-01 00:00:00"
+
+Boolean:
+  type: boolean
+  example: true
