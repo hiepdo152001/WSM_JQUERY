@@ -1,0 +1,80 @@
+put:
+  summary: update User By Id
+  tags:
+    - User
+  security:
+    - bearerAuth: []
+
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size |  | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | email | email | 256 |  ||
+    | phone | string | 255 |  ||
+    | position | string | 255 |  ||
+    | department_id | integer | 255 |  ||
+    | age | date time | 255 |  ||
+    | project | string | 255 |  ||
+    | sex | string | 255 |  ||
+    | permanent_address | string | 255 |  ||
+    | seniority | string | 255 |  ||
+    | contract | string | 255 |  ||
+    | temporary_address | string | 255 |  ||
+    | issued_by | string | 255 |  ||
+    | personal_email | email | 255 |  ||
+    | cccd | string | 255 |  ||
+    | tax_code | string | 255 |  ||
+    | leave_days | integer | 255 |  ||
+    | working_day | date time | 255 |  ||
+    | promotion_day | date time | 255 |  ||
+    | date_range | date time | 255 |  ||
+    | grantType | string | 255 |  | Fix "password" |
+
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+
+          properties:
+            name: { $ref: "schemas.yaml#/Name" }
+            email: { $ref: "schemas.yaml#/Email" }
+            phone: { $ref: "schemas.yaml#/phone" }
+            position: { $ref: "schemas.yaml#/position" }
+            department_id: { $ref: "schemas.yaml#/department_id" }
+            age: { $ref: "schemas.yaml#/age" }
+            project: { $ref: "schemas.yaml#/project" }
+            sex: { $ref: "schemas.yaml#/sex" }
+            permanent_address: { $ref: "schemas.yaml#/permanent_address" }
+            seniority: { $ref: "schemas.yaml#/seniority" }
+            contract: { $ref: "schemas.yaml#/contract" }
+            temporary_address: { $ref: "schemas.yaml#/temporary_address" }
+            issued_by: { $ref: "schemas.yaml#/issued_by" }
+            personal_email: { $ref: "schemas.yaml#/personal_email" }
+            cccd: { $ref: "schemas.yaml#/cccd" }
+            tax_code: { $ref: "schemas.yaml#/tax_code" }
+            leave_days: { $ref: "schemas.yaml#/leave_days" }
+            working_day: { $ref: "schemas.yaml#/working_day" }
+            promotion_day: { $ref: "schemas.yaml#/promotion_day" }
+            date_range: { $ref: "schemas.yaml#/date_range" }
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"
+    "422":
+      $ref: "responses.yaml#/422"
