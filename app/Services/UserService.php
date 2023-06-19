@@ -53,6 +53,9 @@ class UserService
     public function deActive($id)
     {
         $user = User::find($id);
+        if ($user === null) {
+            return $user;
+        }
         $user->status = "deActive";
         $user->save();
         return $user;

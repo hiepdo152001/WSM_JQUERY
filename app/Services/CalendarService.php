@@ -58,7 +58,7 @@ class CalendarService
         $time12h->setTime(12, 0, 0);
         $time12h->setDate($time_in_dt->format('Y'), $time_in_dt->format('m'), $time_in_dt->format('d'));
         $time12h->format('Y-m-d H:i:s');
-        if ($time_in_dt < $time9h) {
+        if ($time_in_dt < $time9h && $time_out_dt > $time9h) {
             $diff = $time9h->diff($time_out_dt);
         } else {
             $diff = $time_in_dt->diff($time_out_dt);

@@ -21,6 +21,10 @@ class AssetsService
 
     public function create($request)
     {
+        $user = User::find($request->user_id);
+        if ($user === null) {
+            return null;
+        }
         $asset = Asset::create([
             'name' => $request->name,
             'code' => $request->code,
