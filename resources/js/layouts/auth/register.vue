@@ -42,7 +42,7 @@
 import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import ApiService from "../common/apiService";
-import { API_REGISTER, LOGIN } from "../store/url";
+import { API_REGISTER, MEMBER } from "../store/url";
 
 export default {
   setup() {
@@ -59,8 +59,7 @@ export default {
       try {
         let res = await ApiService.post(API_REGISTER, form);
         if (res.data.status === true) {
-          await router.push(LOGIN);
-          alert(res.data.message);
+          window.location = MEMBER;
         }
       } catch (error) {
         if (error.response.status === 422) {
