@@ -21,6 +21,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'position' => 'ad',
+            'status' => 'active',
 
         ]);
 
@@ -30,7 +31,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'd1@gmail.com',
             'password' => Hash::make('12345678'),
             'department_id' => '1',
-            'position' => 'tld'
+            'position' => 'tld',
+            'status' => 'active',
 
         ]);
 
@@ -40,7 +42,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'd2@gmail.com',
             'password' => Hash::make('12345678'),
             'department_id' => '2',
-            'position' => 'tld'
+            'position' => 'tld',
+            'status' => 'active',
 
         ]);
     }
