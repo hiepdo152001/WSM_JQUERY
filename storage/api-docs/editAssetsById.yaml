@@ -1,0 +1,51 @@
+patch:
+  summary: Assets Edit By Id
+  tags:
+    - Assets
+  security:
+    - bearerAuth: []
+
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | name | string | 256 | Required ||
+    | code | integer | 256 | Required ||
+    | location | string | 256 | ||
+
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - grantType
+          properties:
+            name: { $ref: "schemas.yaml#/Name" }
+            code:
+              type: integer
+              example: 1
+            location:
+              type: string
+              example: home
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "500":
+      $ref: "responses.yaml#/500"
