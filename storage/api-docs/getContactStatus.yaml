@@ -1,0 +1,30 @@
+get:
+  summary: Contact By Id
+  tags:
+    - Contact
+  security:
+    - bearerAuth: []
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | type |string |255 | Required | 'pending','confirmed','approved','declined','canceled'|
+  parameters:
+    - name: type
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: string
+        format: 255
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"
