@@ -22,7 +22,7 @@ class DepartmentController extends Controller
     public function create(DepartmentRequest $request)
     {
         $department = $this->deService->create($request);
-        return response()->json([], 200);
+        return response()->json([$department], 200);
     }
 
     public function get()
@@ -49,6 +49,6 @@ class DepartmentController extends Controller
                 'message' => 'update false'
             ], 500);
         }
-        return response()->json([], 200);
+        return response()->json(['message' => 'update success'], 200);
     }
 }
