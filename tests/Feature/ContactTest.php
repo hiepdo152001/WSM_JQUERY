@@ -40,7 +40,7 @@ class ContactTest extends TestCase
     public function test_create_request_false_not_found_tld()
     {
         $user = User::factory()->create();
-        $user->department = 'dd';
+        $user->department_id = 1;
         $user->position = 'dd';
         $user->save();
         $token = $user->createToken("API TOKEN")->plainTextToken;
@@ -55,7 +55,9 @@ class ContactTest extends TestCase
 
         $contactTo = Contact::find($this->contact->id);
         $userTo = User::find($this->contact->user_id);
-
+        $userTo->department_id = 1;
+        $userTo->position = 'tld';
+        $userTo->save();
         $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->post('/api/users/request/new', $this->contact->toArray());
         $userTo->notify((new \App\Notifications\StatusReqNotify($contactTo, $userTo)));
         Notification::assertSentTo($userTo, \App\Notifications\StatusReqNotify::class);

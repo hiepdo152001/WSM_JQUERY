@@ -1,0 +1,40 @@
+patch:
+  summary: Department Edit By Id
+  tags:
+    - Department
+  security:
+    - bearerAuth: []
+
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size |  | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | name | string | 256 |  ||
+
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+
+          properties:
+            name: { $ref: "schemas.yaml#/Name" }
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "500":
+      $ref: "responses.yaml#/500"

@@ -35,58 +35,6 @@
                 </div>
               </form>
               <div class="mt-4" style="border: 1px solid gray"></div>
-              <div class="register">
-                <button
-                  @click="registerActive = !registerActive"
-                  class="btn btn-success waves-effect waves-themed"
-                >
-                  Tạo tài khoản mới
-                </button>
-              </div>
-            </div>
-
-            <div class="card register" v-else>
-              <form class="form-group" @submit.prevent="register">
-                <input
-                  v-model="formregis.name"
-                  type="text"
-                  class="form-control"
-                  placeholder="Name"
-                  required
-                />
-                <input
-                  v-model="formregis.email"
-                  type="email"
-                  class="form-control"
-                  placeholder="Email"
-                  required
-                />
-                <div class="alert alert-danger" v-if="checkEmail">
-                  {{ checkEmail }}
-                </div>
-                <input
-                  v-model="formregis.password"
-                  type="password"
-                  class="form-control"
-                  placeholder="Password"
-                  required
-                />
-                <div class="alert alert-danger" v-if="checkPassword">
-                  {{ checkPassword }}
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Đăng kí</button>
-                </div>
-              </form>
-              <div style="border: 1px solid gray"></div>
-              <div class="register">
-                <button
-                  @click="registerActive = !registerActive"
-                  class="btn btn-success waves-effect waves-themed"
-                >
-                  Đăng nhập
-                </button>
-              </div>
             </div>
           </div>
         </div>

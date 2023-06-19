@@ -71,40 +71,28 @@
               <select
                 class="form-control"
                 aria-label="Default select example"
-                v-model="form.department"
+                v-model="form.department_id"
+                readonly="readonly"
               >
-                <option selected="selected" value="d1">Division 1</option>
-                <option value="d1">Division 1</option>
-                <option value="d2">Division 2</option>
-                <option value="d3">Division 3</option>
-                <option value="d4">Division 4</option>
+                <option
+                  v-for="option in departments"
+                  :value="option.id"
+                  disabled
+                >
+                  {{ option.name }}
+                </option>
               </select>
             </div>
             <div class="col-md-2">
               <div class="form-gruop">
                 <label class="form-label">Vị trí</label>
               </div>
-              <select
+              <input
+                type="text"
                 class="form-control"
-                aria-label="Default select example"
                 v-model="form.position"
-              >
-                <option selected="selected" value="ceo">CEO</option>
-                <option value="dl">Division Leader</option>
-                <option value="sgl">Support Group Leader</option>
-                <option value="tl">Technical Leader</option>
-                <option value="vdl">Vice Division Leader</option>
-                <option value="tld">Team Leader</option>
-                <option value="dev">Developer</option>
-                <option value="comtor">Comtor</option>
-                <option value="tester">Tester</option>
-                <option value="hr">Human Resources</option>
-                <option value="acc">Accountant</option>
-                <option value="ad">Admin</option>
-                <option value="incom">Internal Communication</option>
-                <option value="intern">Intern</option>
-                <option value="fl">Freelancer</option>
-              </select>
+                readonly="readonly"
+              />
             </div>
             <div class="col-md-4">
               <div class="form-gruop">
@@ -215,6 +203,7 @@ import {
   API_UPDATE_ACCOUNT,
   PATH_IMAGE,
   PROFILE,
+  DEPARTMENT_GETS,
 } from "../store/url";
 
 export default {
@@ -224,9 +213,10 @@ export default {
     const file = ref(null);
     const fileInput = ref(null);
     const filename = ref("");
+    const departments = ref([]);
     const form = reactive({
       sex: "",
-      department: "",
+      department_id: "",
       position: "",
       age: "",
       permanent_address: "",
@@ -253,7 +243,8 @@ export default {
       try {
         const headers = ApiService.setHeader();
         const res = await ApiService.get(API_MY_ACCOUNT, { headers });
-
+        const response = await ApiService.get(DEPARTMENT_GETS, { headers });
+        departments.value = response.data[0];
         const { data } = res.data;
 
         user.value = data;
@@ -261,13 +252,13 @@ export default {
 
         Object.assign(form, {
           sex: data.sex,
-          department: data.department,
+          department_id: data.department_id,
           position: data.position,
-          age: data.age,
+          age: data.age.substring(0, 10),
           permanent_address: data.permanent_address,
           temporary_address: data.temporary_address,
           cccd: data.cccd,
-          date_range: data.date_range,
+          date_range: data.date_range.substring(0, 10),
           issued_by: data.issued_by,
           tax_code: data.tax_code,
         });
@@ -315,6 +306,7 @@ export default {
       handleFileUpload,
       fileInput,
       filename,
+      departments,
     };
   },
 };

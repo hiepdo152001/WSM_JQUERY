@@ -52,22 +52,20 @@ class ContactPart2Test extends TestCase
         $contactPending1 = Contact::factory()->create();
 
         $contactPending1->user_id = $this->user->id;
-
+        $contactPending1->save();
         $type = "pending";
         $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
 
         $data = $res->json();
 
-
         $data1 = $data['data'][0];
         $data2 = $data['data'][1];
-
 
         $res->assertStatus(200);
         $this->assertEquals($data1['status'], 1);
         $this->assertEquals($data2['status'], 1);
 
-        $this->assertEquals($data1['user_id'], 2);
+        $this->assertEquals($data1['user_id'], $this->user->id);
         $this->assertEquals($data2['user_id'], $this->user->id);
     }
 

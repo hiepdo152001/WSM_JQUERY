@@ -49,6 +49,16 @@ const admin = [
         component: () => import("../layouts/auth/passWord.vue"),
       },
       {
+        path: "register",
+        name: "register",
+        component: () => import("../layouts/auth/register.vue"),
+      },
+      {
+        path: "department/new",
+        name: "department-new",
+        component: () => import("../layouts/admin/newDepartment.vue"),
+      },
+      {
         path: "member/request/",
         name: "member-request",
         component: () => import("../layouts/user/memberRequest.vue"),
@@ -91,9 +101,29 @@ const admin = [
         component: () => import("../layouts/user/editprofile.vue"),
       },
       {
+        path: "asset/:id",
+        name: "asset-user",
+        component: () => import("../layouts/admin/assets.vue"),
+      },
+      {
         path: "member",
         name: "member",
-        component: () => import("../layouts/admin/user.vue"),
+        component: () => import("../layouts/admin/users.vue"),
+      },
+      {
+        path: "department",
+        name: "department",
+        component: () => import("../layouts/admin/department.vue"),
+      },
+      {
+        path: "department/:id",
+        name: "edit-department",
+        component: () => import("../layouts/admin/editDepartment.vue"),
+      },
+      {
+        path: "user/:id",
+        name: "user-view",
+        component: () => import("../layouts/admin/userView.vue"),
       },
     ],
     meta: {

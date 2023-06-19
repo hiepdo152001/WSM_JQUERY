@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'password' => Hash::make('12345678'),
-            'department' => 'd1',
+            'department_id' => '1',
             'position' => 'intern',
             'leave_days' => $this->faker->randomElement([0, 12]),
         ];

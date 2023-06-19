@@ -1,0 +1,52 @@
+post:
+  summary: Create Contact
+  tags:
+    - Contact
+  security:
+    - bearerAuth: []
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | user_id | integer | 256 | Required ||
+    | content | string | 256 | Required ||
+    | type | integer | 256 | ||
+    | phone | string | 256 | ||
+    | project | string | 256 | ||
+    | reason | string | 256 | ||
+    | time_start | time | 256 | ||
+    | time_end | time | 256 | ||
+    | assets_id | integer | 256 | ||
+    | status | integer | 256 | ||
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - grantType
+          properties:
+            phone: { $ref: "schemas.yaml#/phone" }
+            project: { $ref: "schemas.yaml#/project" }
+            name: { $ref: "schemas.yaml#/Name" }
+            reason: { $ref: "schemas.yaml#/reason" }
+            location: { $ref: "schemas.yaml#/location" }
+            user_id: { $ref: "schemas.yaml#/user_id" }
+            content: { $ref: "schemas.yaml#/content" }
+            type: { $ref: "schemas.yaml#/type" }
+            time_start: { $ref: "schemas.yaml#/time_start" }
+            time_in: { $ref: "schemas.yaml#/time_in" }
+            assets_id: { $ref: "schemas.yaml#/assets_id" }
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"

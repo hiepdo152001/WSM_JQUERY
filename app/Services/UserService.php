@@ -31,6 +31,8 @@ class UserService
             'email' => $request->email,
             'name' => $request->name,
             'password' => Hash::make($request->password),
+            'status' => 'active',
+            'leave_days' => 0,
         ]);
         return $user;
     }
@@ -38,6 +40,32 @@ class UserService
     public function getUserByEmail($email)
     {
         $user = User::where('email', $email)->first();
+        return $user;
+    }
+
+    public function check($email)
+    {
+        $status = User::where('email', $email)
+            ->value('status');
+        return $status;
+    }
+
+    public function deActive($id)
+    {
+        $user = User::find($id);
+        if ($user === null) {
+            return $user;
+        }
+        $user->status = "deActive";
+        $user->save();
+        return $user;
+    }
+
+    public function Active($id)
+    {
+        $user = User::find($id);
+        $user->status = "Active";
+        $user->save();
         return $user;
     }
     public function editUser($id, array $payload)
@@ -52,6 +80,24 @@ class UserService
         return $user;
     }
 
+    public function get()
+    {
+        return User::all();
+    }
+
+    public function getDepartment($department_id)
+    {
+        return User::where('department_id', $department_id)->get();;
+    }
+
+    public function search($search)
+    {
+        return User::where('id', $search)
+            ->orWhere('name', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->get();
+    }
+
     public function newPassword(string $email, string $password)
     {
         return $this->user->where('email', $email)->update([
@@ -64,10 +110,10 @@ class UserService
         $email = User::where('id', $id)->value('email');
         return $email;
     }
-    public function getEmailByPosition($department, $position)
+    public function getEmailByPosition($department_id, $position)
     {
         $email = User::where('position', $position)
-            ->where('department', $department)
+            ->where('department_id', $department_id)
             ->value('email');
 
         return $email;

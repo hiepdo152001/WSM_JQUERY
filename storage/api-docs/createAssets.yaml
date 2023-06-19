@@ -1,0 +1,45 @@
+post:
+  summary: Create Assets
+  tags:
+    - Assets
+  security:
+    - bearerAuth: []
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | name | string | 256 | Required ||
+    | code | integer | 256 | Required ||
+    | location | string | 256 | ||
+    | user_id | integer | 256 | ||
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - grantType
+          properties:
+            name: { $ref: "schemas.yaml#/Name" }
+            code:
+              type: integer
+              example: 1
+            location:
+              type: string
+              example: home
+            user_id:
+              type: integer
+              example: 1
+
+  responses:
+    "200":
+      description: OK
+    "500":
+      description: false

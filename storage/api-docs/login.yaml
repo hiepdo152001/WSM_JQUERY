@@ -1,0 +1,36 @@
+post:
+  summary: Login Auth
+  tags:
+    - Auth
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | email | string | 256 | Required ||
+    | password | string | 20 | Required ||
+    | grantType | string | 255 | Required | Fix "password" |
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - grantType
+          properties:
+            email: { $ref: "schemas.yaml#/Email" }
+            password: { $ref: "schemas.yaml#/Password" }
+
+  responses:
+    "202":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"
+    "422":
+      $ref: "responses.yaml#/422"

@@ -6,9 +6,11 @@
       </div>
       <div class="col-6">
         <router-link :to="{ name: 'edit-profile' }">
-          <button class="btn btn-primary btn-sm waves-effect waves-themed">
-            <!-- <i class="fal fa-pencil"></i> -->
-            edit user
+          <button
+            class="btn btn-primary btn-sm waves-effect waves-themed"
+            style="margin: 15px 0px 0px 15px"
+          >
+            <i class="bi bi-pencil"></i>
           </button>
         </router-link>
       </div>
@@ -57,11 +59,10 @@
       </div>
       <table class="table table-striped table-bordered table-hover">
         <tbody>
-          <tr v-for="(value, key) in users" :key="key">
-            <td v-if="key === 'use_property'" :key="key">
-              <strong>{{ key }}</strong>
+          <tr v-for="item in asset[0]" :key="item.id">
+            <td>
+              <strong>{{ item.name }}- {{ item.code }}</strong>
             </td>
-            <td v-if="key === 'use_property'" :key="key">{{ value }}</td>
           </tr>
         </tbody>
       </table>
@@ -72,16 +73,20 @@
 <script>
 import { ref, onMounted } from "vue";
 import ApiService from "../common/apiService";
-import { API_MY_ACCOUNT, PATH_IMAGE } from "../store/url";
+import { API_MY_ACCOUNT, PATH_IMAGE, API_GET_ASSETS } from "../store/url";
 export default {
   setup() {
     const users = ref([]);
+    const asset = ref([]);
     const filename = ref("");
     onMounted(async () => {
       try {
         const headers = ApiService.setHeader();
         const apiResponse = await ApiService.get(API_MY_ACCOUNT, { headers });
+        const assets = await ApiService.get(API_GET_ASSETS, { headers });
         users.value = apiResponse.data.data;
+        asset.value = assets.data;
+
         filename.value = PATH_IMAGE + users.value.avatar;
       } catch (error) {
         console.error(error);
@@ -90,6 +95,7 @@ export default {
     return {
       users,
       filename,
+      asset,
     };
   },
 };

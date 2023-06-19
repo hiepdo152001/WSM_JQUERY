@@ -27,7 +27,6 @@
                 <option value="days_on">Nghỉ phép có lương</option>
                 <option value="days_off">Nghỉ phép không lương</option>
                 <option value="over_time">Làm thêm giờ</option>
-                <option value="take_device_out">Mang thiết bị về nhà</option>
                 <option value="forgot_to_check">
                   Cập nhật thời gian làm việc
                 </option>
@@ -105,55 +104,18 @@
             }"
           >
             <label class="form-label" for="time_start">Thiết bị + Mã</label>
-            <!-- <select
+            <select
+              v-if="asset[0]"
               class="form-control kind-select"
               aria-label="Default select example"
-              v-model="form.use_property"
-              required
+              v-model="form.assets_id"
             >
-              <option :value="user.use_property">
-                {{ user.use_property }}
+              <option v-for="option in asset[0]" :value="option.id">
+                {{ option.name }} - {{ option.code }}
               </option>
-            </select> -->
+            </select>
           </div>
-          <div
-            class="form-group"
-            :class="{ 'd-none': active !== 'take_device_out' }"
-          >
-            <div class="col-md-8">
-              <div>
-                <label class="form-label">Mục đích</label>
-              </div>
-              <div class="frame-wrap d-flex">
-                <div class="form-check" style="margin-right: 20px">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                    v-model="form.sex"
-                    value="Nam"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1"
-                    >Cá nhân</label
-                  >
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                    v-model="form.sex"
-                    value="Nữ"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault2"
-                    >Công việc
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+
           <div class="form-group col-md-8">
             <label for="reason" class="form-label">Lý do</label>
             <textarea
@@ -284,7 +246,12 @@
 import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import ApiService from "../common/apiService";
-import { API_CREATE_REQUEST, API_MY_ACCOUNT, REQUEST } from "../store/url";
+import {
+  API_CREATE_REQUEST,
+  API_MY_ACCOUNT,
+  REQUEST,
+  API_GET_ASSETS,
+} from "../store/url";
 
 export default {
   setup() {
@@ -299,16 +266,22 @@ export default {
       phone: "",
       project: "",
       reason: "",
-      use_property: "",
+      assets_id: "",
     });
 
     const user = ref([]);
+    const asset = ref([]);
     onMounted(async () => {
       try {
         const userLogin = await ApiService.get(API_MY_ACCOUNT, { headers });
+        const assets = await ApiService.get(API_GET_ASSETS, { headers });
+
+        asset.value = assets.data;
         user.value = userLogin.data.data;
+
         form.phone = userLogin.data.data.phone;
         form.project = userLogin.data.data.project;
+
         if (form.check === false) {
           form.type = 1;
         } else {
@@ -321,8 +294,12 @@ export default {
 
     const createRequest = async () => {
       try {
+        check.value = "";
         const userLogin = await ApiService.get(API_MY_ACCOUNT, { headers });
-        if (form.time_start > form.time_end) {
+        if (
+          form.content !== "device_recall" &&
+          form.time_start > form.time_end
+        ) {
           check.value =
             "Thời gian bắt đầu không được lớn hơn thời gian kết thúc";
         } else if (
@@ -342,6 +319,7 @@ export default {
             window.location.href = REQUEST;
           }
         } else {
+          check.value = "";
           const res = await ApiService.postAuth(API_CREATE_REQUEST, form, {
             headers,
           });
@@ -363,6 +341,7 @@ export default {
       onChange,
       active,
       user,
+      asset,
     };
   },
 };

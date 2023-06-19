@@ -1,0 +1,21 @@
+get:
+  summary: Search users
+  tags:
+    - User
+  security:
+    - bearerAuth: []
+
+  parameters:
+    - name: search
+      in: path
+      description: Key search
+      required: true
+      schema:
+        search:
+          type: string
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"

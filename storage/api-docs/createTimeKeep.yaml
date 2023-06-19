@@ -1,0 +1,12 @@
+get:
+  summary: Time keep create
+  tags:
+    - Time Keep
+  security:
+    - bearerAuth: []
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "500":
+      $ref: "responses.yaml#/500"

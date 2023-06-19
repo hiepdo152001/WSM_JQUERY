@@ -37,7 +37,6 @@ class AuthController extends Controller
 
     public function registerAccount(RegisterRequest $request)
     {
-
         $user = $this->userService->createUser($request);
         $user->notify(new RegisterNotify($user));
 
@@ -70,7 +69,13 @@ class AuthController extends Controller
                 'status' => false
             ], 401);
         }
+        $status = $this->userService->check($email);
+        if ($status === 'deActive') {
+            return response()->json([
+                'message' => 'account de active!',
 
+            ], 500);
+        }
         $user->tokens()->delete();
         $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([

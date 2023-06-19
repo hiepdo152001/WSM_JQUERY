@@ -89,7 +89,7 @@ class CalendarController extends Controller
         $work_time = $this->calendarService->getWorkTime($id);
 
         return response()->json(
-            $work_time,
+            round($work_time, 1),
         );
     }
 

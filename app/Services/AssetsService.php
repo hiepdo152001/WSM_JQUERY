@@ -21,6 +21,10 @@ class AssetsService
 
     public function create($request)
     {
+        $user = User::find($request->user_id);
+        if ($user === null) {
+            return null;
+        }
         $asset = Asset::create([
             'name' => $request->name,
             'code' => $request->code,
@@ -36,11 +40,19 @@ class AssetsService
         return $asset->update($payload);
     }
 
+
+    public function deleteId($id)
+    {
+        $asset = Asset::find($id);
+        return $asset->delete();
+    }
+
     public function getById($id)
     {
         $asset = Asset::find($id);
         return $asset;
     }
+
     public function getByUserId($id)
     {
         $assets = Asset::where('user_id', $id)->get();

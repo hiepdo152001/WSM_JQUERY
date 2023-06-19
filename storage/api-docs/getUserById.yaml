@@ -1,0 +1,20 @@
+get:
+  summary: Get User
+  tags:
+    - User
+  security:
+    - bearerAuth: []
+
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    "202":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"

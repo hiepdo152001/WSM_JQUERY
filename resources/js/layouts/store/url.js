@@ -12,6 +12,14 @@ export const GET_REQUEST = APP_URL + "api/users/request/get";
 
 export const GET_USER = APP_URL + "api/users/get-user";
 
+export const DEPARTMENT = APP_URL + "home/department";
+
+export const MEMBER = APP_URL + "home/member";
+
+export const SEARCH = APP_URL + "api/users/search";
+
+export const AllUser = APP_URL + "api/users/gets";
+
 export const PROFILE = APP_URL + "home/edit/profile";
 
 export const CHANGE_PASSWORD = APP_URL + "change-password";
@@ -25,6 +33,10 @@ export const API_REGISTER = "api/auth/register";
 export const API_CHANGE_PASSWORD = "api/auth/change-password";
 
 export const API_MY_ACCOUNT = "api/users/my-account";
+
+export const API_DELETE_USER = "api/users/delete/users";
+
+export const API_ACTIVE_USER = "api/users/active/users";
 
 export const API_REQUEST = "api/users/request";
 
@@ -59,3 +71,15 @@ export const API_GET_TIME_KEEP = "api/users/time-keep/get";
 export const API_GET_TIME_KEEP_BY_DAY = "api/users/time-keep/getByDay";
 
 export const API_GET_NOT_WORK = "api/users/time-keep/getNotWork";
+
+export const API_ASSETS_NEW = "api/users/assets/new";
+
+export const API_GET_ASSETS = "api/users/assets/get";
+
+export const API_GET_ASSETS_ID = "api/users/assets/get";
+
+export const DEPARTMENT_NEW = "api/users/department/new";
+
+export const DEPARTMENT_GETS = "api/users/department/get";
+
+export const DEPARTMENT_EDIT = "api/users/department/edit";

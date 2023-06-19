@@ -1,6 +1,6 @@
 <template>
   <div class="panels d-flex">
-    <div class="col-sm-10">
+    <div class="col-sm-11">
       <form class="navbar-form navbar-left">
         <input type="text" class="form-control" placeholder="Search" />
       </form>

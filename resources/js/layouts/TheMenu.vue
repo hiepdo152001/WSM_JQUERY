@@ -10,30 +10,27 @@
         <span>Lịch làm việc</span>
       </router-link>
     </a-menu-item>
-    <a-sub-menu key="menu-request">
-      <template #icon>
-        <MailOutlined />
-      </template>
-      <template #title>
-        <i class="fal fa-share-square"></i>
-        Các yêu cầu</template
-      >
-      <a-menu-item key="yeu-cau-cua-toi">
-        <router-link :to="{ name: 'yeu-cau-cua-toi' }">
-          <span>Yêu cầu của tôi</span>
-        </router-link>
-      </a-menu-item>
-      <a-menu-item key="member-request">
-        <router-link :to="{ name: 'member-request' }">
-          <span>Yêu cầu cần duyệt</span>
-        </router-link>
-      </a-menu-item>
-      <a-menu-item key="member" :class="{ 'd-none': ad !== ad }">
-        <router-link :to="{ name: 'member' }">
-          <span>Quản lý Usert</span>
-        </router-link>
-      </a-menu-item>
-    </a-sub-menu>
+
+    <a-menu-item key="yeu-cau-cua-toi" :class="{ 'd-none': ad === 'ad' }">
+      <router-link :to="{ name: 'yeu-cau-cua-toi' }">
+        <span>Yêu cầu của tôi</span>
+      </router-link>
+    </a-menu-item>
+    <a-menu-item key="member-request" :class="{ 'd-none': ad === 'ad' }">
+      <router-link :to="{ name: 'member-request' }">
+        <span>Yêu cầu cần duyệt</span>
+      </router-link>
+    </a-menu-item>
+    <a-menu-item key="member" :class="{ 'd-none': ad !== 'ad' }">
+      <router-link :to="{ name: 'member' }">
+        <span>Quản lý User</span>
+      </router-link>
+    </a-menu-item>
+    <a-menu-item key="department" :class="{ 'd-none': ad !== 'ad' }">
+      <router-link :to="{ name: 'department' }">
+        <span>Phòng ban</span>
+      </router-link>
+    </a-menu-item>
   </a-menu>
 </template>
 <script>
@@ -51,7 +48,7 @@ export default {
     onMounted(async () => {
       try {
         const res = await ApiService.get(API_MY_ACCOUNT, { headers });
-        ad.value = res.data.data.department;
+        ad.value = res.data.data.position;
       } catch (error) {
         console.error(error);
       }
@@ -63,3 +60,20 @@ export default {
   },
 };
 </script>
+<style>
+.ant-list,
+.ant-spin-nested-loading,
+.ant-spin-container,
+.ant-menu {
+  background-color: #7656a7;
+}
+.ant-menu {
+  border: none !important;
+}
+.ant-menu-item-selected {
+  background-color: #330c6e !important;
+}
+.ant-menu-title-content span {
+  color: white;
+}
+</style>

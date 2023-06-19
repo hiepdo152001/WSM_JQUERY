@@ -1,0 +1,30 @@
+get:
+  summary: Time Keep get not work
+  tags:
+    - Time Keep
+  security:
+    - bearerAuth: []
+
+  parameters:
+    - name: month
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 06
+    - name: year
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 2023
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"

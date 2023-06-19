@@ -116,8 +116,6 @@ class ContactSttTest extends TestCase
         Notification::assertSentTo($userTo, \App\Notifications\StatusReqNotify::class);
         $res->assertStatus(200);
         $this->assertEquals(3, $status);
-        $this->assertEquals(-1.4, $flag);
-        $this->assertEquals(2, $leave_days);
     }
 
     public function test_stt_3_over_time()

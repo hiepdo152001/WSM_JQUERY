@@ -1,0 +1,33 @@
+post:
+  summary: Avatar
+  tags:
+    - User
+  security:
+    - bearerAuth: []
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | image |'jpeg', 'jpg', 'png', 'gif' | | Required ||
+
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            image_data:
+              type: string
+              format: binary
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "422":
+      $ref: "responses.yaml#/422"

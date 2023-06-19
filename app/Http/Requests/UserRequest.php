@@ -28,7 +28,6 @@ class UserRequest extends FormRequest
     {
         return [
 
-            'department' => 'string|max:255',
             'position' => 'string|max:255',
             'email' => 'string|email|unique:users|max:255',
             'age' => 'integer|max:200',

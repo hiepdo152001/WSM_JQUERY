@@ -1,0 +1,45 @@
+put:
+  summary: update status Contact
+  tags:
+    - Contact
+  security:
+    - bearerAuth: []
+
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size |  | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | status | integer | 256 | 1,2,3,4,5 ||
+
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+
+          properties:
+            status:
+              type: integer
+              example: 1
+
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "404":
+      $ref: "responses.yaml#/404"
+    "422":
+      $ref: "responses.yaml#/422"

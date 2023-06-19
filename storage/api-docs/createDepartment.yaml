@@ -1,0 +1,32 @@
+post:
+  summary: Create Department
+  tags:
+    - Department
+  security:
+    - bearerAuth: []
+  description: |
+    # Overview
+    ## Request Header
+    | Key | Value |
+    | :---- | :---- |
+    | Content-Type | application/json |
+    ## Request Body (In case of login)
+    | Name | Type | Size | Required | Description |
+    | :---- | :---- | :---- | :---- | :---- |
+    | name | string | 256 | Required ||
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - grantType
+          properties:
+            name: { $ref: "schemas.yaml#/Name" }
+  responses:
+    "200":
+      $ref: "responses.yaml#/200"
+    "422":
+      $ref: "responses.yaml#/422"

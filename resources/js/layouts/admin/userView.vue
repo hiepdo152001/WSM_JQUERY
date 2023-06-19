@@ -1,31 +1,5 @@
 <template>
-  <div class="panel-hdr">
-    <h2>Tìm Kiếm theo id</h2>
-  </div>
-
-  <form
-    class="navbar-form navbar-left"
-    @submit.prevent="SearchUser"
-    enctype="multipart/form-data"
-  >
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search"
-        v-model="search.search"
-      />
-      <button class="btn btn-primary mt-2" type="submit">Tìm Kiếm</button>
-    </div>
-  </form>
-  <div
-    style="margin-top: 100px"
-    class="alert alert-danger"
-    :class="{ 'd-none': active !== 'error' }"
-  >
-    Không tồn tại user id
-  </div>
-  <div :class="{ 'd-none': active !== 'active' }">
+  <div class="col-sm-12">
     <div class="panel">
       <div class="panel-container">
         <div class="panel-content">
@@ -33,6 +7,7 @@
             class="form-horizontal"
             @submit.prevent="updateProfile"
             enctype="multipart/form-data"
+            style="padding: 20px 0px 20px 20px"
           >
             <div class="form-group">
               <div class="col-md-12">
@@ -48,6 +23,20 @@
                     style="width: 250px; height: auto; margin-bottom: 20px"
                   />
                   <br />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-4">
+                <div>
+                  <label class="form-label">Tên</label>
+                </div>
+                <div class="frame-wrap d-flex">
+                  <div class="form-check">
+                    <label class="form-check-label" for="flexRadioDefault2"
+                      >{{ user.name }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -94,13 +83,11 @@
                 <select
                   class="form-control"
                   aria-label="Default select example"
-                  v-model="form.department"
+                  v-model="form.department_id"
                 >
-                  <option selected="selected" value="d1">Division 1</option>
-                  <option value="d1">Division 1</option>
-                  <option value="d2">Division 2</option>
-                  <option value="d3">Division 3</option>
-                  <option value="d4">Division 4</option>
+                  <option v-for="option in departments" :value="option.id">
+                    {{ option.name }}
+                  </option>
                 </select>
               </div>
               <div class="col-md-2">
@@ -250,15 +237,32 @@
                 />
               </div>
             </div>
-            <div>
-              <button
-                type="submit"
-                class="btn btn-success waves-effect waves-themed"
-                style=""
-              >
-                <i class="fal fa-save"></i>
-                Lưu
-              </button>
+            <div style="padding-bottom: 40px">
+              <div class="col-md-1">
+                <button
+                  type="submit"
+                  class="btn btn-success waves-effect waves-themed"
+                  style=""
+                >
+                  <i class="fal fa-save"></i>
+                  Lưu
+                </button>
+              </div>
+              <div class="col-md-3">
+                <button
+                  class="btn btn-success waves-effect waves-themed"
+                  type="button"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  v-if="user.id"
+                >
+                  <router-link
+                    :to="{ name: 'asset-user', params: { id: user.id } }"
+                  >
+                    <span style="color: white">Thêm tài sản sử dụng</span>
+                  </router-link>
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -269,13 +273,8 @@
 <script>
 import { ref, onMounted, reactive } from "vue";
 import ApiService from "../common/apiService";
-import {
-  GET_USER,
-  PATH_IMAGE,
-  API_UPDATE_MEMBER,
-  API_AVATAR,
-} from "../store/url";
-
+import { GET_USER, API_UPDATE_MEMBER, DEPARTMENT_GETS } from "../store/url";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const search = reactive({
@@ -283,7 +282,7 @@ export default {
     });
     const form = reactive({
       sex: "",
-      department: "",
+      department_id: "",
       position: "",
       age: "",
       permanent_address: "",
@@ -294,50 +293,46 @@ export default {
       tax_code: "",
       leave_days: "",
     });
-    const active = ref("");
+
     const user = ref([]);
     const filename = ref("");
     const fileInput = ref(null);
     const file = ref(null);
     const headers = ApiService.setHeader();
-
-    const SearchUser = async () => {
+    const router = useRouter();
+    const departments = ref([]);
+    onMounted(async () => {
       try {
-        const id = search.search;
+        const id = router.currentRoute.value.params.id;
         const res = await ApiService.getParameter(GET_USER, id, { headers });
+        const response = await ApiService.get(DEPARTMENT_GETS, { headers });
+        departments.value = response.data[0];
         if (res) {
           const { data } = res.data;
-
           user.value = data;
-          filename.value = PATH_IMAGE + data.avatar;
-
+          filename.value = "../../../storage/" + data.avatar;
           Object.assign(form, {
             sex: data.sex,
-            department: data.department,
+            department_id: data.department_id,
             position: data.position,
-            age: data.age,
+            age: data.age.substring(0, 10),
             permanent_address: data.permanent_address,
             temporary_address: data.temporary_address,
             cccd: data.cccd,
-            date_range: data.date_range,
+            date_range: data.date_range.substring(0, 10),
             issued_by: data.issued_by,
             tax_code: data.tax_code,
             phone: data.phone,
             project: data.project,
             leave_days: data.leave_days,
           });
-          active.value = "active";
         }
-      } catch (error) {
-        if (error.response.status === 404) {
-          active.value = "error";
-        }
-      }
-    };
+      } catch (error) {}
+    });
 
     const updateProfile = async () => {
       try {
-        const id = search.search;
+        const id = router.currentRoute.value.params.id;
 
         let formData = new FormData();
         formData.append("image_data", file.value);
@@ -354,20 +349,17 @@ export default {
         if (updateUser != null) {
           alert("Update successful!");
         }
-      } catch (error) {
-        console.log(1);
-      }
+      } catch (error) {}
     };
 
     return {
       search,
       form,
-      SearchUser,
-
+      user,
       updateProfile,
-      active,
       filename,
       fileInput,
+      departments,
     };
   },
 };

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\department;
+use App\Models\Departments;
 use App\Models\position;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        department::class;
-        position::class;
+        UsersTableSeeder::class;
+        ContactSeeder::class;
+        DepartmentSeeder::class;
     }
 }
