@@ -19,4 +19,15 @@
     <div id="app"></div>
     <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
 </body>
+<style>
+    .btn-primary {
+  color: #fff;
+  background-color: #886ab5;
+  border-color: #886ab5;
+}
+.btn-primary:hover {
+  background-color: #7453a6;
+  border-color: #6e4e9e;
+}
+</style>
 </html>
