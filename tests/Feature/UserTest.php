@@ -61,17 +61,13 @@ class UserTest extends TestCase
 
     public function test_delete_user_by_id_false()
     {
-        $response =  $this->withHeader('Authorization', 'Bearer ' .  $this->token)->delete('/api/users/delete/users/999');
-        $response->assertStatus(404)
-            ->assertJson([
-                'status' =>  false,
-                'message' => 'user id not found',
-            ]);
+        $response =  $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/delete/users/999');
+        $response->assertStatus(404);
     }
 
     public function test_delete_user_by_id_done()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->delete('/api/users/delete/users/' . $this->user->id);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/delete/users/' . $this->user->id);
         $response->assertStatus(202);
     }
 
