@@ -71,7 +71,6 @@ export default {
         if (res.data.status === true) {
           jwtService.setToken(JSON.stringify(res.data.token));
           window.location.href = HOME_CALENDAR;
-          alert(res.data.message);
         }
       } catch (error) {
         if (error.response.status === 401) {
