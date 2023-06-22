@@ -27,62 +27,75 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => '/auth'], function () {
-    Route::post('/register', [AuthController::class, 'registerAccount']);
-    Route::post('/login', [AuthController::class, 'loginAuth']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::put('/change-password', [AuthController::class, 'changePassword']);
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => '/users'], function () {
-        Route::get('/my-account', [UserController::class, 'getUserLogin']);
-        Route::put('/update/my-account', [UserController::class, 'updateUserLoggedIn']);
-        Route::get('/get-user/{id}', [UserController::class, 'getUserById']);
-        Route::put('/update/user/{id}', [UserController::class, 'updateUserById']);
-        Route::post('/update/avatar', [UserController::class, 'editAvatar']);
-        Route::put('/delete/users/{id}', [UserController::class, 'deleteUserById']);
-        Route::put('/active/users/{id}', [UserController::class, 'activeUserById']);
 
-        Route::get('/gets', [UserController::class, 'get']);
-        Route::get('/search/{search}', [UserController::class, 'search']);
-        Route::get('/get/department/{department_id}', [UserController::class, 'getByDepartment']);
+        Route::get('/profile', [UserController::class, 'profile']);
+        Route::put('/profile', [UserController::class, 'updateProfile']);
+        Route::post('/avatar', [UserController::class, 'editAvatar']);
 
-        Route::group(['prefix' => '/request'], function () {
-            Route::post('/new', [ContactController::class, 'ContactCreate']);
-            Route::get('', [ContactController::class, 'getContact']);
-            Route::get('/get/{id}', [ContactController::class, 'get']);
-            Route::put('/update/{id}', [ContactController::class, 'setStatusRequest']);
-            Route::put('/edit/{id}', [ContactController::class, 'edit']);
-            Route::delete('/delete/{id}', [ContactController::class, 'delete']);
+        Route::get('/{id}', [UserController::class, 'getById']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::put('/{id}/deActive', [UserController::class, 'delete']);
+        Route::put('/{id}/active', [UserController::class, 'active']);
+
+        Route::get('', [UserController::class, 'get']);
+        // Route::get('/{search}', [UserController::class, 'search']);
+
+        // pagination & search 
+        // GET /users?keyword=ma&department_id=1&page=2&limit=10
+        // filters / where  keyword=ma&department_id=1
+        // query params
+        // pagination page=2&limit=10
+
+        // Route::get('/get/department/{department_id}', [UserController::class, 'getByDepartment']);
+
+        //request
+        Route::group(['prefix' => '/requests'], function () {
+            Route::get('/all', [ContactController::class, 'getByUserLogin']);
+            Route::post('', [ContactController::class, 'create']);
             Route::get('/manager', [ContactController::class, 'getManager']);
-            Route::get('/user-create/{id}', [ContactController::class, 'userCreate']);
+            Route::get('/{id}', [ContactController::class, 'get']); // popular : user_id => user obj relationship
+            Route::patch('/{id}', [ContactController::class, 'setStatus']);
+            Route::put('/{id}', [ContactController::class, 'edit']);
+            Route::delete('/{id}', [ContactController::class, 'delete']);
+
+            Route::get('/member/{type}', [ContactController::class, 'getStatus']);
         });
 
-        Route::get('/member/request/{type}', [ContactController::class, 'getRequestStatus']);
-
+        //time keep
         Route::group(['prefix' => '/time-keep'], function () {
-            Route::get('/new', [CalendarController::class, 'createTimeKeep']);
-            Route::get('/update', [CalendarController::class, 'updateTimeKeep']);
-            Route::get('/get', [CalendarController::class, 'getTimeKeep']);
-            Route::get('/getByDay', [CalendarController::class, 'getByDay']);
-            Route::get('/getWorkTime', [CalendarController::class, 'getWorkTime']);
-            Route::get('/getNotWork/{year}/{month}', [CalendarController::class, 'getNotWork']);
+            Route::get('/all', [CalendarController::class, 'get']);
+            Route::post('/check-in', [CalendarController::class, 'create']);
+            Route::put('/check-out', [CalendarController::class, 'update']);
+            Route::get('/by-day', [CalendarController::class, 'getByDay']);
+            Route::get('/work-time', [CalendarController::class, 'getWorkTime']);
+            Route::get('/not-work/{year}/{month}', [CalendarController::class, 'getNotWork']);
         });
         Route::get('/exports', [CalendarController::class, 'export']);
 
+        //asset
         Route::group(['prefix' => '/assets'], function () {
-            Route::post('/new', [AssetsController::class, 'create']);
-            Route::patch('/edit/{id}', [AssetsController::class, 'edit']);
-            Route::get('/get/{id}', [AssetsController::class, 'getById']);
-            Route::get('/get', [AssetsController::class, 'getByUserLogin']);
+            Route::get('/me', [AssetsController::class, 'getByUserLogin']);
+            Route::post('/', [AssetsController::class, 'create']);
+            Route::get('/{id}', [AssetsController::class, 'getById']);
+            Route::put('/{id}', [AssetsController::class, 'edit']);
         });
 
-        Route::group(['prefix' => '/department'], function () {
-            Route::post('/new', [DepartmentController::class, 'create']);
-            Route::patch('/edit/{id}', [DepartmentController::class, 'edit']);
-            Route::get('/get', [DepartmentController::class, 'get']);
-            Route::get('/get/{id}', [DepartmentController::class, 'getById']);
-        });
+        // department
+
+    });
+    Route::group(['prefix' => '/departments'], function () {
+        Route::get('', [DepartmentController::class, 'get']);
+        Route::post('', [DepartmentController::class, 'create']);
+        Route::get('/{id}', [DepartmentController::class, 'getById']);
+        Route::put('/{id}', [DepartmentController::class, 'edit']);
     });
 });
 
