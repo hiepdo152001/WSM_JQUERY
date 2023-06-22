@@ -18,9 +18,16 @@
               <div class="form-row">
                 <div class="col-sm-6">
                   <img
+                    v-if="filename"
+                    class="profile-image rounded-circle"
                     :src="filename"
-                    alt="Avatar Image"
-                    style="width: 250px; height: auto; margin-bottom: 20px"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="profile-image rounded-circle"
+                    src="../../../../public/images/andanh.jpg"
+                    alt=""
                   />
                   <br />
                 </div>
@@ -310,7 +317,10 @@ export default {
         if (res) {
           const { data } = res.data;
           user.value = data;
-          filename.value = "../../../storage/" + data.avatar;
+          if (data.avatar !== null) {
+            filename.value = "../../../storage/" + data.avatar;
+          }
+
           Object.assign(form, {
             sex: data.sex,
             department_id: data.department_id,
