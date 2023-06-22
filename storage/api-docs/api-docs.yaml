@@ -4,12 +4,6 @@ info:
   version: "1.0.0"
 schemes:
   - http
-# chi chap nhan request dang json
-# consumes:
-#   - application/json
-# chi nhan response dang json
-# produces:
-#   - application/json
 paths:
   /api/auth/login:
     $ref: "login.yaml"
@@ -24,105 +18,78 @@ paths:
     $ref: "register.yaml"
 
   #User
-  /api/users/update/user/{id}:
-    $ref: "updateUserById.yaml"
-
-  /api/users/update/my-account:
+  /api/users/profile:
+    get: { $ref: "getMyAccount.yaml#/get" }
     $ref: "updateUserLogin.yaml"
 
-  /api/users/get-user/{id}:
-    $ref: "getUserById.yaml"
-
-  /api/users/my-account:
-    $ref: "getMyAccount.yaml"
-
-  /api/users/delete/users/{id}:
-    $ref: "blockUserById.yaml"
-
-  /api/users/active/users/{id}:
-    $ref: "activeUserById.yaml"
-
-  /api/users/gets:
-    $ref: "getUsers.yaml"
-
-  /api/users/get/department/{department_id}:
-    $ref: "getByDepartment.yaml"
-
-  /api/users/search/{search}:
-    $ref: "searchUsers.yaml"
-
-  /api/users/update/avatar:
+  /api/users/avatar:
     $ref: "updateAvatar.yaml"
 
+  /api/users/{id}:
+    $ref: "updateUserById.yaml"
+    get: { $ref: "getUserById.yaml#/get" }
+
+  /api/users/{id}/deActive:
+    $ref: "blockUserById.yaml"
+
+  /api/users/{id}/active:
+    $ref: "activeUserById.yaml"
+
   #Department
-  /api/users/department/new:
-    $ref: "createDepartment.yaml"
 
-  /api/users/department/edit/{id}:
-    $ref: "editDepartmentById.yaml"
-
-  /api/users/department/get/{id}:
+  /api/departments/{id}:
     $ref: "getDepartmentById.yaml"
+    put: { $ref: "editDepartmentById.yaml#/put" }
 
-  /api/users/department/get:
+  /api/departments:
     $ref: "getDepartment.yaml"
-
+    post: { $ref: "createDepartment.yaml#/post" }
   #Assets
-  /api/users/assets/new:
+
+  /api/users/assets:
     $ref: "createAssets.yaml"
 
-  /api/users/assets/edit/{id}:
-    $ref: "editAssetsById.yaml"
-
-  /api/users/assets/get/{id}:
-    $ref: "getAssetsById.yaml"
-
-  /api/users/assets/get:
+  /api/users/assets/me:
     $ref: "getAssets.yaml"
 
+  /api/users/assets/{id}:
+    $ref: "getAssetsById.yaml"
+    put: { $ref: "editAssetsById.yaml#/put" }
+
   #Contact
-  /api/users/request/new:
+  /api/users/requests:
     $ref: "createContact.yaml"
 
-  /api/users/request:
+  /api/users/requests/{id}:
+    $ref: "getContactById.yaml"
+    patch: { $ref: "setSttContact.yaml#/patch" }
+    put: { $ref: "editContact.yaml#/put" }
+    delete: { $ref: "deleteContact.yaml#/delete" }
+  /api/users/requests/manager:
+    $ref: "getManagerUserContact.yaml"
+  /api/users/requests/member/{type}:
+    $ref: "getContactStatus.yaml"
+  /api/users/requests/all:
     $ref: "getContact.yaml"
 
-  /api/users/request/get/{id}:
-    $ref: "getContactById.yaml"
-
-  /api/users/request/update/{id}:
-    $ref: "setSttContact.yaml"
-
-  /api/users/request/manager:
-    $ref: "getManagerUserContact.yaml"
-
-  /api/users/member/request/{type}:
-    $ref: "getContactStatus.yaml"
-
-  /api/users/request/user-create/{id}:
-    $ref: "userCreateContact.yaml"
-
-  /api/users/request/delete/{id}:
-    $ref: "deleteContact.yaml"
-
   #timeKeep
-  /api/users/time-keep/new:
-    $ref: "createTimeKeep.yaml"
+  /api/users/time-keep/all:
+    $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/update:
-    $ref: "createTimeKeep.yaml"
+  /api/users/time-keep/by-day:
+    $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/get:
-    $ref: "createTimeKeep.yaml"
+  /api/users/time-keep/work-time:
+    $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/getByDay:
-    $ref: "createTimeKeep.yaml"
-
-  /api/users/time-keep/getWorkTime:
-    $ref: "createTimeKeep.yaml"
-
-  /api/users/time-keep/getNotWork/{year}/{month}:
+  /api/users/time-keep/not-work/{year}/{month}:
     $ref: "getNotWorkTimeKeep.yaml"
+
+  /api/users/time-keep/check-in:
+    $ref: "createTimeKeep.yaml"
+
+  /api/users/time-keep/check-out:
+    $ref: "updateTimeKeep.yaml"
 
 components:
   schemas:
@@ -137,21 +104,6 @@ components:
         email:
           type: string
 
-  responses:
-    200:
-      $ref: "responses.yaml#/200"
-    201:
-      $ref: "responses.yaml#/201"
-    204:
-      $ref: "responses.yaml#/204"
-    400:
-      $ref: "responses.yaml#/400"
-    401:
-      $ref: "responses.yaml#/401"
-    404:
-      $ref: "responses.yaml#/404"
-    default:
-      $ref: "responses.yaml#/default"
   securitySchemes:
     bearerAuth:
       type: http

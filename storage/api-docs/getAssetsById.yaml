@@ -15,7 +15,7 @@ get:
         format: int64
 
   responses:
-    "200":
-      $ref: "responses.yaml#/200"
-    "404":
-      $ref: "responses.yaml#/404"
+    200:
+      description: "OK"
+    404:
+      description: "Not Found"

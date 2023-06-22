@@ -14,7 +14,6 @@ post:
     | name | string | 256 | Required ||
     | email | string | 256 | Required ||
     | password | string | 6 | Required ||
-    | grantType | string | 255 | Required | Fix "password" |
 
   requestBody:
     required: true
@@ -22,12 +21,11 @@ post:
       application/json:
         schema:
           type: object
-          required:
-            - grantType
+
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
-            email: { $ref: "schemas.yaml#/Email" }
-            password: { $ref: "schemas.yaml#/Password" }
+            name: { $ref: "schemas.yaml#/name" }
+            email: { $ref: "schemas.yaml#/email" }
+            password: { $ref: "schemas.yaml#/password" }
   responses:
     "200":
       $ref: "responses.yaml#/200"

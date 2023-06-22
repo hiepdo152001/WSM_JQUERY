@@ -14,17 +14,17 @@ Token:
   maxLength: 255
   example: "XXXXXXXXXXXXXXX"
 
-Email:
+email:
   type: email
   maxLength: 256
   example: "test@gmail.com"
 
-Name:
+name:
   type: string
   maxLength: 256
   example: "admin"
 
-Password:
+password:
   type: string
   format: password
   maxLength: 20
@@ -143,7 +143,7 @@ time_start:
   maxLength: 25
   example: "2000-01-01 00:00:00"
 
-time_in:
+time_end:
   type: string
   maxLength: 25
   example: "2000-01-01 00:00:00"

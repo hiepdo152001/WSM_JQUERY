@@ -1,4 +1,4 @@
-patch:
+put:
   summary: Department Edit By Id
   tags:
     - Department
@@ -32,9 +32,13 @@ patch:
           type: object
 
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
+            name:
+              type: string
+              maxLength: 256
+              example: "admin"
   responses:
-    "200":
-      $ref: "responses.yaml#/200"
-    "500":
-      $ref: "responses.yaml#/500"
+    200:
+      description: "OK"
+
+    500:
+      description: "Server Error"

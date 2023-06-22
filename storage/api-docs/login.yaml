@@ -13,7 +13,6 @@ post:
     | :---- | :---- | :---- | :---- | :---- |
     | email | string | 256 | Required ||
     | password | string | 20 | Required ||
-    | grantType | string | 255 | Required | Fix "password" |
 
   requestBody:
     required: true
@@ -21,11 +20,17 @@ post:
       application/json:
         schema:
           type: object
-          required:
-            - grantType
+
           properties:
-            email: { $ref: "schemas.yaml#/Email" }
-            password: { $ref: "schemas.yaml#/Password" }
+            email:
+              type: email
+              maxLength: 256
+              example: "test@gmail.com"
+            password:
+              type: string
+              format: password
+              maxLength: 20
+              example: "Password"
 
   responses:
     "202":

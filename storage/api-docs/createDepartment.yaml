@@ -21,12 +21,14 @@ post:
       application/json:
         schema:
           type: object
-          required:
-            - grantType
+
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
+            name:
+              type: string
+              maxLength: 256
+              example: "admin"
   responses:
-    "200":
-      $ref: "responses.yaml#/200"
-    "422":
-      $ref: "responses.yaml#/422"
+    200:
+      description: "OK"
+    422:
+      description: "Unprocessable Content"

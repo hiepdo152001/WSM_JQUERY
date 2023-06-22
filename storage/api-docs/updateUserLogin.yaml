@@ -33,7 +33,6 @@ put:
     | working_day | date time | 255 |  ||
     | promotion_day | date time | 255 |  ||
     | date_range | date time | 255 |  ||
-    | grantType | string | 255 |  | Fix "password" |
 
   requestBody:
     content:
@@ -41,8 +40,8 @@ put:
         schema:
           type: object
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
-            email: { $ref: "schemas.yaml#/Email" }
+            name: { $ref: "schemas.yaml#/name" }
+            email: { $ref: "schemas.yaml#/email" }
             phone: { $ref: "schemas.yaml#/phone" }
             age: { $ref: "schemas.yaml#/age" }
             sex: { $ref: "schemas.yaml#/sex" }

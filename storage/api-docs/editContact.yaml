@@ -1,4 +1,4 @@
-post:
+put:
   summary: Create Contact
   tags:
     - Contact
@@ -23,6 +23,14 @@ post:
     | time_end | time | 256 | ||
     | assets_id | integer | 256 | ||
     | status | integer | 256 | ||
+  parameters:
+    - name: id
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: integer
+        format: int64
 
   requestBody:
     required: true
@@ -30,7 +38,6 @@ post:
       application/json:
         schema:
           type: object
-
           properties:
             phone: { $ref: "schemas.yaml#/phone" }
             project: { $ref: "schemas.yaml#/project" }
@@ -47,5 +54,5 @@ post:
   responses:
     "200":
       $ref: "responses.yaml#/200"
-    "404":
-      $ref: "responses.yaml#/404"
+    "500":
+      $ref: "responses.yaml#/500"

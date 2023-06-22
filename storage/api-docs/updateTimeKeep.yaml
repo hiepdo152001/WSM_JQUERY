@@ -1,4 +1,4 @@
-post:
+put:
   summary: Time keep create
   tags:
     - Time Keep

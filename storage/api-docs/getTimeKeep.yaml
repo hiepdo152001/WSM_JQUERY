@@ -1,5 +1,5 @@
-post:
-  summary: Time keep create
+get:
+  summary: Time Keep All
   tags:
     - Time Keep
   security:

@@ -1,22 +1,9 @@
-patch:
+put:
   summary: Assets Edit By Id
   tags:
     - Assets
   security:
     - bearerAuth: []
-
-  description: |
-    # Overview
-    ## Request Header
-    | Key | Value |
-    | :---- | :---- |
-    | Content-Type | application/json |
-    ## Request Body (In case of login)
-    | Name | Type | Size | Required | Description |
-    | :---- | :---- | :---- | :---- | :---- |
-    | name | string | 256 | Required ||
-    | code | integer | 256 | Required ||
-    | location | string | 256 | ||
 
   parameters:
     - name: id
@@ -33,10 +20,12 @@ patch:
       application/json:
         schema:
           type: object
-          required:
-            - grantType
+
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
+            name:
+              type: string
+              maxLength: 256
+              example: "admin"
             code:
               type: integer
               example: 1
@@ -45,7 +34,7 @@ patch:
               example: home
 
   responses:
-    "200":
-      $ref: "responses.yaml#/200"
-    "500":
-      $ref: "responses.yaml#/500"
+    200:
+      description: "OK"
+    500:
+      description: "Server Error"

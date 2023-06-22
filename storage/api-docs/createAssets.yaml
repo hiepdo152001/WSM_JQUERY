@@ -24,10 +24,12 @@ post:
       application/json:
         schema:
           type: object
-          required:
-            - grantType
+
           properties:
-            name: { $ref: "schemas.yaml#/Name" }
+            name:
+              type: string
+              maxLength: 256
+              example: "admin"
             code:
               type: integer
               example: 1
