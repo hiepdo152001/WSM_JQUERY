@@ -92,7 +92,7 @@ export default {
     });
     const editDepartment = async () => {
       try {
-        const res = await ApiService.patch(DEPARTMENT_EDIT, form.id, form, {
+        const res = await ApiService.putStatus(DEPARTMENT_EDIT, form.id, form, {
           headers,
         });
         if (res.status === 200) {

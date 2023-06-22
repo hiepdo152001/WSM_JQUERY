@@ -41,7 +41,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" class="contact-row">
+        <tr v-for="user in users.data" class="contact-row">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
@@ -87,11 +87,15 @@
       </tbody>
     </table>
   </div>
+  <div class="page">
+    <Bootstrap5Pagination :data="users" @pagination-change-page="getUsers" />
+  </div>
 </template>
 
 <script>
 import { ref, onMounted, reactive } from "vue";
 import ApiService from "../common/apiService";
+import { Bootstrap5Pagination } from "laravel-vue-pagination";
 import {
   AllUser,
   SEARCH,
@@ -100,13 +104,18 @@ import {
   DEPARTMENT_GETS,
 } from "../store/url";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 export default {
+  components: {
+    Bootstrap5Pagination,
+  },
   setup() {
     const users = ref([]);
     const search = reactive({
       search: "",
     });
+    const pages = ref();
     const headers = ApiService.setHeader();
     const router = useRouter();
     const check = ref();
@@ -115,8 +124,8 @@ export default {
         const res = await ApiService.get(AllUser, { headers });
         users.value = res.data[0];
         const departments = await ApiService.get(DEPARTMENT_GETS, { headers });
-        users.value = ApiService.changeDepartment(
-          users.value,
+        users.value.data = ApiService.changeDepartment(
+          users.value.data,
           departments.data[0]
         );
       } catch (error) {
@@ -126,11 +135,19 @@ export default {
     const SearchUser = async () => {
       try {
         const key = search.search;
-        const res = await ApiService.getParameter(SEARCH, key, { headers });
+
+        if (pages.value === undefined) {
+          pages.value = 1;
+        }
+        const res = await ApiService.get(`${AllUser}?page=${pages.value}`, {
+          params: { search: key },
+          headers: headers,
+        });
+
         users.value = res.data[0];
         const departments = await ApiService.get(DEPARTMENT_GETS, { headers });
-        users.value = ApiService.changeDepartment(
-          users.value,
+        users.value.data = ApiService.changeDepartment(
+          users.value.data,
           departments.data[0]
         );
       } catch (error) {
@@ -139,28 +156,49 @@ export default {
         }
       }
     };
-
+    const getUsers = async (page = 1) => {
+      try {
+        pages.value = page;
+        const res = await ApiService.get(`${AllUser}?page=${page}`, {
+          headers,
+        });
+        users.value = res.data[0];
+        const departments = await ApiService.get(DEPARTMENT_GETS, { headers });
+        users.value.data = ApiService.changeDepartment(
+          users.value.data,
+          departments.data[0]
+        );
+      } catch (error) {}
+    };
     const deletes = async (id) => {
       try {
-        const res = await ApiService.putStatus(API_DELETE_USER, id, "", {
+        const deActive = id + "/deActive";
+        const res = await ApiService.putUser(API_DELETE_USER, deActive, "", {
           headers,
         });
 
         if (res.status === 202) {
           const user = res.data[0];
-          users.value = ApiService.changeStatusUser(users.value, user);
+          users.value.data = ApiService.changeStatusUser(
+            users.value.data,
+            user
+          );
         }
       } catch (error) {}
     };
     const active = async (id) => {
       try {
-        const res = await ApiService.putStatus(API_ACTIVE_USER, id, "", {
+        const active = id + "/active";
+        const res = await ApiService.putUser(API_DELETE_USER, active, "", {
           headers,
         });
 
         if (res.status === 202) {
           const user = res.data[0];
-          users.value = ApiService.changeStatusUser(users.value, user);
+          users.value.data = ApiService.changeStatusUser(
+            users.value.data,
+            user
+          );
         }
       } catch (error) {}
     };
@@ -170,6 +208,7 @@ export default {
       deletes,
       active,
       SearchUser,
+      getUsers,
       router,
       check,
     };
@@ -282,5 +321,17 @@ td {
 
 .status-pending {
   color: #2196f3;
+}
+.page-item.active .page-link {
+  background-color: #7453a6 !important;
+}
+.page-item.active a {
+  color: white !important;
+}
+.page-item a {
+  color: black !important;
+}
+.pagination {
+  padding-left: 40%;
 }
 </style>
