@@ -15,19 +15,13 @@ class WorkTimeNotify extends Notification implements ShouldQueue
     /**
      * 
      *
-     * @var User
-     */
-    protected $user;
-    /**
-     * 
-     *
      * @var float
      */
     protected $work_time;
 
-    public function __construct(User $user, float $work_time)
+    public function __construct(float $work_time)
     {
-        $this->user = $user;
+
         $this->work_time = $work_time;
     }
 
@@ -51,6 +45,7 @@ class WorkTimeNotify extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->greeting('Request form by admin')
             ->line('Work Time for you:')
             ->line('' . $this->work_time);
     }
