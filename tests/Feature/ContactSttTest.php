@@ -36,7 +36,7 @@ class ContactSttTest extends TestCase
         $this->contact->save();
         $this->user->leave_days = 2;
         $this->user->save();
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/request/update/' . $this->contact->id, ['status' => 3]);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->patch('/api/users/requests/' . $this->contact->id, ['status' => 3]);
         $data = $res->json();
         $contact = $data[0];
         $flag = $contact['flag'];
@@ -66,7 +66,7 @@ class ContactSttTest extends TestCase
         $this->user->leave_days = 2;
         $this->user->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/request/update/' . $this->contact->id, ['status' => 3]);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->patch('/api/users/requests/' . $this->contact->id, ['status' => 3]);
 
         $data = $res->json();
         $contact = $data[0];
@@ -99,7 +99,7 @@ class ContactSttTest extends TestCase
         $this->user->leave_days = 2;
         $this->user->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/request/update/' . $this->contact->id, ['status' => 3]);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->patch('/api/users/requests/' . $this->contact->id, ['status' => 3]);
 
         $data = $res->json();
         $contact = $data[0];
@@ -130,7 +130,7 @@ class ContactSttTest extends TestCase
         $this->user->leave_days = 2;
         $this->user->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/request/update/' . $this->contact->id, ['status' => 3]);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->patch('/api/users/requests/' . $this->contact->id, ['status' => 3]);
 
         $data = $res->json();
         $contact = $data[0];
@@ -161,7 +161,7 @@ class ContactSttTest extends TestCase
         $this->user->leave_days = 2;
         $this->user->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/request/update/' . $this->contact->id, ['status' => 3]);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->patch('/api/users/requests/' . $this->contact->id, ['status' => 3]);
 
         $data = $res->json();
         $contact = $data[0];

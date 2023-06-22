@@ -30,13 +30,13 @@ class CalendarTest extends TestCase
     public function test_create_time_keep_false_login()
     {
         $token = "";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/new');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->post('/api/users/time-keep/check-in');
         $res->assertStatus(500);
     }
 
     public function test_create_time_keep_done()
     {
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/new');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->post('/api/users/time-keep/check-in');
         $data = $res->json();
         $res->assertStatus(200);
         $this->assertEquals($this->timeKeep->time_in, $data['time_in']);
@@ -47,7 +47,7 @@ class CalendarTest extends TestCase
     public function test_update_time_keep_false_login()
     {
         $token = "";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/update');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->put('/api/users/time-keep/check-out');
         $res->assertStatus(500);
     }
 
@@ -56,7 +56,7 @@ class CalendarTest extends TestCase
         $this->timeKeep->user_id = $this->user->id;
         $this->timeKeep->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/update');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/time-keep/check-out');
 
         $res->assertStatus(200);
     }
@@ -64,7 +64,7 @@ class CalendarTest extends TestCase
     public function test_get_time_keep_false_login()
     {
         $token = "";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/get');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/all');
 
         $res->assertStatus(500);
     }
@@ -72,28 +72,28 @@ class CalendarTest extends TestCase
     public function test_get_time_keep_done()
     {
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/get');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/all');
         $res->assertStatus(200);
     }
 
     public function test_get_time_keep_by_day_false_login()
     {
         $token = "";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/getByDay');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/by-day');
 
         $res->assertStatus(500);
     }
 
     public function test_get_time_keep_by_day()
     {
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/getByDay');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/by-day');
         $res->assertStatus(200);
     }
 
     public function test_get_work_time_false_login()
     {
         $token = "";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/getWorkTime');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/time-keep/work-time');
 
         $res->assertStatus(500);
     }
@@ -112,7 +112,7 @@ class CalendarTest extends TestCase
         $this->contact->month = $month_keep;
         $this->contact->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/getWorkTime');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/work-time');
         $data = $res->json();
         $res->assertStatus(200);
         $this->assertEquals($data, 2.5);
@@ -141,7 +141,7 @@ class CalendarTest extends TestCase
         $this->contact->month = $month_keep;
         $this->contact->save();
 
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/getWorkTime');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/time-keep/work-time');
         $data = $res->json();
 
         $res->assertStatus(200);

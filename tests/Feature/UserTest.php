@@ -29,52 +29,52 @@ class UserTest extends TestCase
     public function test_update_user_by_id_no_id()
     {
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/update/user/50', ['name' => 'abc', 'email' => 'testcase@gmail.com']);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/50', ['name' => 'abc', 'email' => 'testcase@gmail.com']);
         $response->assertStatus(404);
     }
 
     public function test_update_user_by_id_false_validate()
     {
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/update/user/' . $this->user->id, ['name' => '', 'email' => 'admin@gmail.com']);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/' . $this->user->id, ['name' => '', 'email' => 'admin@gmail.com']);
         $response->assertStatus(422);
     }
 
     public function test_update_user_by_id_done()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/update/user/' . $this->user->id, ['name' => 'abc', 'email' => 'adminn@gmail.com']);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)->put('/api/users/' . $this->user->id, ['name' => 'abc', 'email' => 'adminn@gmail.com']);
         $response->assertStatus(200);
     }
 
     public function test_get_user_by_id_false()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/get-user/999');
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/999');
         $response->assertStatus(404);
     }
 
     public function test_get_user_by_id_done()
     {
 
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/get-user/1');
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/1');
         $response->assertStatus(202);
     }
 
-    public function test_delete_user_by_id_false()
+    public function test_de_active_user_by_id_false()
     {
-        $response =  $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/delete/users/999');
+        $response =  $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/999/deActive');
         $response->assertStatus(404);
     }
 
-    public function test_delete_user_by_id_done()
+    public function test_de_active_user_by_id_done()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/delete/users/' . $this->user->id);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/' . $this->user->id . '/deActive');
         $response->assertStatus(202);
     }
 
     public function test_my_account_false_token()
     {
         $token = 'false';
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->get('/api/users/my-account', [
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->get('/api/users/profile', [
             'Authorization' => 'Bearer' . $token
         ]);
         $response->assertStatus(500);
@@ -82,21 +82,21 @@ class UserTest extends TestCase
 
     public function test_my_account_done()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/my-account');
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->get('/api/users/profile');
         $response->assertStatus(200);
     }
 
     public function test_update_my_account_done()
     {
 
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/update/my-account', ['cccd' => '12345678']);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->put('/api/users/profile', ['cccd' => '12345678']);
         $response->assertStatus(200);
     }
 
     public function test_update_my_account_false()
     {
         $token = '';
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->put('/api/users/update/my-account', ['name' => 'abc', 'cccd' => 'abcd']);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->put('/api/users/profile', ['name' => 'abc', 'cccd' => 'abcd']);
         $response->assertStatus(500);
     }
 
@@ -106,7 +106,7 @@ class UserTest extends TestCase
 
         $file = UploadedFile::fake()->image('avatar.jpg');
         $token = '';
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->post('/api/users/update/avatar', ['image_data' => $file]);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $token)->post('/api/users/avatar', ['image_data' => $file]);
         $response->assertStatus(500);
     }
 
@@ -116,7 +116,7 @@ class UserTest extends TestCase
 
         $file = UploadedFile::fake()->create('image.pdf');
 
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->post('/api/users/update/avatar', ['image_data' => $file]);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->post('/api/users/avatar', ['image_data' => $file]);
         $response->assertStatus(422);
     }
 
@@ -126,7 +126,7 @@ class UserTest extends TestCase
 
         $file = UploadedFile::fake()->create('image.jpg');
 
-        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->post('/api/users/update/avatar', ['image_data' => $file]);
+        $response = $this->withHeader('Authorization', 'Bearer ' .  $this->token)->post('/api/users/avatar', ['image_data' => $file]);
         $response->assertStatus(200);
     }
 }

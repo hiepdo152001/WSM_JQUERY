@@ -30,20 +30,20 @@ class ContactPart2Test extends TestCase
     public function test_get_manager_false_login()
     {
         $token = '';
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/request/manager', $this->contact->toArray());
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/requests/manager', $this->contact->toArray());
         $res->assertStatus(500);
     }
 
     public function test_get_manager_done()
     {
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/request/manager', $this->contact->toArray());
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/manager', $this->contact->toArray());
         $res->assertStatus(200);
     }
 
     public function test_get_request_stt_false_login()
     {
         $token = '';
-        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/member/request/pending');
+        $res = $this->withHeader('Authorization', 'Bearer ' . $token)->get('/api/users/requests/member/pending');
         $res->assertStatus(500);
     }
 
@@ -54,7 +54,7 @@ class ContactPart2Test extends TestCase
         $contactPending1->user_id = $this->user->id;
         $contactPending1->save();
         $type = "pending";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/member/' . $type);
 
         $data = $res->json();
 
@@ -84,7 +84,7 @@ class ContactPart2Test extends TestCase
         $contactPending2->save();
 
         $type = "confirmed";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/member/' . $type);
         $data = $res->json();
 
         $data1 = $data['data'][0];
@@ -114,7 +114,7 @@ class ContactPart2Test extends TestCase
         $contactPending2->save();
 
         $type = "approved";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/member/' . $type);
         $data = $res->json();
 
         $data1 = $data['data'][0];
@@ -145,7 +145,7 @@ class ContactPart2Test extends TestCase
         $contactPending2->save();
 
         $type = "declined";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/member/' . $type);
         $data = $res->json();
 
         $data1 = $data['data'][0];
@@ -176,7 +176,7 @@ class ContactPart2Test extends TestCase
         $contactPending2->save();
 
         $type = "canceled";
-        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/member/request/' . $type);
+        $res = $this->withHeader('Authorization', 'Bearer ' . $this->token)->get('/api/users/requests/member/' . $type);
         $data = $res->json();
 
         $data1 = $data['data'][0];
