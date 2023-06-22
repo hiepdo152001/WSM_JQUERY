@@ -34,13 +34,13 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-
-    public function updateUserById($id, Request $userequest)
+    // update
+    public function update($id, Request $userequest)
     {
         $validator = FacadesValidator::make($userequest->all(), [
             'email' => 'string|unique:users|email'
         ]);
-        $user = $this->userService->getUserById($id);
+        $user = $this->userService->getById($id);
         $email = $userequest->email;
 
         if ($user === null) {
@@ -57,7 +57,7 @@ class UserController extends Controller
             ], 422);
         }
 
-        $this->userService->editUser($id, $userequest->input());
+        $this->userService->edit($id, $userequest->input());
 
         return response()->json([
             'status' => true,
@@ -65,7 +65,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function updateUserLoggedIn(Request $request)
+    // updateProfile
+    public function updateProfile(Request $request)
     {
 
         $user = $this->getCurrentLoggedIn();
@@ -75,7 +76,7 @@ class UserController extends Controller
                 'message' => 'user not found!'
             ], 500);
         }
-        $this->userService->editUser($user->id, $request->except(['position', 'department_id']));
+        $this->userService->edit($user->id, $request->except(['position', 'department_id']));
 
         return response()->json([
             'status' => true,
@@ -83,9 +84,10 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function getUserById($id)
+    // getById
+    public function getById($id)
     {
-        $user = $this->userService->getUserById($id);
+        $user = $this->userService->getById($id);
 
         if ($user === null) {
             return response()->json([
@@ -99,7 +101,8 @@ class UserController extends Controller
         ], 202);
     }
 
-    public function getUserLogin()
+    // profile
+    public function profile()
     {
 
         $user = $this->getCurrentLoggedIn();
@@ -115,7 +118,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function deleteUserById($id)
+    // delete
+    public function delete($id)
     {
         $user = $this->userService->deActive($id);
         if ($user === null) {
@@ -125,7 +129,9 @@ class UserController extends Controller
         }
         return response()->json([$user], 202);
     }
-    public function activeUserById($id)
+
+    // active
+    public function active($id)
     {
         $user = $this->userService->Active($id);
         if ($user === false) {
@@ -135,6 +141,7 @@ class UserController extends Controller
         }
         return response()->json([$user], 202);
     }
+
     public function editAvatar(Request $request)
     {
         $user = $this->getCurrentLoggedIn();
@@ -145,7 +152,7 @@ class UserController extends Controller
                 if ($pathName === false) {
                     return response()->json([], 422);
                 }
-                $userUpdate =  $this->userService->editUser($id, [
+                $userUpdate =  $this->userService->edit($id, [
                     'avatar' => $pathName,
                 ]);
                 return response()->json([
@@ -161,9 +168,10 @@ class UserController extends Controller
         ], 500);
     }
 
-    public function get()
+    public function get(Request $request)
     {
-        $users = $this->userService->get();
+        $search = $request->input('search');
+        $users = $this->userService->get($search);
         return response()->json([
             $users
         ], 200);

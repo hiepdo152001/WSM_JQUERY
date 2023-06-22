@@ -22,7 +22,7 @@ class CalendarController extends Controller
     }
 
 
-    public function createTimeKeep()
+    public function create()
     {
         $users = $this->getCurrentLoggedIn();
         $id = $users->id;
@@ -40,7 +40,7 @@ class CalendarController extends Controller
         );
     }
 
-    public function updateTimeKeep()
+    public function update()
     {
         $users = $this->getCurrentLoggedIn();
         $id = $users->id;
@@ -59,7 +59,7 @@ class CalendarController extends Controller
     }
 
 
-    public function getTimeKeep()
+    public function get()
     {
         $user = $this->getCurrentLoggedIn();
         $id = $user->id;

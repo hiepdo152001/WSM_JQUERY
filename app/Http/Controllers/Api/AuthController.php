@@ -35,14 +35,10 @@ class AuthController extends Controller
     }
 
 
-    public function registerAccount(RegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
-        $user = $this->userService->createUser($request);
+        $user = $this->userService->create($request);
         $user->notify(new RegisterNotify($user));
-
-        // queue mail
-        // $userMail = $user->email;
-        // Mail::to("{{$userMail}}")->queue(new MailRegitser($user));
 
         return response()->json([
             'status' =>  true,
@@ -52,10 +48,10 @@ class AuthController extends Controller
     }
 
 
-    public function loginAuth(Request $request)
+    public function login(Request $request)
     {
         $email = $request->email;
-        $user = $this->userService->getUserByEmail($email);
+        $user = $this->userService->getByEmail($email);
         if (!$user) {
             return response()->json([
                 'message' => 'email not found',
@@ -103,7 +99,7 @@ class AuthController extends Controller
     public function changePassword(PasswordRequest $request)
     {
         $email = $request->email;
-        $user = $this->userService->getUserByEmail($email);
+        $user = $this->userService->getByEmail($email);
         if ($user === null) {
             return response()->json([
                 'status' => false,
