@@ -39,6 +39,12 @@ const AppService = {
   putAvatar(resource, data, header) {
     return axiosClient.put(`${resource}`, data, header);
   },
+  checkOut(resource, data, header) {
+    return axiosClient.put(`${resource}`, data, header);
+  },
+  putUser(resource, slug, data, header) {
+    return axiosClient.put(`${resource}/${slug}`, data, header);
+  },
   put(resource, slug, header) {
     return axiosClient.put(`${resource}/${slug}`, header);
   },
@@ -89,11 +95,6 @@ const AppService = {
     });
   },
   changeDepartment(users, departments) {
-    const changes = {
-      d1: "Division1",
-      d2: "Division1",
-      d3: "Division1",
-    };
     users.forEach((item) => {
       departments.forEach((department) => {
         if (item.department_id === department.id) {
