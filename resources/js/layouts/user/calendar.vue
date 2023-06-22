@@ -170,11 +170,23 @@ export default {
           text: "Check-in",
           click: async function () {
             try {
-              const res = await ApiService.get(API_CREATE_TIME_KEEP, {
+              const res = await ApiService.postAuth(API_CREATE_TIME_KEEP, "", {
                 headers,
               });
               if (res.data.time_in !== null) {
-                window.location.href = HOME_CALENDAR;
+                const calendarApi = calendarRef.value.getApi();
+                ApiService.getTimeCheck(res.data, checks, color);
+                const defaultEvent = {
+                  title: checks.check_in,
+                  start: res.data.created_at,
+                  end: res.data.updated_at,
+                  color: color.check_in,
+                  allDay: true,
+                };
+
+                calendarApi.addEvent(defaultEvent);
+                options.events = [defaultEvent];
+                showCheckOutButton.value = false;
               }
             } catch (error) {}
           },
@@ -185,11 +197,28 @@ export default {
           click: async function () {
             try {
               if (confirm("Bạn muốn check-out ngay bây giờ ?")) {
-                const res = await ApiService.get(API_UPDATE_TIME_KEEP, {
-                  headers,
-                });
+                const res = await ApiService.checkOut(
+                  API_UPDATE_TIME_KEEP,
+                  "",
+                  {
+                    headers,
+                  }
+                );
+                if (res.data.time_in !== null) {
+                  const calendarApi = calendarRef.value.getApi();
+                  ApiService.getTimeCheck(res.data, checks, color);
+                  const defaultEvent = {
+                    title: checks.check_out,
+                    start: res.data.created_at,
+                    end: res.data.updated_at,
+                    color: color.check_in,
+                    allDay: true,
+                  };
 
-                window.location.href = HOME_CALENDAR;
+                  calendarApi.addEvent(defaultEvent);
+                  options.events = [defaultEvent];
+                  off.value = true;
+                }
               }
             } catch (error) {}
           },

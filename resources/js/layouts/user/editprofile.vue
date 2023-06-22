@@ -19,9 +19,16 @@
             <div class="form-row">
               <div class="col-sm-6">
                 <img
+                  v-if="filename"
+                  class="profile-image rounded-circle"
                   :src="filename"
-                  alt="Avatar Image"
-                  style="width: 250px; height: auto; margin-bottom: 20px"
+                  alt=""
+                />
+                <img
+                  v-else
+                  class="profile-image rounded-circle"
+                  src="../../../../public/images/andanh.jpg"
+                  alt=""
                 />
                 <br />
                 <input type="file" ref="fileInput" @change="handleFileUpload" />
@@ -214,6 +221,7 @@ export default {
     const fileInput = ref(null);
     const filename = ref("");
     const departments = ref([]);
+    const an = ref("");
     const form = reactive({
       sex: "",
       department_id: "",
@@ -248,7 +256,11 @@ export default {
         const { data } = res.data;
 
         user.value = data;
-        filename.value = PATH_IMAGE + data.avatar;
+        if (data.avatar !== null) {
+          filename.value = PATH_IMAGE + data.avatar;
+        } else {
+          an.value = "an";
+        }
 
         Object.assign(form, {
           sex: data.sex,
@@ -307,6 +319,7 @@ export default {
       fileInput,
       filename,
       departments,
+      an,
     };
   },
 };

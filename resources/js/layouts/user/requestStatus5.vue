@@ -20,7 +20,7 @@
       <tbody>
         <tr v-for="contact in contacts" :key="contact.id" class="contact-row">
           <td>{{ contact.contents }}</td>
-          <td>{{ contact.userCreate }}</td>
+          <td>{{ contact.user_name }}</td>
           <td>{{ contact.type }}</td>
           <td>{{ contact.time_start }} -> {{ contact.time_end }}</td>
           <td>
@@ -77,14 +77,7 @@ export default {
         if (contacts.value.length === 0 || res.data.data.position !== "tld") {
           check.value = "null";
         }
-        contacts.value.forEach(async (contact) => {
-          const res = await ApiService.getParameter(
-            API_USER_CREATE,
-            contact.id,
-            { headers }
-          );
-          contact.userCreate = res.data[0];
-        });
+
         contacts.value.forEach(async (contact) => {
           if (contact.content === "device_recall") {
             const assetId = contact.assets_id;
