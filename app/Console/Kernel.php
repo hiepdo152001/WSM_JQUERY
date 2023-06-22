@@ -16,7 +16,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
         $schedule->command('worktime:send')->monthlyOn(01, '12:00');
+        $schedule->command('leaveDays:add')->monthlyOn(01, '00:01');
     }
 
     /**
