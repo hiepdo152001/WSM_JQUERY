@@ -173,6 +173,12 @@ var AppService = (_AppService = {
   putAvatar: function putAvatar(resource, data, header) {
     return axiosClient.put("".concat(resource), data, header);
   },
+  checkOut: function checkOut(resource, data, header) {
+    return axiosClient.put("".concat(resource), data, header);
+  },
+  putUser: function putUser(resource, slug, data, header) {
+    return axiosClient.put("".concat(resource, "/").concat(slug), data, header);
+  },
   put: function put(resource, slug, header) {
     return axiosClient.put("".concat(resource, "/").concat(slug), header);
   },
@@ -216,11 +222,6 @@ var AppService = (_AppService = {
     }
   });
 }), _defineProperty(_AppService, "changeDepartment", function changeDepartment(users, departments) {
-  var changes = {
-    d1: "Division1",
-    d2: "Division1",
-    d3: "Division1"
-  };
   users.forEach(function (item) {
     departments.forEach(function (department) {
       if (item.department_id === department.id) {
@@ -457,44 +458,53 @@ var HOME = APP_URL + "home";
 var HOME_CALENDAR = APP_URL + "home/calendar";
 var LOGIN = APP_URL + "login";
 var REQUEST = APP_URL + "home/request";
-var GET_REQUEST = APP_URL + "api/users/request/get";
-var GET_USER = APP_URL + "api/users/get-user";
 var DEPARTMENT = APP_URL + "home/department";
 var MEMBER = APP_URL + "home/member";
-var SEARCH = APP_URL + "api/users/search";
-var AllUser = APP_URL + "api/users/gets";
 var PROFILE = APP_URL + "home/edit/profile";
+var STATUS_2 = "home/member/request/?type=pending";
+
+//api
+
+var PATH_IMAGE = "../../../../storage/";
+var API_AVATAR = "api/users/avatar";
+var API_UPDATE_ACCOUNT = "api/users/profile";
+var API_UPDATE_MEMBER = "api/users";
+var GET_USER = APP_URL + "api/users";
+
+//suwa lai
+var SEARCH = APP_URL + "api/users/search";
+var AllUser = APP_URL + "api/users";
 var CHANGE_PASSWORD = APP_URL + "change-password";
 var API_LOGIN = "api/auth/login";
 var API_LOGOUT = "api/auth/logout";
 var API_REGISTER = "api/auth/register";
 var API_CHANGE_PASSWORD = "api/auth/change-password";
-var API_MY_ACCOUNT = "api/users/my-account";
-var API_DELETE_USER = "api/users/delete/users";
-var API_ACTIVE_USER = "api/users/active/users";
-var API_REQUEST = "api/users/request";
+var API_MY_ACCOUNT = "api/users/profile";
+
+//set lai ben fe
+var API_DELETE_USER = "api/users";
+var API_ACTIVE_USER = "api/users";
+var API_REQUEST = "api/users/requests/all";
+var GET_REQUEST = APP_URL + "api/users/requests";
+
+//sua lai
 var API_USER_CREATE = "api/users/request/user-create";
-var API_USER_MNG = "api/users/request/manager";
-var API_REQUEST_STATUS = "api/users/member/request";
-var API_CREATE_REQUEST = "api/users/request/new";
-var API_REQUEST_DELETE = "api/users/request/delete";
-var API_REQUEST_UPDATE = "api/users/request/update";
-var STATUS_2 = "home/member/request/?type=pending";
-var PATH_IMAGE = "../../../../storage/";
-var API_AVATAR = "api/users/update/avatar";
-var API_UPDATE_ACCOUNT = "api/users/update/my-account";
-var API_UPDATE_MEMBER = "api/users/update/user";
-var API_CREATE_TIME_KEEP = "api/users/time-keep/new";
-var API_UPDATE_TIME_KEEP = "api/users/time-keep/update";
-var API_GET_TIME_KEEP = "api/users/time-keep/get";
-var API_GET_TIME_KEEP_BY_DAY = "api/users/time-keep/getByDay";
-var API_GET_NOT_WORK = "api/users/time-keep/getNotWork";
-var API_ASSETS_NEW = "api/users/assets/new";
-var API_GET_ASSETS = "api/users/assets/get";
-var API_GET_ASSETS_ID = "api/users/assets/get";
-var DEPARTMENT_NEW = "api/users/department/new";
-var DEPARTMENT_GETS = "api/users/department/get";
-var DEPARTMENT_EDIT = "api/users/department/edit";
+var API_USER_MNG = "api/users/requests/manager";
+var API_REQUEST_STATUS = "api/users/requests/member";
+var API_CREATE_REQUEST = "api/users/requests";
+var API_REQUEST_DELETE = "api/users/requests";
+var API_REQUEST_UPDATE = "api/users/requests";
+var API_CREATE_TIME_KEEP = "api/users/time-keep/check-in";
+var API_UPDATE_TIME_KEEP = "api/users/time-keep/check-out";
+var API_GET_TIME_KEEP = "api/users/time-keep/all";
+var API_GET_TIME_KEEP_BY_DAY = "api/users/time-keep/by-day";
+var API_GET_NOT_WORK = "api/users/time-keep/not-work";
+var API_ASSETS_NEW = "api/users/assets";
+var API_GET_ASSETS = "api/users/assets/me";
+var API_GET_ASSETS_ID = "api/users/assets";
+var DEPARTMENT_NEW = "api/departments";
+var DEPARTMENT_GETS = "api/departments";
+var DEPARTMENT_EDIT = "api/departments";
 
 /***/ }),
 

@@ -27,44 +27,64 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var position = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     var headers = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].setHeader();
     var check = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)();
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
       var type, res, apiResponse;
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            _context3.prev = 0;
+            _context2.prev = 0;
             type = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].getTypeParameter();
-            _context3.next = 4;
+            _context2.next = 4;
             return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].get(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_MY_ACCOUNT, {
               headers: headers
             });
           case 4:
-            res = _context3.sent;
+            res = _context2.sent;
             position.value = res.data.data.position;
-            _context3.next = 8;
+            _context2.next = 8;
             return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].getParameter(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_REQUEST_STATUS, type, {
               headers: headers
             });
           case 8:
-            apiResponse = _context3.sent;
+            apiResponse = _context2.sent;
             contacts.value = apiResponse.data.data;
             if (contacts.value.length === 0 || res.data.data.position !== "tld") {
               check.value = "null";
             }
             contacts.value.forEach( /*#__PURE__*/function () {
               var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(contact) {
-                var res;
+                var assetId, assets;
                 return _regeneratorRuntime().wrap(function _callee$(_context) {
                   while (1) switch (_context.prev = _context.next) {
                     case 0:
-                      _context.next = 2;
-                      return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].getParameter(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_USER_CREATE, contact.id, {
+                      if (!(contact.content === "device_recall")) {
+                        _context.next = 12;
+                        break;
+                      }
+                      assetId = contact.assets_id;
+                      if (!(assetId !== null)) {
+                        _context.next = 9;
+                        break;
+                      }
+                      _context.next = 5;
+                      return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].getParameter(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_GET_ASSETS_ID, assetId, {
                         headers: headers
                       });
-                    case 2:
-                      res = _context.sent;
-                      contact.userCreate = res.data[0];
-                    case 4:
+                    case 5:
+                      assets = _context.sent;
+                      if (assets.data.length > 0) {
+                        contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, assets.data[0]);
+                      }
+                      _context.next = 10;
+                      break;
+                    case 9:
+                      contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, null);
+                    case 10:
+                      _context.next = 13;
+                      break;
+                    case 12:
+                      contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, null);
+                    case 13:
                     case "end":
                       return _context.stop();
                   }
@@ -74,61 +94,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _ref2.apply(this, arguments);
               };
             }());
-            contacts.value.forEach( /*#__PURE__*/function () {
-              var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(contact) {
-                var assetId, assets;
-                return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-                  while (1) switch (_context2.prev = _context2.next) {
-                    case 0:
-                      if (!(contact.content === "device_recall")) {
-                        _context2.next = 12;
-                        break;
-                      }
-                      assetId = contact.assets_id;
-                      if (!(assetId !== null)) {
-                        _context2.next = 9;
-                        break;
-                      }
-                      _context2.next = 5;
-                      return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].getParameter(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_GET_ASSETS_ID, assetId, {
-                        headers: headers
-                      });
-                    case 5:
-                      assets = _context2.sent;
-                      if (assets.data.length > 0) {
-                        contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, assets.data[0]);
-                      }
-                      _context2.next = 10;
-                      break;
-                    case 9:
-                      contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, null);
-                    case 10:
-                      _context2.next = 13;
-                      break;
-                    case 12:
-                      contact = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeContent(contact, null);
-                    case 13:
-                    case "end":
-                      return _context2.stop();
-                  }
-                }, _callee2);
-              }));
-              return function (_x2) {
-                return _ref3.apply(this, arguments);
-              };
-            }());
             contacts.value = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].changeTypeRequest(contacts.value);
-            _context3.next = 19;
+            _context2.next = 18;
             break;
-          case 16:
-            _context3.prev = 16;
-            _context3.t0 = _context3["catch"](0);
-            console.error(_context3.t0);
-          case 19:
+          case 15:
+            _context2.prev = 15;
+            _context2.t0 = _context2["catch"](0);
+            console.error(_context2.t0);
+          case 18:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
-      }, _callee3, null, [[0, 16]]);
+      }, _callee2, null, [[0, 15]]);
     })));
     return {
       contacts: contacts,
@@ -194,7 +171,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: contact.id,
       "class": "contact-row"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.contents), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.userCreate), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.time_start) + " -> " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.time_end), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.contents), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.user_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.time_start) + " -> " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(contact.time_end), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'view-request',
         params: {
@@ -270,6 +247,12 @@ var AppService = (_AppService = {
   putAvatar: function putAvatar(resource, data, header) {
     return axiosClient.put("".concat(resource), data, header);
   },
+  checkOut: function checkOut(resource, data, header) {
+    return axiosClient.put("".concat(resource), data, header);
+  },
+  putUser: function putUser(resource, slug, data, header) {
+    return axiosClient.put("".concat(resource, "/").concat(slug), data, header);
+  },
   put: function put(resource, slug, header) {
     return axiosClient.put("".concat(resource, "/").concat(slug), header);
   },
@@ -313,11 +296,6 @@ var AppService = (_AppService = {
     }
   });
 }), _defineProperty(_AppService, "changeDepartment", function changeDepartment(users, departments) {
-  var changes = {
-    d1: "Division1",
-    d2: "Division1",
-    d3: "Division1"
-  };
   users.forEach(function (item) {
     departments.forEach(function (department) {
       if (item.department_id === department.id) {
@@ -554,44 +532,53 @@ var HOME = APP_URL + "home";
 var HOME_CALENDAR = APP_URL + "home/calendar";
 var LOGIN = APP_URL + "login";
 var REQUEST = APP_URL + "home/request";
-var GET_REQUEST = APP_URL + "api/users/request/get";
-var GET_USER = APP_URL + "api/users/get-user";
 var DEPARTMENT = APP_URL + "home/department";
 var MEMBER = APP_URL + "home/member";
-var SEARCH = APP_URL + "api/users/search";
-var AllUser = APP_URL + "api/users/gets";
 var PROFILE = APP_URL + "home/edit/profile";
+var STATUS_2 = "home/member/request/?type=pending";
+
+//api
+
+var PATH_IMAGE = "../../../../storage/";
+var API_AVATAR = "api/users/avatar";
+var API_UPDATE_ACCOUNT = "api/users/profile";
+var API_UPDATE_MEMBER = "api/users";
+var GET_USER = APP_URL + "api/users";
+
+//suwa lai
+var SEARCH = APP_URL + "api/users/search";
+var AllUser = APP_URL + "api/users";
 var CHANGE_PASSWORD = APP_URL + "change-password";
 var API_LOGIN = "api/auth/login";
 var API_LOGOUT = "api/auth/logout";
 var API_REGISTER = "api/auth/register";
 var API_CHANGE_PASSWORD = "api/auth/change-password";
-var API_MY_ACCOUNT = "api/users/my-account";
-var API_DELETE_USER = "api/users/delete/users";
-var API_ACTIVE_USER = "api/users/active/users";
-var API_REQUEST = "api/users/request";
+var API_MY_ACCOUNT = "api/users/profile";
+
+//set lai ben fe
+var API_DELETE_USER = "api/users";
+var API_ACTIVE_USER = "api/users";
+var API_REQUEST = "api/users/requests/all";
+var GET_REQUEST = APP_URL + "api/users/requests";
+
+//sua lai
 var API_USER_CREATE = "api/users/request/user-create";
-var API_USER_MNG = "api/users/request/manager";
-var API_REQUEST_STATUS = "api/users/member/request";
-var API_CREATE_REQUEST = "api/users/request/new";
-var API_REQUEST_DELETE = "api/users/request/delete";
-var API_REQUEST_UPDATE = "api/users/request/update";
-var STATUS_2 = "home/member/request/?type=pending";
-var PATH_IMAGE = "../../../../storage/";
-var API_AVATAR = "api/users/update/avatar";
-var API_UPDATE_ACCOUNT = "api/users/update/my-account";
-var API_UPDATE_MEMBER = "api/users/update/user";
-var API_CREATE_TIME_KEEP = "api/users/time-keep/new";
-var API_UPDATE_TIME_KEEP = "api/users/time-keep/update";
-var API_GET_TIME_KEEP = "api/users/time-keep/get";
-var API_GET_TIME_KEEP_BY_DAY = "api/users/time-keep/getByDay";
-var API_GET_NOT_WORK = "api/users/time-keep/getNotWork";
-var API_ASSETS_NEW = "api/users/assets/new";
-var API_GET_ASSETS = "api/users/assets/get";
-var API_GET_ASSETS_ID = "api/users/assets/get";
-var DEPARTMENT_NEW = "api/users/department/new";
-var DEPARTMENT_GETS = "api/users/department/get";
-var DEPARTMENT_EDIT = "api/users/department/edit";
+var API_USER_MNG = "api/users/requests/manager";
+var API_REQUEST_STATUS = "api/users/requests/member";
+var API_CREATE_REQUEST = "api/users/requests";
+var API_REQUEST_DELETE = "api/users/requests";
+var API_REQUEST_UPDATE = "api/users/requests";
+var API_CREATE_TIME_KEEP = "api/users/time-keep/check-in";
+var API_UPDATE_TIME_KEEP = "api/users/time-keep/check-out";
+var API_GET_TIME_KEEP = "api/users/time-keep/all";
+var API_GET_TIME_KEEP_BY_DAY = "api/users/time-keep/by-day";
+var API_GET_NOT_WORK = "api/users/time-keep/not-work";
+var API_ASSETS_NEW = "api/users/assets";
+var API_GET_ASSETS = "api/users/assets/me";
+var API_GET_ASSETS_ID = "api/users/assets";
+var DEPARTMENT_NEW = "api/departments";
+var DEPARTMENT_GETS = "api/departments";
+var DEPARTMENT_EDIT = "api/departments";
 
 /***/ }),
 
