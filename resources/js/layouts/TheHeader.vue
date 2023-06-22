@@ -8,9 +8,16 @@
     <div class="dropdown col-sm-1">
       <div class="btn custom-dropdown" type="button" data-toggle="dropdown">
         <img
+          v-if="filename"
+          class="profile-image rounded-circle"
           :src="filename"
-          alt="Avatar Image"
-          style="width: 50px; height: 50px; border-radius: 50px"
+          alt=""
+        />
+        <img
+          v-else
+          class="profile-image rounded-circle"
+          src="../../../public/images/andanh.jpg"
+          alt=""
         />
       </div>
       <ul class="dropdown-menu dropdown-menu-left">
@@ -20,8 +27,15 @@
           <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
             <span class="mr-2">
               <img
+                v-if="filename"
                 class="profile-image rounded-circle"
                 :src="filename"
+                alt=""
+              />
+              <img
+                v-else
+                class="profile-image rounded-circle"
+                src="../../../public/images/andanh.jpg"
                 alt=""
               />
             </span>
@@ -110,6 +124,7 @@ export default {
     const name = ref("");
     const email = ref("");
     const filename = ref("");
+    const an = ref("");
     onMounted(async () => {
       try {
         const headers = ApiService.setHeader();
@@ -117,7 +132,11 @@ export default {
         users.value = apiResponse.data.data;
         name.value = users.value.name;
         email.value = users.value.email;
-        filename.value = "../../../storage/" + users.value.avatar;
+        if (users.value.avatar !== null) {
+          filename.value = "../../../storage/" + users.value.avatar;
+        } else {
+          an.value = "an";
+        }
       } catch (error) {
         console.error(error);
       }
@@ -135,6 +154,7 @@ export default {
       filename,
       name,
       email,
+      an,
     };
   },
 };
