@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class ContactService
@@ -38,7 +39,7 @@ class ContactService
         $this->assetsService = $assetsService;
     }
 
-    public function ContactsCreate($id, $request)
+    public function create($id, $request)
     {
         $contact = Contact::create([
             'user_id' => $id,
@@ -61,23 +62,25 @@ class ContactService
         return $contacts;
     }
 
-    public function getContactById($id)
+    public function getById($id)
     {
         $contact = Contact::find($id);
         return $contact;
     }
 
-    public function updateContactById($id, array $payload)
-    {
-        $contact = Contact::find($id);
-        $contact->update($payload);
-        return $contact;
-    }
+    // public function updateById($id, array $payload)
+    // {
+    //     $contact = Contact::find($id);
+    //     $contact->update($payload);
+    //     return $contact;
+    // }
 
     public function edit($id, array $payload)
     {
         $contact = Contact::find($id);
-
+        if ($contact === null) {
+            return null;
+        }
         $contact->update($payload);
 
         return $contact;
@@ -100,7 +103,7 @@ class ContactService
         if ($user_id === null) {
             return null;
         }
-        $user = $this->userService->getUserById($user_id);
+        $user = $this->userService->getById($user_id);
         if ($user === null) {
             return null;
         }
@@ -115,6 +118,10 @@ class ContactService
             ->where('users.department_id', $department_id)
             ->get();
 
+        foreach ($contacts as $contact) {
+            $user = User::with('contacts')->find($contact->user_id);
+            $contact->user_name = $user->name;
+        }
         return $contacts;
     }
 
@@ -123,7 +130,7 @@ class ContactService
         if ($newContact && $newContact->status === 3) {
 
             if ($newContact->content === 'days_on') {
-                $user = $this->userService->getUserById($newContact->user_id);
+                $user = $this->userService->getById($newContact->user_id);
                 $daysOn = $this->userService->getTime($newContact->time_start, $newContact->time_end);
 
                 if ($daysOn <= $user->leave_days) {

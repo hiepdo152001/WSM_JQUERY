@@ -25,7 +25,7 @@ class UserService
         $this->calendarService = $calendarService;
     }
 
-    public function createUser($request)
+    public function create($request)
     {
         $user = User::create([
             'email' => $request->email,
@@ -37,7 +37,7 @@ class UserService
         return $user;
     }
 
-    public function getUserByEmail($email)
+    public function getByEmail($email)
     {
         $user = User::where('email', $email)->first();
         return $user;
@@ -68,21 +68,27 @@ class UserService
         $user->save();
         return $user;
     }
-    public function editUser($id, array $payload)
+    public function edit($id, array $payload)
     {
         $user = User::find($id);
         return $user->update($payload);
     }
 
-    public function getUserById($id)
+    public function getById($id)
     {
         $user = User::find($id);
         return $user;
     }
 
-    public function get()
+    public function get($search)
     {
-        return User::all();
+        if (!empty($search)) {
+            return User::where('id', $search)
+                ->orWhere('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->paginate(3);
+        }
+        return User::paginate(3);
     }
 
     public function getDepartment($department_id)
@@ -156,5 +162,12 @@ class UserService
             }
         }
         return $dayOn;
+    }
+
+    public function leaveDays($id)
+    {
+        $user = User::find($id);
+        $user->leave_days = $user->leave_days + 1;
+        $user->save();
     }
 }
