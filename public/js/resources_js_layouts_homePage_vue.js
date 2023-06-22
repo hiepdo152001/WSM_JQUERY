@@ -54,7 +54,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               if (res.data.status === true) {
                 _common_jwtService__WEBPACK_IMPORTED_MODULE_3__["default"].setToken(JSON.stringify(res.data.token));
                 window.location.href = _store_url__WEBPACK_IMPORTED_MODULE_2__.HOME_CALENDAR;
-                alert(res.data.message);
               }
               _context.next = 10;
               break;
