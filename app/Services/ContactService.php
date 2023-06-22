@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Contact;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 
 class ContactService
@@ -137,7 +138,7 @@ class ContactService
 
                     $payload = ['leave_days' => $user->leave_days - $daysOn, 'month' => $month];
                 } else {
-                    $payload = ['leave_days' => 0, 'flag' => round($user->leave_days - $daysOn, 1), 'month' => $month];
+                    $payload = ['leave_days' => 0, 'flag' => $user->leave_days, 'month' => $month];
                 }
             } elseif ($newContact->content === 'days_off') {
                 $payload = [];
@@ -145,7 +146,13 @@ class ContactService
                 $days = $this->userService->getTime($newContact->time_start, $newContact->time_end);
                 $payload = ['flag' => round($days, 2), 'month' => $month];
             } elseif ($newContact->content === 'over_time') {
-                $overTime = $this->userService->getTime($newContact->time_start, $newContact->time_end) * 1.5;
+                $datetime1 = new DateTime($newContact->time_start);
+                $datetime2 = new DateTime($newContact->time_end);
+
+                $diff = $datetime1->diff($datetime2);
+                $time = $diff->d * 24 + $diff->h + $diff->i / 60;
+
+                $overTime = $time * 1.5 / 8;
                 $payload = ['flag' => round($overTime, 2), 'month' => $month];
             } elseif ($newContact->content === 'forgot_to_check') {
                 $day = date('d', strtotime($newContact->time_start));
