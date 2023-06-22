@@ -43,16 +43,11 @@ class WorkTimeUser extends Command
      */
     public function handle()
     {
-        $currentDate = date('Y-m-d');
-        if (date('d', strtotime($currentDate)) == '01') {
-            $previousMonth = date('m', strtotime('-1 month', strtotime($currentDate)));
-
-            $users = User::select('id', 'email')->get();
-            foreach ($users as $user) {
-                $id = $user->id;
-                $work_time = $this->calendarService->getWorkTime($id);
-                $user->notify(new WorkTimeNotify($user, $work_time));
-            }
+        $users = User::select('id', 'email')->get();
+        foreach ($users as $user) {
+            $id = $user->id;
+            $work_time = $this->calendarService->getWorkTime($id);
+            $user->notify(new WorkTimeNotify($work_time));
         }
     }
 }
