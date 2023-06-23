@@ -99,10 +99,11 @@ export default {
     const user = ref([]);
     onMounted(async () => {
       try {
-        const apiResponse = await ApiService.get(API_REQUEST, { headers });
-        contacts.value = apiResponse.data.data;
         const res = await ApiService.get(API_MY_ACCOUNT, { headers });
         user.value = res.data.data;
+        const apiResponse = await ApiService.get(API_REQUEST, { headers });
+        contacts.value = apiResponse.data.data;
+
         const userMng = await ApiService.get(API_USER_MNG, { headers });
         const assignee = userMng.data.name;
         ApiService.setDeadline(contacts, assignee);

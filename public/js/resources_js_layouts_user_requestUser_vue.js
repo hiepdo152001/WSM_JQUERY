@@ -27,25 +27,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var headers = _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].setHeader();
     var user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var apiResponse, res, userMng, assignee;
+      var res, apiResponse, userMng, assignee;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
             _context2.next = 3;
-            return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].get(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_REQUEST, {
-              headers: headers
-            });
-          case 3:
-            apiResponse = _context2.sent;
-            contacts.value = apiResponse.data.data;
-            _context2.next = 7;
             return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].get(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_MY_ACCOUNT, {
               headers: headers
             });
-          case 7:
+          case 3:
             res = _context2.sent;
             user.value = res.data.data;
+            _context2.next = 7;
+            return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].get(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_REQUEST, {
+              headers: headers
+            });
+          case 7:
+            apiResponse = _context2.sent;
+            contacts.value = apiResponse.data.data;
             _context2.next = 11;
             return _common_apiService__WEBPACK_IMPORTED_MODULE_1__["default"].get(_store_url__WEBPACK_IMPORTED_MODULE_2__.API_USER_MNG, {
               headers: headers
