@@ -8,7 +8,7 @@ put:
   parameters:
     - name: id
       in: path
-      description: The id of the user
+      description: The id of the Assets
       required: true
       schema:
         type: integer
@@ -31,10 +31,10 @@ put:
               example: 1
             location:
               type: string
-              example: home
+              example: "home"
 
   responses:
-    200:
+    "200":
       description: "OK"
-    500:
+    "500":
       description: "Server Error"

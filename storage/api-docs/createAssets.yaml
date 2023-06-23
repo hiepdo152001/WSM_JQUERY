@@ -35,7 +35,7 @@ post:
               example: 1
             location:
               type: string
-              example: home
+              example: "home"
             user_id:
               type: integer
               example: 1

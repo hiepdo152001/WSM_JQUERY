@@ -28,7 +28,7 @@ post:
               maxLength: 256
               example: "admin"
   responses:
-    200:
+    "200":
       description: "OK"
-    422:
+    "422":
       description: "Unprocessable Content"

@@ -49,27 +49,27 @@ put:
         schema:
           type: object
 
-          properties:
-            name: { $ref: "schemas.yaml#/name" }
-            email: { $ref: "schemas.yaml#/email" }
-            phone: { $ref: "schemas.yaml#/phone" }
-            position: { $ref: "schemas.yaml#/position" }
-            department_id: { $ref: "schemas.yaml#/department_id" }
-            age: { $ref: "schemas.yaml#/age" }
-            project: { $ref: "schemas.yaml#/project" }
-            sex: { $ref: "schemas.yaml#/sex" }
-            permanent_address: { $ref: "schemas.yaml#/permanent_address" }
-            seniority: { $ref: "schemas.yaml#/seniority" }
-            contract: { $ref: "schemas.yaml#/contract" }
-            temporary_address: { $ref: "schemas.yaml#/temporary_address" }
-            issued_by: { $ref: "schemas.yaml#/issued_by" }
-            personal_email: { $ref: "schemas.yaml#/personal_email" }
-            cccd: { $ref: "schemas.yaml#/cccd" }
-            tax_code: { $ref: "schemas.yaml#/tax_code" }
-            leave_days: { $ref: "schemas.yaml#/leave_days" }
-            working_day: { $ref: "schemas.yaml#/working_day" }
-            promotion_day: { $ref: "schemas.yaml#/promotion_day" }
-            date_range: { $ref: "schemas.yaml#/date_range" }
+          # properties:
+          #   name: { $ref: "schemas.yaml#/name" }
+          #   email: { $ref: "schemas.yaml#/email" }
+          #   phone: { $ref: "schemas.yaml#/phone" }
+          #   position: { $ref: "schemas.yaml#/position" }
+          #   department_id: { $ref: "schemas.yaml#/department_id" }
+          #   age: { $ref: "schemas.yaml#/age" }
+          #   project: { $ref: "schemas.yaml#/project" }
+          #   sex: { $ref: "schemas.yaml#/sex" }
+          #   permanent_address: { $ref: "schemas.yaml#/permanent_address" }
+          #   seniority: { $ref: "schemas.yaml#/seniority" }
+          #   contract: { $ref: "schemas.yaml#/contract" }
+          #   temporary_address: { $ref: "schemas.yaml#/temporary_address" }
+          #   issued_by: { $ref: "schemas.yaml#/issued_by" }
+          #   personal_email: { $ref: "schemas.yaml#/personal_email" }
+          #   cccd: { $ref: "schemas.yaml#/cccd" }
+          #   tax_code: { $ref: "schemas.yaml#/tax_code" }
+          #   leave_days: { $ref: "schemas.yaml#/leave_days" }
+          #   working_day: { $ref: "schemas.yaml#/working_day" }
+          #   promotion_day: { $ref: "schemas.yaml#/promotion_day" }
+          #   date_range: { $ref: "schemas.yaml#/date_range" }
   responses:
     "200":
       $ref: "responses.yaml#/200"

@@ -2,94 +2,100 @@ openapi: 3.0.0
 info:
   title: "Your Application API document"
   version: "1.0.0"
-schemes:
-  - http
+servers:
+  - url: http://localhost:8080/api
 paths:
-  /api/auth/login:
+  #auth
+  /auth/login:
     $ref: "login.yaml"
 
-  /api/auth/logout:
+  /auth/logout:
     $ref: "logout.yaml"
 
-  /api/auth/change-password:
+  /auth/change-password:
     $ref: "changePassword.yaml"
 
-  /api/auth/register:
+  /auth/register:
     $ref: "register.yaml"
-
-  #User
-  /api/users/profile:
-    get: { $ref: "getMyAccount.yaml#/get" }
-    $ref: "updateUserLogin.yaml"
-
-  /api/users/avatar:
-    $ref: "updateAvatar.yaml"
-
-  /api/users/{id}:
-    $ref: "updateUserById.yaml"
-    get: { $ref: "getUserById.yaml#/get" }
-
-  /api/users/{id}/deActive:
-    $ref: "blockUserById.yaml"
-
-  /api/users/{id}/active:
-    $ref: "activeUserById.yaml"
-
-  #Department
-
-  /api/departments/{id}:
+  #department
+  /departments/{id}:
     $ref: "getDepartmentById.yaml"
-    put: { $ref: "editDepartmentById.yaml#/put" }
+    put:
+      $ref: "editDepartmentById.yaml#/put"
 
-  /api/departments:
+  /departments:
     $ref: "getDepartment.yaml"
-    post: { $ref: "createDepartment.yaml#/post" }
-  #Assets
-
-  /api/users/assets:
+    post:
+      $ref: "createDepartment.yaml#/post"
+  #asset
+  /users/assets:
     $ref: "createAssets.yaml"
 
-  /api/users/assets/me:
+  /users/assets/me:
     $ref: "getAssets.yaml"
 
-  /api/users/assets/{id}:
+  /users/assets/{id}:
     $ref: "getAssetsById.yaml"
-    put: { $ref: "editAssetsById.yaml#/put" }
-
-  #Contact
-  /api/users/requests:
+    put:
+      $ref: "editAssetsById.yaml#/put"
+  # requests
+  /users/requests:
     $ref: "createContact.yaml"
 
-  /api/users/requests/{id}:
+  /users/requests/{id}:
     $ref: "getContactById.yaml"
-    patch: { $ref: "setSttContact.yaml#/patch" }
-    put: { $ref: "editContact.yaml#/put" }
-    delete: { $ref: "deleteContact.yaml#/delete" }
-  /api/users/requests/manager:
+    patch:
+      $ref: "setSttContact.yaml#/patch"
+    put:
+      $ref: "editContact.yaml#/put"
+    delete:
+      $ref: "deleteContact.yaml#/delete"
+
+  /users/requests/manager:
     $ref: "getManagerUserContact.yaml"
-  /api/users/requests/member/{type}:
+
+  /users/requests/member/{type}:
     $ref: "getContactStatus.yaml"
-  /api/users/requests/all:
+
+  /users/requests/all:
     $ref: "getContact.yaml"
-
-  #timeKeep
-  /api/users/time-keep/all:
+  # time keep
+  /users/time-keep/all:
     $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/by-day:
+  /users/time-keep/by-day:
     $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/work-time:
+  /users/time-keep/work-time:
     $ref: "getTimeKeep.yaml"
 
-  /api/users/time-keep/not-work/{year}/{month}:
+  /users/time-keep/not-work/{year}/{month}:
     $ref: "getNotWorkTimeKeep.yaml"
 
-  /api/users/time-keep/check-in:
+  /users/time-keep/check-in:
     $ref: "createTimeKeep.yaml"
 
-  /api/users/time-keep/check-out:
+  /users/time-keep/check-out:
     $ref: "updateTimeKeep.yaml"
+  #user
+  /users/profile:
+    get:
+      $ref: "getMyAccount.yaml#/get"
+    $ref: "updateUserLogin.yaml"
+
+  /users/avatar:
+    $ref: "updateAvatar.yaml"
+
+  /users/{id}:
+    $ref: "getUserById.yaml"
+    put:
+      $ref: "updateUserById.yaml#/put"
+
+  /users/{id}/deActive:
+    $ref: "blockUserById.yaml"
+
+  /users/{id}/active:
+    $ref: "activeUserById.yaml"
 
 components:
   schemas:

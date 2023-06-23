@@ -37,9 +37,9 @@ patch:
               example: 1
 
   responses:
-    200:
+    "200":
       description: "OK"
-    404:
+    "404":
       description: "Not Found"
-    422:
+    "422":
       description: "Unprocessable Content"

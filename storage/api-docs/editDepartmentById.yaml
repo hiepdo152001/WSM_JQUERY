@@ -34,11 +34,10 @@ put:
           properties:
             name:
               type: string
-              maxLength: 256
               example: "admin"
   responses:
-    200:
+    "200":
       description: "OK"
 
-    500:
+    "500":
       description: "Server Error"
