@@ -29,7 +29,7 @@
   background-color: #7453a6;
   border-color: #6e4e9e;
 }
-.bi{
+.bi-eye-fill{
   color: black;
 }
 </style>
