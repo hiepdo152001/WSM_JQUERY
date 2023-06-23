@@ -39,22 +39,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/profile', [UserController::class, 'profile']);
         Route::put('/profile', [UserController::class, 'updateProfile']);
         Route::post('/avatar', [UserController::class, 'editAvatar']);
-
         Route::get('/{id}', [UserController::class, 'getById']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::put('/{id}/deActive', [UserController::class, 'delete']);
         Route::put('/{id}/active', [UserController::class, 'active']);
-
         Route::get('', [UserController::class, 'get']);
-        // Route::get('/{search}', [UserController::class, 'search']);
-
-        // pagination & search 
-        // GET /users?keyword=ma&department_id=1&page=2&limit=10
-        // filters / where  keyword=ma&department_id=1
-        // query params
-        // pagination page=2&limit=10
-
-        // Route::get('/get/department/{department_id}', [UserController::class, 'getByDepartment']);
 
         //request
         Route::group(['prefix' => '/requests'], function () {
@@ -87,10 +76,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::get('/{id}', [AssetsController::class, 'getById']);
             Route::put('/{id}', [AssetsController::class, 'edit']);
         });
-
-        // department
-
     });
+
+    // department
     Route::group(['prefix' => '/departments'], function () {
         Route::get('', [DepartmentController::class, 'get']);
         Route::post('', [DepartmentController::class, 'create']);
