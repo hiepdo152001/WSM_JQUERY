@@ -8,15 +8,7 @@
     :class="{ 'd-none': check === 'null' }"
   >
     <table class="table table-bordered" style="margin-top: 30px">
-      <thead>
-        <tr>
-          <th>Nội dung</th>
-          <th>Người tạo</th>
-          <th>Loại request</th>
-          <th>Thời hạn</th>
-          <th>Xử lí</th>
-        </tr>
-      </thead>
+      <TheHeader />
       <tbody>
         <tr v-for="contact in contacts" :key="contact.id" class="contact-row">
           <td>{{ contact.contents }}</td>
@@ -76,8 +68,11 @@ import {
   API_GET_ASSETS_ID,
 } from "../store/url";
 import { useRouter } from "vue-router";
-
+import TheHeader from "../../components/headerRequest.vue";
 export default {
+  components: {
+    TheHeader,
+  },
   setup() {
     const contacts = ref([]);
     const form = reactive({

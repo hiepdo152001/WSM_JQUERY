@@ -263,16 +263,11 @@ export default {
         }
 
         Object.assign(form, {
-          sex: data.sex,
-          department_id: data.department_id,
-          position: data.position,
+          ...data,
+
           age: data.age.substring(0, 10),
-          permanent_address: data.permanent_address,
-          temporary_address: data.temporary_address,
-          cccd: data.cccd,
+
           date_range: data.date_range.substring(0, 10),
-          issued_by: data.issued_by,
-          tax_code: data.tax_code,
         });
       } catch (error) {
         console.error(error);

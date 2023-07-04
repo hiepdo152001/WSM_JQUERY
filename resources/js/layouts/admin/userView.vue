@@ -33,6 +33,7 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <div class="col-md-4">
                 <div>
@@ -47,6 +48,7 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <div class="col-md-4">
                 <div>
@@ -82,9 +84,10 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group">
               <div class="col-md-2">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Bộ phận</label>
                 </div>
                 <select
@@ -98,7 +101,7 @@
                 </select>
               </div>
               <div class="col-md-2">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Vị trí</label>
                 </div>
                 <select
@@ -124,7 +127,7 @@
                 </select>
               </div>
               <div class="col-md-4">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Ngày sinh</label>
                 </div>
                 <input
@@ -137,7 +140,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Địa chỉ thường trú</label>
                 </div>
                 <input
@@ -148,7 +151,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Địa chỉ tạm trú</label>
                 </div>
                 <input
@@ -161,7 +164,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Số CCCD</label>
                 </div>
                 <input
@@ -172,7 +175,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Ngày cấp</label>
                 </div>
                 <input
@@ -185,7 +188,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Số diện thoại</label>
                 </div>
                 <input
@@ -196,7 +199,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Project</label>
                 </div>
                 <input
@@ -209,7 +212,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Nơi cấp</label>
                 </div>
                 <input
@@ -220,7 +223,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Mã số thuế</label>
                 </div>
                 <input
@@ -233,7 +236,7 @@
             </div>
             <div class="form-group">
               <div class="col-md-6">
-                <div class="form-gruop">
+                <div class="form-group">
                   <label class="form-label">Số ngày phép</label>
                 </div>
                 <input
@@ -322,19 +325,11 @@ export default {
           }
 
           Object.assign(form, {
-            sex: data.sex,
-            department_id: data.department_id,
-            position: data.position,
+            ...data,
+
             age: data.age.substring(0, 10),
-            permanent_address: data.permanent_address,
-            temporary_address: data.temporary_address,
-            cccd: data.cccd,
+
             date_range: data.date_range.substring(0, 10),
-            issued_by: data.issued_by,
-            tax_code: data.tax_code,
-            phone: data.phone,
-            project: data.project,
-            leave_days: data.leave_days,
           });
         }
       } catch (error) {}
