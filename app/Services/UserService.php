@@ -7,7 +7,7 @@ use DateTime;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Type\Integer;
 
-class UserService
+class UserService extends CrudService
 {
     /**
      * @var User
@@ -23,18 +23,13 @@ class UserService
     {
         $this->user = $user;
         $this->calendarService = $calendarService;
+        parent::__construct($this->user);
     }
 
-    public function create($request)
+    public function create(array $payload)
     {
-        $user = User::create([
-            'email' => $request->email,
-            'name' => $request->name,
-            'password' => Hash::make($request->password),
-            'status' => 'active',
-            'leave_days' => 0,
-        ]);
-        return $user;
+        $payload['password'] = Hash::make($payload['password']);
+        return parent::create($payload);
     }
 
     public function getByEmail($email)
@@ -68,11 +63,11 @@ class UserService
         $user->save();
         return $user;
     }
-    public function edit($id, array $payload)
-    {
-        $user = User::find($id);
-        return $user->update($payload);
-    }
+    // public function edit($id, array $payload)
+    // {
+    //     $user = User::find($id);
+    //     return $user->update($payload);
+    // }
 
     public function getById($id)
     {

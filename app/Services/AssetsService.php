@@ -7,7 +7,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
 
-class AssetsService
+class AssetsService extends CrudService
 {
     /**
      * @var Asset
@@ -17,6 +17,7 @@ class AssetsService
     public function __construct(Asset $asset)
     {
         $this->asset = $asset;
+        parent::__construct($this->asset);
     }
 
     public function create($request)
@@ -34,24 +35,24 @@ class AssetsService
         return $asset;
     }
 
-    public function edit($id, array $payload)
-    {
-        $asset = Asset::find($id);
-        return $asset->update($payload);
-    }
+    // public function edit($id, array $payload)
+    // {
+    //     $asset = Asset::find($id);
+    //     return $asset->update($payload);
+    // }
 
 
-    public function deleteId($id)
-    {
-        $asset = Asset::find($id);
-        return $asset->delete();
-    }
+    // public function deleteId($id)
+    // {
+    //     $asset = Asset::find($id);
+    //     return $asset->delete();
+    // }
 
-    public function getById($id)
-    {
-        $asset = Asset::find($id);
-        return $asset;
-    }
+    // public function getById($id)
+    // {
+    //     $asset = Asset::find($id);
+    //     return $asset;
+    // }
 
     public function getByUserId($id)
     {

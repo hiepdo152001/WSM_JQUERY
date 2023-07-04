@@ -40,10 +40,10 @@ class ContactService
         $this->assetsService = $assetsService;
     }
 
-    public function create($id, $request)
+    public function create($userId, $request)
     {
         $contact = Contact::create([
-            'user_id' => $id,
+            'user_id' => $userId,
             'content' => $request->content,
             'type' => $request->type,
             'phone' => $request->phone,
@@ -69,12 +69,6 @@ class ContactService
         return $contact;
     }
 
-    // public function updateById($id, array $payload)
-    // {
-    //     $contact = Contact::find($id);
-    //     $contact->update($payload);
-    //     return $contact;
-    // }
 
     public function edit($id, array $payload)
     {
@@ -118,58 +112,76 @@ class ContactService
             ->where('contacts.status', $status)
             ->where('users.department_id', $department_id)
             ->get();
-
+        $users = User::with('contacts')->get();
         foreach ($contacts as $contact) {
-            $user = User::with('contacts')->find($contact->user_id);
-            $contact->user_name = $user->name;
+            foreach ($users as $user) {
+                if ($contact->user_id === $user->id) {
+                    $contact->user_name = $user->name;
+                }
+            }
         }
         return $contacts;
     }
 
     public function handleRequest($newContact, $user, $month)
     {
-        if ($newContact && $newContact->status === 3) {
+        if ($newContact->content === 'days_on') {
 
-            if ($newContact->content === 'days_on') {
-                $user = $this->userService->getById($newContact->user_id);
-                $daysOn = $this->userService->getTime($newContact->time_start, $newContact->time_end);
-
-                if ($daysOn <= $user->leave_days) {
-
-                    $payload = ['leave_days' => $user->leave_days - $daysOn, 'month' => $month];
-                } else {
-                    $payload = ['leave_days' => 0, 'flag' => $user->leave_days, 'month' => $month];
-                }
-            } elseif ($newContact->content === 'days_off') {
-                $payload = [];
-            } elseif ($newContact->content === 'special_take_leave') {
-                $days = $this->userService->getTime($newContact->time_start, $newContact->time_end);
-                $payload = ['flag' => round($days, 2), 'month' => $month];
-            } elseif ($newContact->content === 'over_time') {
-                $datetime1 = new DateTime($newContact->time_start);
-                $datetime2 = new DateTime($newContact->time_end);
-
-                $diff = $datetime1->diff($datetime2);
-                $time = $diff->d * 24 + $diff->h + $diff->i / 60;
-
-                $overTime = $time * 1.5 / 8;
-                $payload = ['flag' => round($overTime, 2), 'month' => $month];
-            } elseif ($newContact->content === 'forgot_to_check') {
-                $day = date('d', strtotime($newContact->time_start));
-                $month = date('m', strtotime($newContact->time_start));
-                $id = $newContact->user_id;
-                $this->calendarService->updateRequest($id, $newContact->time_start, $newContact->time_end, $day, $month);
-                $payload = [];
-            } elseif ($newContact->content === 'device_recall') {
-                $id = $newContact->assets_id;
-
-                $assets = $this->assetsService->getById($id);
-                $assets->user_id = null;
-                $assets->save();
-                $payload = [];
-            }
-
-            return $payload;
+            return $this->dayOns($newContact, $month);
+        } elseif ($newContact->content === 'days_off') {
+            return [];
+        } elseif ($newContact->content === 'special_take_leave') {
+            $days = $this->userService->getTime($newContact->time_start, $newContact->time_end);
+            return ['flag' => round($days, 2), 'month' => $month];
+        } elseif ($newContact->content === 'over_time') {
+            return $this->overTime($newContact, $month);
+        } elseif ($newContact->content === 'forgot_to_check') {
+            return $this->forgotToCheck($newContact);
+        } elseif ($newContact->content === 'device_recall') {
+            return $this->deviceRecall($newContact);
         }
+    }
+
+    public function dayOns($newContact, $month)
+    {
+        $user = $this->userService->getById($newContact->user_id);
+        $daysOn = $this->userService->getTime($newContact->time_start, $newContact->time_end);
+
+        if ($daysOn <= $user->leave_days) {
+
+            return ['leave_days' => $user->leave_days - $daysOn, 'month' => $month];
+        }
+        return ['leave_days' => 0, 'flag' => $user->leave_days, 'month' => $month];
+    }
+
+    public function overTime($newContact, $month)
+    {
+        $datetime1 = new DateTime($newContact->time_start);
+        $datetime2 = new DateTime($newContact->time_end);
+
+        $diff = $datetime1->diff($datetime2);
+        $time = $diff->d * 24 + $diff->h + $diff->i / 60;
+
+        $overTime = $time * 1.5 / 8;
+        return ['flag' => round($overTime, 2), 'month' => $month];
+    }
+
+    public function forgotToCheck($newContact)
+    {
+        $day = date('d', strtotime($newContact->time_start));
+        $month = date('m', strtotime($newContact->time_start));
+        $id = $newContact->user_id;
+        $this->calendarService->updateRequest($id, $newContact->time_start, $newContact->time_end, $day, $month);
+        return [];
+    }
+
+    public function deviceRecall($newContact)
+    {
+        $id = $newContact->assets_id;
+
+        $assets = $this->assetsService->getById($id);
+        $assets->user_id = null;
+        $assets->save();
+        return [];
     }
 }
