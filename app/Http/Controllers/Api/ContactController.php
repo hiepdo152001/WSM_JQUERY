@@ -104,15 +104,12 @@ class ContactController extends Controller
                 'message' => 'id not found!'
             ], 404);
         }
-
         $newContact = $this->contacts->edit($id, $request->all());
-
         if ($newContact->status === 3) {
             $times = new DateTime($newContact->time_start);
             $month = $times->format("m");
 
             $payload = $this->contacts->handleRequest($newContact, $user, $month);
-
             $newContact = $this->contacts->edit($id, $payload);
 
             $this->users->edit($contact->user_id, $payload);
@@ -163,7 +160,6 @@ class ContactController extends Controller
 
         $department_id = $user->department_id;
         $requests = $this->contacts->get($department_id, $status);
-
         return response()->json([
             'data' => $requests,
         ], 200);

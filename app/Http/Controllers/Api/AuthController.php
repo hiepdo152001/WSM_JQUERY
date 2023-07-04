@@ -37,7 +37,8 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = $this->userService->create($request);
+
+        $user = $this->userService->create($request->all());
         $user->notify(new RegisterNotify($user));
 
         return response()->json([

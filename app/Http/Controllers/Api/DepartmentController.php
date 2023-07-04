@@ -21,7 +21,7 @@ class DepartmentController extends Controller
 
     public function create(DepartmentRequest $request)
     {
-        $department = $this->deService->create($request);
+        $department = $this->deService->create($request->all());
         return response()->json([$department], 200);
     }
 
@@ -43,7 +43,7 @@ class DepartmentController extends Controller
 
     public function edit($id, DepartmentRequest $request)
     {
-        $check = $this->deService->edit($id, $request);
+        $check = $this->deService->edit($id, $request->all());
         if ($check === false) {
             return response()->json([
                 'message' => 'update false'
