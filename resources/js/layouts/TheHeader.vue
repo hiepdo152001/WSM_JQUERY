@@ -84,7 +84,7 @@
   background-color: #fff;
   -webkit-box-shadow: 0px 0px 13px 0px rgba(62, 44, 90, 0.08);
   box-shadow: 0px 0px 13px 0px rgba(62, 44, 90, 0.08);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0px !important;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.09);
   border-bottom: 1px solid #e0e0e0;

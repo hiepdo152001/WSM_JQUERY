@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import TheHeader from "../../layouts/TheHeader.vue";
+
 import { ref, onMounted } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -44,6 +46,7 @@ import {
 export default {
   components: {
     FullCalendar,
+    TheHeader,
   },
 
   setup() {
@@ -350,5 +353,11 @@ export default {
 .fc-theme-standard td,
 .fc-theme-standard th {
   border: 1px solid #886ab5 !important;
+}
+.fc-view-harness {
+  height: 677px !important;
+}
+.fc .fc-scrollgrid-liquid {
+  height: 100% !important;
 }
 </style>
